@@ -2,7 +2,30 @@
 # yarn lockfile v1
 
 
+git-directory-deploy@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/git-directory-deploy/-/git-directory-deploy-1.5.1.tgz#c4fad8c270d678d5f309fbddeac1eda60cad7fd2"
+  integrity sha1-xPrYwnDWeNXzCfvd6sHtpgytf9I=
+  dependencies:
+    lodash "^4.14.2"
+    minimist "^1.1.0"
+
 lix@^15.9.1:
   version "15.9.1"
   resolved "https://registry.yarnpkg.com/lix/-/lix-15.9.1.tgz#c0fe09535fa542d6a13193959401a6734274b228"
   integrity sha512-HOK+F/IFO9E3SqfBVFDnCGIDX7Hqee8RleBuQKQQ2UWh/qZ5WqVV4XTFgYgMVS0g+fwtZuuULOiAEqCQkSo3YA==
+
+lodash@^4.14.2:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+minimist@^1.1.0:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+
+ncp@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
+  integrity sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=

@@ -1,14 +1,20 @@
 {
-  "name": "helder.std",
-  "version": "0.0.0-test.0",
-  "main": "dist/js/index.js",
-  "repository": "https://github.com/helder/haxe.std",
-  "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/helder/std",
   "scripts": {
+    "postinstall": "lix download",
+    
     "build:js": "lix build-js.hxml",
-    "build:php": "lix build-php.hxml"
+    "version:js": "node version.js",
+    "publish:js": "ncp build/js dist/js && git-directory-deploy --directory dist/js --branch js",
+
+    "build:php": "lix build-php.hxml",
+    "publish:php": "ncp build/php dist/php && git-directory-deploy --directory dist/php --branch php",
+    "version:php": "git tag -a $(haxe --version) $(git log -n 1 --pretty=format:%H php) && git push --tags"
   },
   "devDependencies": {
-    "lix": "^15.9.1"
+    "git-directory-deploy": "^1.5.1",
+    "lix": "^15.9.1",
+    "ncp": "^2.0.0"
   }
 }

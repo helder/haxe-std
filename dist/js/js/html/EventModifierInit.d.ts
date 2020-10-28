@@ -1,4 +1,0 @@
-
-export type EventModifierInit = {altKey?: null | boolean, bubbles?: null | boolean, cancelable?: null | boolean, composed?: null | boolean, ctrlKey?: null | boolean, detail?: null | number, metaKey?: null | boolean, modifierAltGraph?: null | boolean, modifierCapsLock?: null | boolean, modifierFn?: null | boolean, modifierFnLock?: null | boolean, modifierNumLock?: null | boolean, modifierOS?: null | boolean, modifierScrollLock?: null | boolean, modifierSymbol?: null | boolean, modifierSymbolLock?: null | boolean, shiftKey?: null | boolean, view?: null | Window}
-
-//# sourceMappingURL=EventModifierInit.d.ts.map

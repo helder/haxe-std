@@ -1,4 +1,0 @@
-
-export type MediaTrackSupportedConstraints = {aspectRatio?: null | boolean, autoGainControl?: null | boolean, browserWindow?: null | boolean, channelCount?: null | boolean, deviceId?: null | boolean, echoCancellation?: null | boolean, facingMode?: null | boolean, frameRate?: null | boolean, groupId?: null | boolean, height?: null | boolean, latency?: null | boolean, mediaSource?: null | boolean, noiseSuppression?: null | boolean, sampleRate?: null | boolean, sampleSize?: null | boolean, scrollWithPage?: null | boolean, viewportHeight?: null | boolean, viewportOffsetX?: null | boolean, viewportOffsetY?: null | boolean, viewportWidth?: null | boolean, volume?: null | boolean, width?: null | boolean}
-
-//# sourceMappingURL=MediaTrackSupportedConstraints.d.ts.map
