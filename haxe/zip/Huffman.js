@@ -91,6 +91,9 @@ class HuffTools extends Register.inherits() {
 		return Huffman.NeedBit(this.treeMake(bits, maxbits, v, len), this.treeMake(bits, maxbits, v | 1, len));
 	}
 	make(lengths, pos, nlengths, maxbits) {
+		if (nlengths == 1) {
+			return Huffman.NeedBit(Huffman.Found(0), Huffman.Found(0));
+		};
 		var counts = new Array();
 		var tmp = new Array();
 		if (maxbits > 32) {

@@ -96,11 +96,23 @@ class Std {
 	If `x` cannot be parsed as integer, the result is `null`.
 	*/
 	static parseInt(x) {
-		var v = parseInt(x, x && x[0]=="0" && (x[1]=="x" || x[1]=="X") ? 16 : 10);
-		if (isNaN(v)) {
-			return null;
+		if (x != null) {
+			var _g = 0;
+			var _g1 = x.length;
+			while (_g < _g1) {
+				var i = _g++;
+				var c = x.charCodeAt(i);
+				if (c <= 8 || c >= 14 && c != 32 && c != 45) {
+					var v = parseInt(x, (x[i + 1]=="x" || x[i + 1]=="X") ? 16 : 10);
+					if (isNaN(v)) {
+						return null;
+					} else {
+						return v;
+					};
+				};
+			};
 		};
-		return v;
+		return null;
 	}
 	
 	/**
