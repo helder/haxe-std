@@ -1,9 +1,9 @@
 {
 	"name": "helder.std",
 	"license": "MIT",
-	"tags": ["js", "php"],
+	"tags": ["js", "php", "genes"],
 	"classPath": "src",
-	"description": "Import std classes from an external package (php / genes)",
+	"description": "Import std from an external package (php / genes)",
 	"contributors": ["benmerckx"],
 	"releasenote": "See repository",
 	"version": "0.0.0",

@@ -25,7 +25,7 @@ class Std {
 				type.meta.add(':native', [macro $v{native}], type.pos);
 			});
 		else if (Context.defined('genes'))
-			excludeAsNative(['js', 'genes'].concat(stdPaths), (pack, type) -> {
+			excludeAsNative(['js'].concat(stdPaths), (pack, type) -> {
 				final path = type.module.split('.');
 				final name = type.name;
 				final from = ['helder.std'].concat(path).join('/');
