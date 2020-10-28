@@ -38,6 +38,6 @@ Haxe 4.x std is published to [helder.std](https://www.npmjs.com/package/helder.s
 Install according to your haxe version:
 
 ````
-npm install helder/std@4.1.4
-yarn add helder/std@4.1.4
+npm install helder.std@4.1.4
+yarn add helder.std@4.1.4
 ````
