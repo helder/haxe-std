@@ -272,7 +272,7 @@ class JsonParser extends Register.inherits() {
 								buf.b += String.fromCodePoint(65533);
 								prev = -1;
 							} else {
-								buf.b += String.fromCodePoint((prev - 55296 << 10) + (uc - 56320) + 65536);
+								buf.b += String.fromCodePoint(((prev - 55296 << 10) + (uc - 56320) + 65536));
 								prev = -1;
 							};
 						} else if (uc >= 55296 && uc <= 56319) {

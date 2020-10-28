@@ -103,7 +103,7 @@ class Std {
 				var i = _g++;
 				var c = x.charCodeAt(i);
 				if (c <= 8 || c >= 14 && c != 32 && c != 45) {
-					var v = parseInt(x, (x[i + 1]=="x" || x[i + 1]=="X") ? 16 : 10);
+					var v = parseInt(x, (x[(i + 1)]=="x" || x[(i + 1)]=="X") ? 16 : 10);
 					if (isNaN(v)) {
 						return null;
 					} else {
