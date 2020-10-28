@@ -20,7 +20,7 @@ class Std {
     excludeAsNative(['js', 'genes'].concat(stdPaths), (pack, type) -> {
       final path = type.module.split('.');
       final name = type.name;
-      final from = ['haxe-std'].concat(path).join('/');
+      final from = ['helder.std'].concat(path).join('/');
       type.meta.add(':jsRequire', [macro $v{from}, macro $v{name}], type.pos);
     });
     #end
