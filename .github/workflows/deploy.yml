@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-          always-auth: true
+          registry-url: 'https://registry.npmjs.org'
       - run: yarn
       - run: yarn lix install haxe ${{ github.event.inputs.version }}
 
