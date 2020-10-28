@@ -22,7 +22,8 @@ jobs:
       - run: yarn build:js
       - run: yarn version:js
       - run: yarn publish:js
-      - run: cd dist/js && yarn publish --non-interactive
+      - run: yarn publish --non-interactive
+        working-directory: dist/js
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
