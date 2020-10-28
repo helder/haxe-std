@@ -1,7 +1,7 @@
 name: deploy
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
     inputs:
       version:
         description: 'Haxe version'
@@ -17,7 +17,7 @@ jobs:
           node-version: '12.x'
       - run: yarn
       - run: yarn lix install haxe ${{ github.event.inputs.version }}
-      
+
       - run: yarn build:js
       - run: yarn version:js
       - run: yarn publish:js
