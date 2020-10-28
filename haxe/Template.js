@@ -553,9 +553,9 @@ class Template extends Register.inherits() {
 					let _this = this.buf;
 					let x = Std.string(v4.apply(this.macros, pl));
 					_this.b += Std.string(x);
-				}catch (_g1) {
-					NativeStackTrace.lastError = _g1;
-					let e = Exception.caught(_g1).unwrap();
+				}catch (_g) {
+					NativeStackTrace.lastError = _g;
+					let e = Exception.caught(_g).unwrap();
 					let plstr;
 					try {
 						plstr = pl.join(",");

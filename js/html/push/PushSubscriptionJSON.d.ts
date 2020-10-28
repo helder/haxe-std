@@ -1,5 +1,4 @@
-import {PushSubscriptionKeys} from "./PushSubscriptionKeys"
 
-export type PushSubscriptionJSON = {endpoint?: null | string, keys?: null | PushSubscriptionKeys}
+export type PushSubscriptionJSON = {endpoint?: null | string, keys?: any}
 
 //# sourceMappingURL=PushSubscriptionJSON.d.ts.map

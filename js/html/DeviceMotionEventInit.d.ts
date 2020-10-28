@@ -1,6 +1,4 @@
-import {DeviceRotationRateInit} from "./DeviceRotationRateInit"
-import {DeviceAccelerationInit} from "./DeviceAccelerationInit"
 
-export type DeviceMotionEventInit = {acceleration?: null | DeviceAccelerationInit, accelerationIncludingGravity?: null | DeviceAccelerationInit, bubbles?: null | boolean, cancelable?: null | boolean, composed?: null | boolean, interval?: null | number, rotationRate?: null | DeviceRotationRateInit}
+export type DeviceMotionEventInit = {acceleration?: any, accelerationIncludingGravity?: any, bubbles?: null | boolean, cancelable?: null | boolean, composed?: null | boolean, interval?: null | number, rotationRate?: any}
 
 //# sourceMappingURL=DeviceMotionEventInit.d.ts.map
