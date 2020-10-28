@@ -22,11 +22,12 @@ export declare class Int64_Impl_ {
 	Throws an exception  if `x` cannot be represented in 32 bits.
 	*/
 	static toInt(x: __Int64): number
+	static is(val: any): boolean
 	
 	/**
 	Returns whether the value `val` is of type `haxe.Int64`
 	*/
-	static is(val: any): boolean
+	static isInt64(val: any): boolean
 	
 	/**
 	Returns the high 32-bit word of `x`.

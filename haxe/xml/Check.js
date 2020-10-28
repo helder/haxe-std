@@ -1,4 +1,5 @@
-import {HaxeError} from "../../js/Boot"
+import {ArrayIterator} from "../iterators/ArrayIterator"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Xml, XmlType_Impl_} from "../../Xml"
 import {Std} from "../../Std"
@@ -65,11 +66,11 @@ CheckResult.__empty_constructs__ = [CheckResult.CMatch]
 export const Check = Register.global("$hxClasses")["haxe.xml.Check"] = 
 class Check {
 	static isBlank(x) {
-		var tmp;
+		let tmp;
 		if (x.nodeType == Xml.PCData) {
-			var tmp1 = Check.blanks;
+			let tmp1 = Check.blanks;
 			if (x.nodeType == Xml.Document || x.nodeType == Xml.Element) {
-				throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(x.nodeType));
+				throw Exception.thrown("Bad node type, unexpected " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 			};
 			tmp = tmp1.match(x.nodeValue);
 		} else {
@@ -90,10 +91,10 @@ class Check {
 				return Check.filterMatch(s, Filter.FEnum(["true", "false", "0", "1"]));
 				break
 			case 2:
-				var values = f.values;
-				var _g = 0;
+				let values = f.values;
+				let _g = 0;
 				while (_g < values.length) {
-					var v = values[_g];
+					let v = values[_g];
 					++_g;
 					if (s == v) {
 						return true;
@@ -102,7 +103,7 @@ class Check {
 				return false;
 				break
 			case 3:
-				var r = f.matcher;
+				let r = f.matcher;
 				return r.match(s);
 				break
 			
@@ -111,18 +112,18 @@ class Check {
 	static isNullable(r) {
 		switch (r._hx_index) {
 			case 0:
-				var _g2 = r.childs;
-				var _g1 = r.attribs;
-				var _g = r.name;
+				let _g = r.childs;
+				let _g1 = r.attribs;
+				let _g2 = r.name;
 				return false;
 				break
 			case 1:
-				var _g5 = r.filter;
+				let _g3 = r.filter;
 				return false;
 				break
 			case 2:
-				var one = r.atLeastOne;
-				var r1 = r.rule;
+				let one = r.atLeastOne;
+				let r1 = r.rule;
 				if (one == true) {
 					return Check.isNullable(r1);
 				} else {
@@ -130,32 +131,32 @@ class Check {
 				};
 				break
 			case 3:
-				var _g4 = r.ordered;
-				var rl = r.rules;
-				var _g3 = 0;
-				while (_g3 < rl.length) {
-					var r2 = rl[_g3];
-					++_g3;
-					if (!Check.isNullable(r2)) {
+				let _g4 = r.ordered;
+				let rl = r.rules;
+				let _g5 = 0;
+				while (_g5 < rl.length) {
+					let r = rl[_g5];
+					++_g5;
+					if (!Check.isNullable(r)) {
 						return false;
 					};
 				};
 				return true;
 				break
 			case 4:
-				var rl1 = r.choices;
-				var _g6 = 0;
+				let rl1 = r.choices;
+				let _g6 = 0;
 				while (_g6 < rl1.length) {
-					var r3 = rl1[_g6];
+					let r = rl1[_g6];
 					++_g6;
-					if (Check.isNullable(r3)) {
+					if (Check.isNullable(r)) {
 						return true;
 					};
 				};
 				return false;
 				break
 			case 5:
-				var _g9 = r.rule;
+				let _g7 = r.rule;
 				return true;
 				break
 			
@@ -164,13 +165,13 @@ class Check {
 	static check(x, r) {
 		switch (r._hx_index) {
 			case 0:
-				var childs = r.childs;
-				var attribs = r.attribs;
-				var name = r.name;
-				var tmp;
+				let childs = r.childs;
+				let attribs = r.attribs;
+				let name = r.name;
+				let tmp;
 				if (x.nodeType == Xml.Element) {
 					if (x.nodeType != Xml.Element) {
-						throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(x.nodeType));
+						throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 					};
 					tmp = x.nodeName != name;
 				} else {
@@ -179,23 +180,23 @@ class Check {
 				if (tmp) {
 					return CheckResult.CElementExpected(name, x);
 				};
-				var attribs1 = (attribs == null) ? new Array() : attribs.slice();
-				var xatt = x.attributes();
+				let attribs1 = (attribs == null) ? new Array() : attribs.slice();
+				let xatt = x.attributes();
 				while (xatt.hasNext()) {
-					var xatt1 = xatt.next();
-					var found = false;
-					var _g = 0;
+					let xatt1 = xatt.next();
+					let found = false;
+					let _g = 0;
 					while (_g < attribs1.length) {
-						var att = attribs1[_g];
+						let att = attribs1[_g];
 						++_g;
-						var _g2 = att.defvalue;
-						var filter = att.filter;
-						var name1 = att.name;
-						if (xatt1 != name1) {
+						let _g1 = att.defvalue;
+						let filter = att.filter;
+						let name = att.name;
+						if (xatt1 != name) {
 							continue;
 						};
 						if (filter != null && !Check.filterMatch(x.get(xatt1), filter)) {
-							return CheckResult.CInvalidAttrib(name1, x, filter);
+							return CheckResult.CInvalidAttrib(name, x, filter);
 						};
 						HxOverrides.remove(attribs1, att);
 						found = true;
@@ -204,66 +205,66 @@ class Check {
 						return CheckResult.CExtraAttrib(xatt1, x);
 					};
 				};
-				var _g1 = 0;
-				while (_g1 < attribs1.length) {
-					var att1 = attribs1[_g1];
-					++_g1;
-					var _g11 = att1.filter;
-					var defvalue = att1.defvalue;
-					var name2 = att1.name;
+				let _g = 0;
+				while (_g < attribs1.length) {
+					let att = attribs1[_g];
+					++_g;
+					let _g1 = att.filter;
+					let defvalue = att.defvalue;
+					let name = att.name;
 					if (defvalue == null) {
-						return CheckResult.CMissingAttrib(name2, x);
+						return CheckResult.CMissingAttrib(name, x);
 					};
 				};
 				if (childs == null) {
 					childs = Rule.RList([]);
 				};
 				if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-					throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(x.nodeType));
+					throw Exception.thrown("Bad node type, expected Element or Document but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 				};
-				var m = Check.checkList(HxOverrides.iter(x.children), childs);
+				let m = Check.checkList(new ArrayIterator(x.children), childs);
 				if (m != CheckResult.CMatch) {
 					return CheckResult.CInElement(x, m);
 				};
-				var _g12 = 0;
-				while (_g12 < attribs1.length) {
-					var att2 = attribs1[_g12];
-					++_g12;
-					var _g21 = att2.filter;
-					var defvalue1 = att2.defvalue;
-					var name3 = att2.name;
-					x.set(name3, defvalue1);
+				let _g1 = 0;
+				while (_g1 < attribs1.length) {
+					let att = attribs1[_g1];
+					++_g1;
+					let _g = att.filter;
+					let defvalue = att.defvalue;
+					let name = att.name;
+					x.set(name, defvalue);
 				};
 				return CheckResult.CMatch;
 				break
 			case 1:
-				var filter1 = r.filter;
+				let filter = r.filter;
 				if (x.nodeType != Xml.PCData && x.nodeType != Xml.CData) {
 					return CheckResult.CDataExpected(x);
 				};
-				var tmp1;
-				if (filter1 != null) {
+				let tmp1;
+				if (filter != null) {
 					if (x.nodeType == Xml.Document || x.nodeType == Xml.Element) {
-						throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(x.nodeType));
+						throw Exception.thrown("Bad node type, unexpected " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 					};
-					tmp1 = !Check.filterMatch(x.nodeValue, filter1);
+					tmp1 = !Check.filterMatch(x.nodeValue, filter);
 				} else {
 					tmp1 = false;
 				};
 				if (tmp1) {
-					return CheckResult.CInvalidData(x, filter1);
+					return CheckResult.CInvalidData(x, filter);
 				};
 				return CheckResult.CMatch;
 				break
 			case 4:
-				var choices = r.choices;
+				let choices = r.choices;
 				if (choices.length == 0) {
-					throw new HaxeError("No choice possible");
+					throw Exception.thrown("No choice possible");
 				};
-				var _g3 = 0;
-				while (_g3 < choices.length) {
-					var c = choices[_g3];
-					++_g3;
+				let _g2 = 0;
+				while (_g2 < choices.length) {
+					let c = choices[_g2];
+					++_g2;
 					if (Check.check(x, c) == CheckResult.CMatch) {
 						return CheckResult.CMatch;
 					};
@@ -271,27 +272,27 @@ class Check {
 				return Check.check(x, choices[0]);
 				break
 			case 5:
-				var r1 = r.rule;
+				let r1 = r.rule;
 				return Check.check(x, r1);
 				break
 			default:
-			throw new HaxeError("Unexpected " + Std.string(r));
+			throw Exception.thrown("Unexpected " + Std.string(r));
 			
 		};
 	}
 	static checkList(it, r) {
 		switch (r._hx_index) {
 			case 2:
-				var one = r.atLeastOne;
-				var r1 = r.rule;
-				var found = false;
-				var x = it;
+				let one = r.atLeastOne;
+				let r1 = r.rule;
+				let found = false;
+				let x = it;
 				while (x.hasNext()) {
-					var x1 = x.next();
+					let x1 = x.next();
 					if (Check.isBlank(x1)) {
 						continue;
 					};
-					var m = Check.checkList(HxOverrides.iter([x1]), r1);
+					let m = Check.checkList(new ArrayIterator([x1]), r1);
 					if (m != CheckResult.CMatch) {
 						return m;
 					};
@@ -303,88 +304,88 @@ class Check {
 				return CheckResult.CMatch;
 				break
 			case 3:
-				var ordered = r.ordered;
-				var rules = r.rules;
-				var rules1 = rules.slice();
-				var x2 = it;
-				while (x2.hasNext()) {
-					var x3 = x2.next();
-					if (Check.isBlank(x3)) {
+				let ordered = r.ordered;
+				let rules = r.rules;
+				let rules1 = rules.slice();
+				let x1 = it;
+				while (x1.hasNext()) {
+					let x = x1.next();
+					if (Check.isBlank(x)) {
 						continue;
 					};
-					var found1 = false;
-					var _g = 0;
+					let found = false;
+					let _g = 0;
 					while (_g < rules1.length) {
-						var r2 = rules1[_g];
+						let r = rules1[_g];
 						++_g;
-						var m1 = Check.checkList(HxOverrides.iter([x3]), r2);
-						if (m1 == CheckResult.CMatch) {
-							found1 = true;
-							if (r2._hx_index == 2) {
-								var one1 = r2.atLeastOne;
-								var rsub = r2.rule;
-								if (one1) {
-									var i;
-									var _g1 = 0;
-									var _g11 = rules1.length;
-									while (_g1 < _g11) {
-										var i1 = _g1++;
-										if (rules1[i1] == r2) {
-											rules1[i1] = Rule.RMulti(rsub);
+						let m = Check.checkList(new ArrayIterator([x]), r);
+						if (m == CheckResult.CMatch) {
+							found = true;
+							if (r._hx_index == 2) {
+								let one = r.atLeastOne;
+								let rsub = r.rule;
+								if (one) {
+									let i;
+									let _g = 0;
+									let _g1 = rules1.length;
+									while (_g < _g1) {
+										let i = _g++;
+										if (rules1[i] == r) {
+											rules1[i] = Rule.RMulti(rsub);
 										};
 									};
 								};
 							} else {
-								HxOverrides.remove(rules1, r2);
+								HxOverrides.remove(rules1, r);
 							};
 							break;
-						} else if (ordered && !Check.isNullable(r2)) {
-							return m1;
+						} else if (ordered && !Check.isNullable(r)) {
+							return m;
 						};
 					};
-					if (!found1) {
-						return CheckResult.CExtra(x3);
+					if (!found) {
+						return CheckResult.CExtra(x);
 					};
 				};
-				var _g2 = 0;
-				while (_g2 < rules1.length) {
-					var r3 = rules1[_g2];
-					++_g2;
-					if (!Check.isNullable(r3)) {
-						return CheckResult.CMissing(r3);
+				let _g = 0;
+				while (_g < rules1.length) {
+					let r = rules1[_g];
+					++_g;
+					if (!Check.isNullable(r)) {
+						return CheckResult.CMissing(r);
 					};
 				};
 				return CheckResult.CMatch;
 				break
 			default:
-			var found2 = false;
-			var x4 = it;
-			while (x4.hasNext()) {
-				var x5 = x4.next();
-				if (Check.isBlank(x5)) {
+			let found1 = false;
+			let x2 = it;
+			while (x2.hasNext()) {
+				let x = x2.next();
+				if (Check.isBlank(x)) {
 					continue;
 				};
-				var m2 = Check.check(x5, r);
-				if (m2 != CheckResult.CMatch) {
-					return m2;
+				let m = Check.check(x, r);
+				if (m != CheckResult.CMatch) {
+					return m;
 				};
-				found2 = true;
+				found1 = true;
 				break;
 			};
-			if (!found2) {
+			if (!found1) {
 				if (r._hx_index == 5) {
-					var _g3 = r.rule;
+					let _g = r.rule;
 				} else {
 					return CheckResult.CMissing(r);
 				};
 			};
-			var x6 = it;
-			while (x6.hasNext()) {
-				var x7 = x6.next();
-				if (Check.isBlank(x7)) {
+			let x3 = it;
+			while (x3.hasNext()) {
+				let x = x3.next();
+				if (Check.isBlank(x)) {
 					continue;
 				};
-				return CheckResult.CExtra(x7);
+				return CheckResult.CExtra(x);
 			};
 			return CheckResult.CMatch;
 			
@@ -394,11 +395,11 @@ class Check {
 		if (path.length == 0) {
 			return "";
 		};
-		var s = "In ";
-		var first = true;
-		var _g = 0;
+		let s = "In ";
+		let first = true;
+		let _g = 0;
 		while (_g < path.length) {
-			var x = path[_g];
+			let x = path[_g];
 			++_g;
 			if (first) {
 				first = false;
@@ -406,7 +407,7 @@ class Check {
 				s += ".";
 			};
 			if (x.nodeType != Xml.Element) {
-				throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(x.nodeType));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 			};
 			s += x.nodeName;
 		};
@@ -415,14 +416,14 @@ class Check {
 	static makeString(x) {
 		if (x.nodeType == Xml.Element) {
 			if (x.nodeType != Xml.Element) {
-				throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(x.nodeType));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 			};
 			return "element " + x.nodeName;
 		};
 		if (x.nodeType == Xml.Document || x.nodeType == Xml.Element) {
-			throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(x.nodeType));
+			throw Exception.thrown("Bad node type, unexpected " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 		};
-		var s = x.nodeValue.split("\r").join("\\r").split("\n").join("\\n").split("\t").join("\\t");
+		let s = x.nodeValue.split("\r").join("\\r").split("\n").join("\\n").split("\t").join("\\t");
 		if (s.length > 20) {
 			return HxOverrides.substr(s, 0, 17) + "...";
 		};
@@ -431,31 +432,31 @@ class Check {
 	static makeRule(r) {
 		switch (r._hx_index) {
 			case 0:
-				var _g2 = r.childs;
-				var _g1 = r.attribs;
-				var name = r.name;
+				let _g = r.childs;
+				let _g1 = r.attribs;
+				let name = r.name;
 				return "element " + name;
 				break
 			case 1:
-				var _g5 = r.filter;
+				let _g2 = r.filter;
 				return "data";
 				break
 			case 2:
-				var _g7 = r.atLeastOne;
-				var r1 = r.rule;
+				let _g3 = r.atLeastOne;
+				let r1 = r.rule;
 				return Check.makeRule(r1);
 				break
 			case 3:
-				var _g4 = r.ordered;
-				var rules = r.rules;
+				let _g4 = r.ordered;
+				let rules = r.rules;
 				return Check.makeRule(rules[0]);
 				break
 			case 4:
-				var choices = r.choices;
+				let choices = r.choices;
 				return Check.makeRule(choices[0]);
 				break
 			case 5:
-				var r2 = r.rule;
+				let r2 = r.rule;
 				return Check.makeRule(r2);
 				break
 			
@@ -467,52 +468,52 @@ class Check {
 		};
 		switch (m._hx_index) {
 			case 0:
-				throw new HaxeError("assert");
+				throw Exception.thrown("assert");
 				break
 			case 1:
-				var r = m.r;
+				let r = m.r;
 				return Check.makeWhere(path) + "Missing " + Check.makeRule(r);
 				break
 			case 2:
-				var x = m.x;
+				let x = m.x;
 				return Check.makeWhere(path) + "Unexpected " + Check.makeString(x);
 				break
 			case 3:
-				var x1 = m.x;
-				var name = m.name;
+				let x1 = m.x;
+				let name = m.name;
 				return Check.makeWhere(path) + Check.makeString(x1) + " while expected element " + name;
 				break
 			case 4:
-				var x2 = m.x;
+				let x2 = m.x;
 				return Check.makeWhere(path) + Check.makeString(x2) + " while data expected";
 				break
 			case 5:
-				var x3 = m.x;
-				var att = m.att;
+				let x3 = m.x;
+				let att = m.att;
 				path.push(x3);
 				return Check.makeWhere(path) + "unexpected attribute " + att;
 				break
 			case 6:
-				var x4 = m.x;
-				var att1 = m.att;
+				let x4 = m.x;
+				let att1 = m.att;
 				path.push(x4);
 				return Check.makeWhere(path) + "missing required attribute " + att1;
 				break
 			case 7:
-				var _g11 = m.f;
-				var x5 = m.x;
-				var att2 = m.att;
+				let _g = m.f;
+				let x5 = m.x;
+				let att2 = m.att;
 				path.push(x5);
 				return Check.makeWhere(path) + "invalid attribute value for " + att2;
 				break
 			case 8:
-				var _g13 = m.f;
-				var x6 = m.x;
+				let _g1 = m.f;
+				let x6 = m.x;
 				return Check.makeWhere(path) + "invalid data format for " + Check.makeString(x6);
 				break
 			case 9:
-				var m1 = m.r;
-				var x7 = m.x;
+				let m1 = m.r;
+				let x7 = m.x;
 				path.push(x7);
 				return Check.makeError(m1, path);
 				break
@@ -520,24 +521,24 @@ class Check {
 		};
 	}
 	static checkNode(x, r) {
-		var m = Check.checkList(HxOverrides.iter([x]), r);
+		let m = Check.checkList(new ArrayIterator([x]), r);
 		if (m == CheckResult.CMatch) {
 			return;
 		};
-		throw new HaxeError(Check.makeError(m));
+		throw Exception.thrown(Check.makeError(m));
 	}
 	static checkDocument(x, r) {
 		if (x.nodeType != Xml.Document) {
-			throw new HaxeError("Document expected");
+			throw Exception.thrown("Document expected");
 		};
 		if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-			throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(x.nodeType));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
 		};
-		var m = Check.checkList(HxOverrides.iter(x.children), r);
+		let m = Check.checkList(new ArrayIterator(x.children), r);
 		if (m == CheckResult.CMatch) {
 			return;
 		};
-		throw new HaxeError(Check.makeError(m));
+		throw Exception.thrown(Check.makeError(m));
 	}
 	static get __name__() {
 		return "haxe.xml.Check"

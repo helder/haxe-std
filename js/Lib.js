@@ -20,10 +20,10 @@ class Lib {
 	@deprecated Use Browser.alert() instead.
 	*/
 	static alert(v) {
-		alert(Boot.__string_rec(v, ""));
+		(alert)(Boot.__string_rec(v, ""));
 	}
 	static eval(code) {
-		return eval(code);
+		return (eval)(code);
 	}
 	static get undefined() {
 		return this.get_undefined()

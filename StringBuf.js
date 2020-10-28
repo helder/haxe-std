@@ -6,12 +6,9 @@ import {HxOverrides} from "./HxOverrides"
 A String buffer is an efficient way to build a big string by appending small
 elements together.
 
-Its cross-platform implementation uses String concatenation internally, but
-StringBuf may be optimized for different targets.
-
 Unlike String, an instance of StringBuf is not immutable in the sense that
 it can be passed as argument to functions which modify it by appending more
-values. However, the internal buffer cannot be modified.
+values.
 */
 export const StringBuf = Register.global("$hxClasses")["StringBuf"] = 
 class StringBuf extends Register.inherits() {

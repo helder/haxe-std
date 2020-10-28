@@ -24,10 +24,10 @@ class Lambda {
 	If `it` is an Array, this function returns a copy of it.
 	*/
 	static array(it) {
-		var a = new Array();
-		var i = Register.iter(it);
+		let a = new Array();
+		let i = Register.iter(it);
 		while (i.hasNext()) {
-			var i1 = i.next();
+			let i1 = i.next();
 			a.push(i1);
 		};
 		return a;
@@ -39,10 +39,10 @@ class Lambda {
 	If `it` is a List, this function returns a copy of it.
 	*/
 	static list(it) {
-		var l = new List();
-		var i = Register.iter(it);
+		let l = new List();
+		let i = Register.iter(it);
 		while (i.hasNext()) {
-			var i1 = i.next();
+			let i1 = i.next();
 			l.add(i1);
 		};
 		return l;
@@ -54,10 +54,10 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static map(it, f) {
-		var _g = [];
-		var x = Register.iter(it);
+		let _g = [];
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			_g.push(f(x1));
 		};
 		return _g;
@@ -69,11 +69,11 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static mapi(it, f) {
-		var i = 0;
-		var _g = [];
-		var x = Register.iter(it);
+		let i = 0;
+		let _g = [];
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			_g.push(f(i++, x1));
 		};
 		return _g;
@@ -84,13 +84,13 @@ class Lambda {
 	The order of elements is preserved.
 	*/
 	static flatten(it) {
-		var _g = [];
-		var e = Register.iter(it);
+		let _g = [];
+		let e = Register.iter(it);
 		while (e.hasNext()) {
-			var e1 = e.next();
-			var x = Register.iter(e1);
+			let e1 = e.next();
+			let x = Register.iter(e1);
 			while (x.hasNext()) {
-				var x1 = x.next();
+				let x1 = x.next();
 				_g.push(x1);
 			};
 		};
@@ -103,20 +103,20 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static flatMap(it, f) {
-		var _g = [];
-		var x = Register.iter(it);
+		let _g = [];
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			_g.push(f(x1));
 		};
-		var _g1 = [];
-		var e = Register.iter(_g);
+		let _g1 = [];
+		let e = Register.iter(_g);
 		while (e.hasNext()) {
-			var e1 = e.next();
-			var x2 = Register.iter(e1);
-			while (x2.hasNext()) {
-				var x3 = x2.next();
-				_g1.push(x3);
+			let e1 = e.next();
+			let x = Register.iter(e1);
+			while (x.hasNext()) {
+				let x1 = x.next();
+				_g1.push(x1);
 			};
 		};
 		return _g1;
@@ -131,9 +131,9 @@ class Lambda {
 	If no such element is found, the result is false.
 	*/
 	static has(it, elt) {
-		var x = Register.iter(it);
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			if (x1 == elt) {
 				return true;
 			};
@@ -152,9 +152,9 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static exists(it, f) {
-		var x = Register.iter(it);
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			if (f(x1)) {
 				return true;
 			};
@@ -175,9 +175,9 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static foreach(it, f) {
-		var x = Register.iter(it);
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			if (!f(x1)) {
 				return false;
 			};
@@ -191,9 +191,9 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static iter(it, f) {
-		var x = Register.iter(it);
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			f(x1);
 		};
 	}
@@ -205,10 +205,10 @@ class Lambda {
 	Otherwise if `f` is null, the result is unspecified.
 	*/
 	static filter(it, f) {
-		var _g = [];
-		var x = Register.iter(it);
+		let _g = [];
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			if (f(x1)) {
 				_g.push(x1);
 			};
@@ -229,10 +229,26 @@ class Lambda {
 	If `it` or `f` are null, the result is unspecified.
 	*/
 	static fold(it, f, first) {
-		var x = Register.iter(it);
+		let x = Register.iter(it);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			first = f(x1, first);
+		};
+		return first;
+	}
+	
+	/**
+	Similar to fold, but also passes the index of each element to `f`.
+	
+	If `it` or `f` are null, the result is unspecified.
+	*/
+	static foldi(it, f, first) {
+		let i = 0;
+		let x = Register.iter(it);
+		while (x.hasNext()) {
+			let x1 = x.next();
+			first = f(x1, first, i);
+			++i;
 		};
 		return first;
 	}
@@ -244,17 +260,17 @@ class Lambda {
 	This function traverses all elements.
 	*/
 	static count(it, pred = null) {
-		var n = 0;
+		let n = 0;
 		if (pred == null) {
-			var _ = Register.iter(it);
+			let _ = Register.iter(it);
 			while (_.hasNext()) {
-				var _1 = _.next();
+				let _1 = _.next();
 				++n;
 			};
 		} else {
-			var x = Register.iter(it);
+			let x = Register.iter(it);
 			while (x.hasNext()) {
-				var x1 = x.next();
+				let x1 = x.next();
 				if (pred(x1)) {
 					++n;
 				};
@@ -278,10 +294,10 @@ class Lambda {
 	If `v` does not exist in `it`, the result is -1.
 	*/
 	static indexOf(it, v) {
-		var i = 0;
-		var v2 = Register.iter(it);
+		let i = 0;
+		let v2 = Register.iter(it);
 		while (v2.hasNext()) {
-			var v21 = v2.next();
+			let v21 = v2.next();
 			if (v == v21) {
 				return i;
 			};
@@ -301,14 +317,37 @@ class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static find(it, f) {
-		var v = Register.iter(it);
+		let v = Register.iter(it);
 		while (v.hasNext()) {
-			var v1 = v.next();
+			let v1 = v.next();
 			if (f(v1)) {
 				return v1;
 			};
 		};
 		return null;
+	}
+	
+	/**
+	Returns the index of the first element of `it` for which `f` is true.
+	
+	This function returns as soon as an element is found for which a call to
+	`f` returns true.
+	
+	If no such element is found, the result is -1.
+	
+	If `f` is null, the result is unspecified.
+	*/
+	static findIndex(it, f) {
+		let i = 0;
+		let v = Register.iter(it);
+		while (v.hasNext()) {
+			let v1 = v.next();
+			if (f(v1)) {
+				return i;
+			};
+			++i;
+		};
+		return -1;
 	}
 	
 	/**
@@ -318,16 +357,16 @@ class Lambda {
 	If `a` or `b` are null, the result is unspecified.
 	*/
 	static concat(a, b) {
-		var l = new Array();
-		var x = Register.iter(a);
+		let l = new Array();
+		let x = Register.iter(a);
 		while (x.hasNext()) {
-			var x1 = x.next();
+			let x1 = x.next();
 			l.push(x1);
 		};
-		var x2 = Register.iter(b);
-		while (x2.hasNext()) {
-			var x3 = x2.next();
-			l.push(x3);
+		let x1 = Register.iter(b);
+		while (x1.hasNext()) {
+			let x = x1.next();
+			l.push(x);
 		};
 		return l;
 	}

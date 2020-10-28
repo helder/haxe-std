@@ -27,7 +27,7 @@ class Hmac extends Register.inherits() {
 	new(hashMethod) {
 		this.method = hashMethod;
 		this.blockSize = 64;
-		var tmp;
+		let tmp;
 		switch (hashMethod._hx_index) {
 			case 0:
 				tmp = 16;
@@ -57,16 +57,16 @@ class Hmac extends Register.inherits() {
 		};
 	}
 	nullPad(s, chunkLen) {
-		var r = chunkLen - s.length % chunkLen;
+		let r = chunkLen - s.length % chunkLen;
 		if (r == chunkLen && s.length != 0) {
 			return s;
 		};
-		var sb = new BytesBuffer();
+		let sb = new BytesBuffer();
 		sb.add(s);
-		var _g = 0;
-		var _g1 = r;
+		let _g = 0;
+		let _g1 = r;
 		while (_g < _g1) {
-			var x = _g++;
+			let x = _g++;
 			sb.addByte(0);
 		};
 		return sb.getBytes();
@@ -87,18 +87,18 @@ class Hmac extends Register.inherits() {
 			};
 		};
 		key = this.nullPad(key, this.blockSize);
-		var Ki = new BytesBuffer();
-		var Ko = new BytesBuffer();
-		var _g = 0;
-		var _g1 = key.length;
+		let Ki = new BytesBuffer();
+		let Ko = new BytesBuffer();
+		let _g = 0;
+		let _g1 = key.length;
 		while (_g < _g1) {
-			var i = _g++;
+			let i = _g++;
 			Ko.addByte(key.b[i] ^ 92);
 			Ki.addByte(key.b[i] ^ 54);
 		};
 		Ki.add(msg);
-		var b = Ki.getBytes();
-		var tmp;
+		let b = Ki.getBytes();
+		let tmp;
 		switch (this.method._hx_index) {
 			case 0:
 				tmp = Md5.make(b);
@@ -112,7 +112,7 @@ class Hmac extends Register.inherits() {
 			
 		};
 		Ko.add(tmp);
-		var b1 = Ko.getBytes();
+		let b1 = Ko.getBytes();
 		switch (this.method._hx_index) {
 			case 0:
 				return Md5.make(b1);

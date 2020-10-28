@@ -1,7 +1,4 @@
 
-export declare class MapEntry_Impl_ {
-	static readonly key: K
-	static readonly value: V
-}
+export type MapEntry<K, V> = any[]
 
 //# sourceMappingURL=Map.d.ts.map

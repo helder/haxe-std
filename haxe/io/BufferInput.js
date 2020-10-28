@@ -20,7 +20,7 @@ class BufferInput extends Register.inherits(Input) {
 		if (this.available == 0) {
 			this.refill();
 		};
-		var c = this.buf.b[this.pos];
+		let c = this.buf.b[this.pos];
 		this.pos++;
 		this.available--;
 		return c;
@@ -29,7 +29,7 @@ class BufferInput extends Register.inherits(Input) {
 		if (this.available == 0) {
 			this.refill();
 		};
-		var size = (len > this.available) ? this.available : len;
+		let size = (len > this.available) ? this.available : len;
 		buf.blit(pos, this.buf, this.pos, size);
 		this.pos += size;
 		this.available -= size;

@@ -1,3 +1,4 @@
+import {HashMapKeyValueIterator} from "../iterators/HashMapKeyValueIterator"
 import {IntMap} from "./IntMap"
 import {Iterator} from "../../StdTypes"
 
@@ -42,6 +43,11 @@ export declare class HashMap_Impl_ {
 	See `Map.iterator`
 	*/
 	static iterator<K, V>($this: HashMapData<K, V>): Iterator<V>
+	
+	/**
+	See `Map.keyValueIterator`
+	*/
+	static keyValueIterator<K, V>($this: HashMapData<K, V>): HashMapKeyValueIterator<K, V>
 	
 	/**
 	See `Map.clear`

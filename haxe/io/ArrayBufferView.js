@@ -13,7 +13,7 @@ class ArrayBufferView_Impl_ {
 		return this.get_byteLength()
 	}
 	static _new(size) {
-		var this1 = new Uint8Array(size);
+		let this1 = new Uint8Array(size);
 		return this1;
 	}
 	static get_byteOffset(this1) {

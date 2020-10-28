@@ -1,5 +1,5 @@
-import {HaxeError} from "../../js/Boot"
 import {Error} from "./Error"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const UInt32Array_Impl_ = Register.global("$hxClasses")["haxe.io._UInt32Array.UInt32Array_Impl_"] = 
@@ -11,7 +11,7 @@ class UInt32Array_Impl_ {
 		return this.get_view()
 	}
 	static _new(elements) {
-		var this1 = new Uint32Array(elements);
+		let this1 = new Uint32Array(elements);
 		return this1;
 	}
 	static get_length(this1) {
@@ -43,17 +43,17 @@ class UInt32Array_Impl_ {
 			length = a.length - pos;
 		};
 		if (pos < 0 || length < 0 || pos + length > a.length) {
-			throw new HaxeError(Error.OutsideBounds);
+			throw Exception.thrown(Error.OutsideBounds);
 		};
 		if (pos == 0 && length == a.length) {
 			return new Uint32Array(a);
 		};
-		var this1 = new Uint32Array(a.length);
-		var i = this1;
-		var _g = 0;
-		var _g1 = length;
+		let this1 = new Uint32Array(a.length);
+		let i = this1;
+		let _g = 0;
+		let _g1 = length;
 		while (_g < _g1) {
-			var idx = _g++;
+			let idx = _g++;
 			i[idx] = a[idx + pos];
 		};
 		return i;

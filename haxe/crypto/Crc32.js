@@ -9,7 +9,7 @@ class Crc32 extends Register.inherits() {
 		this.crc = -1;
 	}
 	byte(b) {
-		var tmp = (this.crc ^ b) & 255;
+		let tmp = (this.crc ^ b) & 255;
 		tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 		tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 		tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
@@ -21,12 +21,12 @@ class Crc32 extends Register.inherits() {
 		this.crc = this.crc >>> 8 ^ tmp;
 	}
 	update(b, pos, len) {
-		var b1 = b.b.bufferValue;
-		var _g = pos;
-		var _g1 = pos + len;
+		let b1 = b.b.bufferValue;
+		let _g = pos;
+		let _g1 = pos + len;
 		while (_g < _g1) {
-			var i = _g++;
-			var tmp = (this.crc ^ b1.bytes[i]) & 255;
+			let i = _g++;
+			let tmp = (this.crc ^ b1.bytes[i]) & 255;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
@@ -46,13 +46,13 @@ class Crc32 extends Register.inherits() {
 	Calculates the CRC32 of the given data bytes
 	*/
 	static make(data) {
-		var c_crc = -1;
-		var b = data.b.bufferValue;
-		var _g = 0;
-		var _g1 = data.length;
+		let c_crc = -1;
+		let b = data.b.bufferValue;
+		let _g = 0;
+		let _g1 = data.length;
 		while (_g < _g1) {
-			var i = _g++;
-			var tmp = (c_crc ^ b.bytes[i]) & 255;
+			let i = _g++;
+			let tmp = (c_crc ^ b.bytes[i]) & 255;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;
 			tmp = tmp >>> 1 ^ -(tmp & 1) & -306674912;

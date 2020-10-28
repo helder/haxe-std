@@ -1,4 +1,4 @@
-import {HaxeError} from "../../js/Boot"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {StringBuf} from "../../StringBuf"
 import {Std} from "../../Std"
@@ -19,11 +19,11 @@ class JsonParser extends Register.inherits() {
 		this.pos = 0;
 	}
 	doParse() {
-		var result = this.parseRec();
-		var c;
+		let result = this.parseRec();
+		let c;
 		while (true) {
 			c = this.str.charCodeAt(this.pos++);
-			var c1 = c;
+			let c1 = c;
 			if (!(c1 == c1)) {
 				break;
 			};
@@ -39,7 +39,7 @@ class JsonParser extends Register.inherits() {
 	}
 	parseRec() {
 		while (true) {
-			var c = this.str.charCodeAt(this.pos++);
+			let c = this.str.charCodeAt(this.pos++);
 			switch (c) {
 				case 9:case 10:case 13:case 32:
 					break
@@ -47,15 +47,15 @@ class JsonParser extends Register.inherits() {
 					return this.parseString();
 					break
 				case 45:case 48:case 49:case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:
-					var c1 = c;
-					var start = this.pos - 1;
-					var minus = c1 == 45;
-					var digit = !minus;
-					var zero = c1 == 48;
-					var point = false;
-					var e = false;
-					var pm = false;
-					var end = false;
+					let c1 = c;
+					let start = this.pos - 1;
+					let minus = c1 == 45;
+					let digit = !minus;
+					let zero = c1 == 48;
+					let point = false;
+					let e = false;
+					let pm = false;
+					let end = false;
 					while (true) {
 						c1 = this.str.charCodeAt(this.pos++);
 						switch (c1) {
@@ -112,8 +112,8 @@ class JsonParser extends Register.inherits() {
 							break;
 						};
 					};
-					var f = parseFloat(HxOverrides.substr(this.str, start, this.pos - start));
-					var i = f | 0;
+					let f = parseFloat(HxOverrides.substr(this.str,start,this.pos - start));
+					let i = f | 0;
 					if (i == f) {
 						return i;
 					} else {
@@ -121,11 +121,11 @@ class JsonParser extends Register.inherits() {
 					};
 					break
 				case 91:
-					var arr = [];
-					var comma = null;
+					let arr = [];
+					let comma = null;
 					while (true) {
-						var c2 = this.str.charCodeAt(this.pos++);
-						switch (c2) {
+						let c = this.str.charCodeAt(this.pos++);
+						switch (c) {
 							case 9:case 10:case 13:case 32:
 								break
 							case 44:
@@ -153,7 +153,7 @@ class JsonParser extends Register.inherits() {
 					};
 					break
 				case 102:
-					var save = this.pos;
+					let save = this.pos;
 					if (this.str.charCodeAt(this.pos++) != 97 || this.str.charCodeAt(this.pos++) != 108 || this.str.charCodeAt(this.pos++) != 115 || this.str.charCodeAt(this.pos++) != 101) {
 						this.pos = save;
 						this.invalidChar();
@@ -161,7 +161,7 @@ class JsonParser extends Register.inherits() {
 					return false;
 					break
 				case 110:
-					var save1 = this.pos;
+					let save1 = this.pos;
 					if (this.str.charCodeAt(this.pos++) != 117 || this.str.charCodeAt(this.pos++) != 108 || this.str.charCodeAt(this.pos++) != 108) {
 						this.pos = save1;
 						this.invalidChar();
@@ -169,7 +169,7 @@ class JsonParser extends Register.inherits() {
 					return null;
 					break
 				case 116:
-					var save2 = this.pos;
+					let save2 = this.pos;
 					if (this.str.charCodeAt(this.pos++) != 114 || this.str.charCodeAt(this.pos++) != 117 || this.str.charCodeAt(this.pos++) != 101) {
 						this.pos = save2;
 						this.invalidChar();
@@ -177,12 +177,12 @@ class JsonParser extends Register.inherits() {
 					return true;
 					break
 				case 123:
-					var obj = {};
-					var field = null;
-					var comma1 = null;
+					let obj = {};
+					let field = null;
+					let comma1 = null;
 					while (true) {
-						var c3 = this.str.charCodeAt(this.pos++);
-						switch (c3) {
+						let c = this.str.charCodeAt(this.pos++);
+						switch (c) {
 							case 9:case 10:case 13:case 32:
 								break
 							case 34:
@@ -225,11 +225,11 @@ class JsonParser extends Register.inherits() {
 		};
 	}
 	parseString() {
-		var start = this.pos;
-		var buf = null;
-		var prev = -1;
+		let start = this.pos;
+		let buf = null;
+		let prev = -1;
 		while (true) {
-			var c = this.str.charCodeAt(this.pos++);
+			let c = this.str.charCodeAt(this.pos++);
 			if (c == 34) {
 				break;
 			};
@@ -237,8 +237,8 @@ class JsonParser extends Register.inherits() {
 				if (buf == null) {
 					buf = new StringBuf();
 				};
-				var s = this.str;
-				var len = this.pos - start - 1;
+				let s = this.str;
+				let len = this.pos - start - 1;
 				buf.b += (len == null) ? HxOverrides.substr(s, start, null) : HxOverrides.substr(s, start, len);
 				c = this.str.charCodeAt(this.pos++);
 				if (c != 117 && prev != -1) {
@@ -265,7 +265,7 @@ class JsonParser extends Register.inherits() {
 						buf.b += String.fromCodePoint(9);
 						break
 					case 117:
-						var uc = Std.parseInt("0x" + HxOverrides.substr(this.str, this.pos, 4));
+						let uc = Std.parseInt("0x" + HxOverrides.substr(this.str, this.pos, 4));
 						this.pos += 4;
 						if (prev != -1) {
 							if (uc < 56320 || uc > 57343) {
@@ -282,12 +282,12 @@ class JsonParser extends Register.inherits() {
 						};
 						break
 					default:
-					throw new HaxeError("Invalid escape sequence \\" + String.fromCodePoint(c) + " at position " + (this.pos - 1));
+					throw Exception.thrown("Invalid escape sequence \\" + String.fromCodePoint(c) + " at position " + (this.pos - 1));
 					
 				};
 				start = this.pos;
 			} else if (c != c) {
-				throw new HaxeError("Unclosed string");
+				throw Exception.thrown("Unclosed string");
 			};
 		};
 		if (prev != -1) {
@@ -297,21 +297,21 @@ class JsonParser extends Register.inherits() {
 		if (buf == null) {
 			return HxOverrides.substr(this.str, start, this.pos - start - 1);
 		} else {
-			var s1 = this.str;
-			var len1 = this.pos - start - 1;
-			buf.b += (len1 == null) ? HxOverrides.substr(s1, start, null) : HxOverrides.substr(s1, start, len1);
+			let s = this.str;
+			let len = this.pos - start - 1;
+			buf.b += (len == null) ? HxOverrides.substr(s, start, null) : HxOverrides.substr(s, start, len);
 			return buf.b;
 		};
 	}
 	parseNumber(c) {
-		var start = this.pos - 1;
-		var minus = c == 45;
-		var digit = !minus;
-		var zero = c == 48;
-		var point = false;
-		var e = false;
-		var pm = false;
-		var end = false;
+		let start = this.pos - 1;
+		let minus = c == 45;
+		let digit = !minus;
+		let zero = c == 48;
+		let point = false;
+		let e = false;
+		let pm = false;
+		let end = false;
 		while (true) {
 			c = this.str.charCodeAt(this.pos++);
 			switch (c) {
@@ -368,8 +368,8 @@ class JsonParser extends Register.inherits() {
 				break;
 			};
 		};
-		var f = parseFloat(HxOverrides.substr(this.str, start, this.pos - start));
-		var i = f | 0;
+		let f = parseFloat(HxOverrides.substr(this.str,start,this.pos - start));
+		let i = f | 0;
 		if (i == f) {
 			return i;
 		} else {
@@ -381,10 +381,10 @@ class JsonParser extends Register.inherits() {
 	}
 	invalidChar() {
 		this.pos--;
-		throw new HaxeError("Invalid char " + this.str.charCodeAt(this.pos) + " at position " + this.pos);
+		throw Exception.thrown("Invalid char " + this.str.charCodeAt(this.pos) + " at position " + this.pos);
 	}
 	invalidNumber(start) {
-		throw new HaxeError("Invalid number at position " + start + ": " + HxOverrides.substr(this.str, start, this.pos - start));
+		throw Exception.thrown("Invalid number at position " + start + ": " + HxOverrides.substr(this.str, start, this.pos - start));
 	}
 	
 	/**

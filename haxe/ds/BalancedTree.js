@@ -1,11 +1,11 @@
-import {HaxeError} from "../../js/Boot"
 import {MapKeyValueIterator} from "../iterators/MapKeyValueIterator"
+import {ArrayIterator} from "../iterators/ArrayIterator"
+import {NativeStackTrace} from "../NativeStackTrace"
+import {Exception} from "../Exception"
 import {IMap} from "../Constraints"
-import {CallStack} from "../CallStack"
 import {Register} from "../../genes/Register"
 import {Std} from "../../Std"
 import {Reflect} from "../../Reflect"
-import {HxOverrides} from "../../HxOverrides"
 
 /**
 BalancedTree allows key-value mapping with arbitrary keys, as long as they
@@ -41,9 +41,9 @@ class BalancedTree extends Register.inherits() {
 	If `key` is null, the result is unspecified.
 	*/
 	get(key) {
-		var node = this.root;
+		let node = this.root;
 		while (node != null) {
-			var c = this.compare(key, node.key);
+			let c = this.compare(key, node.key);
 			if (c == 0) {
 				return node.value;
 			};
@@ -70,14 +70,12 @@ class BalancedTree extends Register.inherits() {
 		try {
 			this.root = this.removeLoop(key, this.root);
 			return true;
-		}catch (e) {
-			CallStack.lastException = e;
-			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
-			if (typeof(e1) == "string") {
-				var e2 = e1;
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			if (typeof(Exception.caught(_g).unwrap()) == "string") {
 				return false;
 			} else {
-				throw e;
+				throw _g;
 			};
 		};
 	}
@@ -90,9 +88,9 @@ class BalancedTree extends Register.inherits() {
 	If `key` is null, the result is unspecified.
 	*/
 	exists(key) {
-		var node = this.root;
+		let node = this.root;
 		while (node != null) {
-			var c = this.compare(key, node.key);
+			let c = this.compare(key, node.key);
 			if (c == 0) {
 				return true;
 			} else if (c < 0) {
@@ -110,9 +108,9 @@ class BalancedTree extends Register.inherits() {
 	This operation is performed in-order.
 	*/
 	iterator() {
-		var ret = [];
-		this.iteratorLoop(this.root, ret);
-		return HxOverrides.iter(ret);
+		let ret = [];
+		BalancedTree.iteratorLoop(this.root, ret);
+		return new ArrayIterator(ret);
 	}
 	
 	/**
@@ -128,12 +126,12 @@ class BalancedTree extends Register.inherits() {
 	This operation is performed in-order.
 	*/
 	keys() {
-		var ret = [];
+		let ret = [];
 		this.keysLoop(this.root, ret);
-		return HxOverrides.iter(ret);
+		return new ArrayIterator(ret);
 	}
 	copy() {
-		var copied = new BalancedTree();
+		let copied = new BalancedTree();
 		copied.root = this.root;
 		return copied;
 	}
@@ -141,35 +139,28 @@ class BalancedTree extends Register.inherits() {
 		if (node == null) {
 			return new TreeNode(null, k, v, null);
 		};
-		var c = this.compare(k, node.key);
+		let c = this.compare(k, node.key);
 		if (c == 0) {
 			return new TreeNode(node.left, k, v, node.right, (node == null) ? 0 : node._height);
 		} else if (c < 0) {
-			var nl = this.setLoop(k, v, node.left);
+			let nl = this.setLoop(k, v, node.left);
 			return this.balance(nl, node.key, node.value, node.right);
 		} else {
-			var nr = this.setLoop(k, v, node.right);
+			let nr = this.setLoop(k, v, node.right);
 			return this.balance(node.left, node.key, node.value, nr);
 		};
 	}
 	removeLoop(k, node) {
 		if (node == null) {
-			throw new HaxeError("Not_found");
+			throw Exception.thrown("Not_found");
 		};
-		var c = this.compare(k, node.key);
+		let c = this.compare(k, node.key);
 		if (c == 0) {
 			return this.merge(node.left, node.right);
 		} else if (c < 0) {
 			return this.balance(this.removeLoop(k, node.left), node.key, node.value, node.right);
 		} else {
 			return this.balance(node.left, node.key, node.value, this.removeLoop(k, node.right));
-		};
-	}
-	iteratorLoop(node, acc) {
-		if (node != null) {
-			this.iteratorLoop(node.left, acc);
-			acc.push(node.value);
-			this.iteratorLoop(node.right, acc);
 		};
 	}
 	keysLoop(node, acc) {
@@ -186,12 +177,12 @@ class BalancedTree extends Register.inherits() {
 		if (t2 == null) {
 			return t1;
 		};
-		var t = this.minBinding(t2);
+		let t = this.minBinding(t2);
 		return this.balance(t1, t.key, t.value, this.removeMinBinding(t2));
 	}
 	minBinding(t) {
 		if (t == null) {
-			throw new HaxeError("Not_found");
+			throw Exception.thrown("Not_found");
 		} else if (t.left == null) {
 			return t;
 		} else {
@@ -206,20 +197,20 @@ class BalancedTree extends Register.inherits() {
 		};
 	}
 	balance(l, k, v, r) {
-		var hl = (l == null) ? 0 : l._height;
-		var hr = (r == null) ? 0 : r._height;
+		let hl = (l == null) ? 0 : l._height;
+		let hr = (r == null) ? 0 : r._height;
 		if (hl > hr + 2) {
-			var _this = l.left;
-			var _this1 = l.right;
+			let _this = l.left;
+			let _this1 = l.right;
 			if (((_this == null) ? 0 : _this._height) >= ((_this1 == null) ? 0 : _this1._height)) {
 				return new TreeNode(l.left, l.key, l.value, new TreeNode(l.right, k, v, r));
 			} else {
 				return new TreeNode(new TreeNode(l.left, l.key, l.value, l.right.left), l.right.key, l.right.value, new TreeNode(l.right.right, k, v, r));
 			};
 		} else if (hr > hl + 2) {
-			var _this2 = r.right;
-			var _this3 = r.left;
-			if (((_this2 == null) ? 0 : _this2._height) > ((_this3 == null) ? 0 : _this3._height)) {
+			let _this = r.right;
+			let _this1 = r.left;
+			if (((_this == null) ? 0 : _this._height) > ((_this1 == null) ? 0 : _this1._height)) {
 				return new TreeNode(new TreeNode(l, k, v, r.left), r.key, r.value, r.right);
 			} else {
 				return new TreeNode(new TreeNode(l, k, v, r.left.left), r.left.key, r.left.value, new TreeNode(r.left.right, r.key, r.value, r.right));
@@ -245,6 +236,13 @@ class BalancedTree extends Register.inherits() {
 	clear() {
 		this.root = null;
 	}
+	static iteratorLoop(node, acc) {
+		if (node != null) {
+			BalancedTree.iteratorLoop(node.left, acc);
+			acc.push(node.value);
+			BalancedTree.iteratorLoop(node.right, acc);
+		};
+	}
 	static get __name__() {
 		return "haxe.ds.BalancedTree"
 	}
@@ -268,15 +266,15 @@ class TreeNode extends Register.inherits() {
 		this.value = v;
 		this.right = r;
 		if (h == -1) {
-			var tmp;
-			var _this = this.left;
-			var _this1 = this.right;
+			let tmp;
+			let _this = this.left;
+			let _this1 = this.right;
 			if (((_this == null) ? 0 : _this._height) > ((_this1 == null) ? 0 : _this1._height)) {
-				var _this2 = this.left;
-				tmp = (_this2 == null) ? 0 : _this2._height;
+				let _this = this.left;
+				tmp = (_this == null) ? 0 : _this._height;
 			} else {
-				var _this3 = this.right;
-				tmp = (_this3 == null) ? 0 : _this3._height;
+				let _this = this.right;
+				tmp = (_this == null) ? 0 : _this._height;
 			};
 			this._height = tmp + 1;
 		} else {

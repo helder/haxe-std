@@ -1,4 +1,4 @@
-import {HaxeError} from "./js/Boot"
+import {Exception} from "./haxe/Exception"
 import {Register} from "./genes/Register"
 import {Std} from "./Std"
 import {HxOverrides} from "./HxOverrides"
@@ -56,7 +56,7 @@ class EReg extends Register.inherits() {
 		if (this.r.m != null && n >= 0 && n < this.r.m.length) {
 			return this.r.m[n];
 		} else {
-			throw new HaxeError("EReg::matched");
+			throw Exception.thrown("EReg::matched");
 		};
 	}
 	
@@ -73,7 +73,7 @@ class EReg extends Register.inherits() {
 	*/
 	matchedLeft() {
 		if (this.r.m == null) {
-			throw new HaxeError("No string matched");
+			throw Exception.thrown("No string matched");
 		};
 		return HxOverrides.substr(this.r.s, 0, this.r.m.index);
 	}
@@ -91,9 +91,9 @@ class EReg extends Register.inherits() {
 	*/
 	matchedRight() {
 		if (this.r.m == null) {
-			throw new HaxeError("No string matched");
+			throw Exception.thrown("No string matched");
 		};
-		var sz = this.r.m.index + this.r.m[0].length;
+		let sz = this.r.m.index + this.r.m[0].length;
 		return HxOverrides.substr(this.r.s, sz, this.r.s.length - sz);
 	}
 	
@@ -110,7 +110,7 @@ class EReg extends Register.inherits() {
 	*/
 	matchedPos() {
 		if (this.r.m == null) {
-			throw new HaxeError("No string matched");
+			throw Exception.thrown("No string matched");
 		};
 		return {"pos": this.r.m.index, "len": this.r.m[0].length};
 	}
@@ -130,18 +130,18 @@ class EReg extends Register.inherits() {
 		if (this.r.global) {
 			this.r.lastIndex = pos;
 			this.r.m = this.r.exec((len < 0) ? s : HxOverrides.substr(s, 0, pos + len));
-			var b = this.r.m != null;
+			let b = this.r.m != null;
 			if (b) {
 				this.r.s = s;
 			};
 			return b;
 		} else {
-			var b1 = this.match((len < 0) ? HxOverrides.substr(s, pos, null) : HxOverrides.substr(s, pos, len));
-			if (b1) {
+			let b = this.match((len < 0) ? HxOverrides.substr(s, pos, null) : HxOverrides.substr(s, pos, len));
+			if (b) {
 				this.r.s = s;
 				this.r.m.index += pos;
 			};
-			return b1;
+			return b;
 		};
 	}
 	
@@ -164,7 +164,7 @@ class EReg extends Register.inherits() {
 	If `s` is null, the result is unspecified.
 	*/
 	split(s) {
-		var d = "#__delim__#";
+		let d = "#__delim__#";
 		return s.replace(this.r, d).split(d);
 	}
 	
@@ -201,8 +201,8 @@ class EReg extends Register.inherits() {
 	If `s` or `f` are null, the result is unspecified.
 	*/
 	map(s, f) {
-		var offset = 0;
-		var buf_b = "";
+		let offset = 0;
+		let buf_b = "";
 		while (true) {
 			if (offset >= s.length) {
 				break;
@@ -210,7 +210,7 @@ class EReg extends Register.inherits() {
 				buf_b += Std.string(HxOverrides.substr(s, offset, null));
 				break;
 			};
-			var p = this.matchedPos();
+			let p = this.matchedPos();
 			buf_b += Std.string(HxOverrides.substr(s, offset, p.pos - offset));
 			buf_b += Std.string(f(this));
 			if (p.len == 0) {

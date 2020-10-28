@@ -9,13 +9,13 @@ class Uncompress extends Register.inherits() {
 		this.windowBits = windowBits;
 	}
 	execute(src, srcPos, dst, dstPos) {
-		var data = src.b;
-		var src1 = Buffer.from(data.buffer, data.byteOffset, src.length).slice(srcPos);
-		var data1 = dst.b;
-		var dst1 = Buffer.from(data1.buffer, data1.byteOffset, dst.length);
-		var res = Zlib.inflateRawSync(src1, {"info": true});
-		var engine = res.engine;
-		var res1 = res.buffer;
+		let data = src.b;
+		let src1 = Buffer.from(data.buffer, data.byteOffset, src.length).slice(srcPos);
+		let data1 = dst.b;
+		let dst1 = Buffer.from(data1.buffer, data1.byteOffset, dst.length);
+		let res = Zlib.inflateRawSync(src1, {"info": true});
+		let engine = res.engine;
+		let res1 = res.buffer;
 		dst1.set(res1, dstPos);
 		return {"done": true, "read": engine.bytesRead, "write": res1.byteLength};
 	}
@@ -24,8 +24,8 @@ class Uncompress extends Register.inherits() {
 	close() {
 	}
 	static run(src, bufsize = null) {
-		var data = src.b;
-		var buffer = Zlib.inflateSync(Buffer.from(data.buffer, data.byteOffset, src.length), (bufsize == null) ? {} : {"chunkSize": bufsize});
+		let data = src.b;
+		let buffer = Zlib.inflateSync(Buffer.from(data.buffer, data.byteOffset, src.length), (bufsize == null) ? {} : {"chunkSize": bufsize});
 		return Helper.bytesOfBuffer(buffer);
 	}
 	static get __name__() {

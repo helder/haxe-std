@@ -25,13 +25,13 @@ class EntryPoint {
 	}
 	static processEvents() {
 		while (true) {
-			var f = EntryPoint.pending.shift();
+			let f = EntryPoint.pending.shift();
 			if (f == null) {
 				break;
 			};
 			f();
 		};
-		var time = MainLoop.tick();
+		let time = MainLoop.tick();
 		if (!MainLoop.hasEvents() && EntryPoint.threadCount == 0) {
 			return -1;
 		};
@@ -42,11 +42,10 @@ class EntryPoint {
 	Start the main loop. Depending on the platform, this can return immediately or will only return when the application exits.
 	*/
 	static run() {
-		var nextTick = EntryPoint.processEvents();
-		if (nextTick < 0) {
-			return;
+		let nextTick = EntryPoint.processEvents();
+		if (nextTick >= 0) {
+			setTimeout(EntryPoint.run, nextTick * 1000);
 		};
-		setTimeout(EntryPoint.run, nextTick);
 	}
 	static get __name__() {
 		return "haxe.EntryPoint"

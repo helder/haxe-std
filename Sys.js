@@ -1,10 +1,10 @@
-import {HaxeError} from "./js/Boot"
 import {Output} from "./haxe/io/Output"
 import {Input} from "./haxe/io/Input"
 import {Error} from "./haxe/io/Error"
 import {Eof} from "./haxe/io/Eof"
 import {StringMap} from "./haxe/ds/StringMap"
-import {CallStack} from "./haxe/CallStack"
+import {NativeStackTrace} from "./haxe/NativeStackTrace"
+import {Exception} from "./haxe/Exception"
 import {Register} from "./genes/Register"
 import * as Fs from "fs"
 import * as ChildProcess from "child_process"
@@ -69,13 +69,13 @@ class Sys {
 	Returns all environment variables.
 	*/
 	static environment() {
-		var m = new StringMap();
-		var _g = 0;
-		var _g1 = Reflect.fields(process.env);
+		let m = new StringMap();
+		let _g = 0;
+		let _g1 = Reflect.fields(process.env);
 		while (_g < _g1.length) {
-			var key = _g1[_g];
+			let key = _g1[_g];
 			++_g;
-			var v = process.env[key];
+			let v = process.env[key];
 			m.inst.set(key, v);
 		};
 		return m;
@@ -113,7 +113,7 @@ class Sys {
 	- `"Mac"`
 	*/
 	static systemName() {
-		var _g = process.platform;
+		let _g = process.platform;
 		switch (_g) {
 			case "darwin":
 				return "Mac";
@@ -128,7 +128,7 @@ class Sys {
 				return "Windows";
 				break
 			default:
-			var other = _g;
+			let other = _g;
 			return other;
 			
 		};
@@ -203,14 +203,14 @@ class Sys {
 	Setting `echo` to `true` will also display the character on the output.
 	*/
 	static getChar(echo) {
-		throw new HaxeError("Sys.getChar is currently not implemented on node.js");
+		throw Exception.thrown("Sys.getChar is currently not implemented on node.js");
 	}
 	
 	/**
 	Suspends execution for the given length of time (in seconds).
 	*/
 	static sleep(seconds) {
-		var end = Date.now() + seconds * 1000;
+		let end = Date.now() + seconds * 1000;
 		while (Date.now() <= end) {
 		};
 	}
@@ -255,7 +255,7 @@ class FileOutput extends Register.inherits(Output) {
 		Fs.writeSync(this.fd, String.fromCodePoint(c));
 	}
 	writeBytes(s, pos, len) {
-		var data = s.b;
+		let data = s.b;
 		return Fs.writeSync(this.fd, Buffer.from(data.buffer, data.byteOffset, s.length), pos, len);
 	}
 	writeString(s, encoding = null) {
@@ -285,32 +285,32 @@ class FileInput extends Register.inherits(Input) {
 		this.fd = fd;
 	}
 	readByte() {
-		var buf = Buffer.alloc(1);
+		let buf = Buffer.alloc(1);
 		try {
 			Fs.readSync(this.fd, buf, 0, 1, null);
-		}catch (e) {
-			CallStack.lastException = e;
-			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
-			if (e1.code == "EOF") {
-				throw new HaxeError(new Eof());
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			let e = Exception.caught(_g).unwrap();
+			if (e.code == "EOF") {
+				throw Exception.thrown(new Eof());
 			} else {
-				throw new HaxeError(Error.Custom(e1));
+				throw Exception.thrown(Error.Custom(e));
 			};
 		};
 		return buf[0];
 	}
 	readBytes(s, pos, len) {
-		var data = s.b;
-		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		let data = s.b;
+		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
 		try {
 			return Fs.readSync(this.fd, buf, pos, len, null);
-		}catch (e) {
-			CallStack.lastException = e;
-			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
-			if (e1.code == "EOF") {
-				throw new HaxeError(new Eof());
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			let e = Exception.caught(_g).unwrap();
+			if (e.code == "EOF") {
+				throw Exception.thrown(new Eof());
 			} else {
-				throw new HaxeError(Error.Custom(e1));
+				throw Exception.thrown(Error.Custom(e));
 			};
 		};
 	}

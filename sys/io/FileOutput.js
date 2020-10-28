@@ -13,15 +13,15 @@ class FileOutput extends Register.inherits(Output) {
 		this.pos = 0;
 	}
 	writeByte(b) {
-		var buf = Buffer.alloc(1);
+		let buf = Buffer.alloc(1);
 		buf[0] = b;
 		Fs.writeSync(this.fd, buf, 0, 1, this.pos);
 		this.pos++;
 	}
 	writeBytes(s, pos, len) {
-		var data = s.b;
-		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
-		var wrote = Fs.writeSync(this.fd, buf, pos, len, this.pos);
+		let data = s.b;
+		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		let wrote = Fs.writeSync(this.fd, buf, pos, len, this.pos);
 		this.pos += wrote;
 		return wrote;
 	}

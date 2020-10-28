@@ -1,7 +1,7 @@
 import {Register} from "../../genes/Register"
 
-export const MapEntry_Impl_ = Register.global("$hxClasses")["js.lib._Map.MapEntry_Impl_"] = 
-class MapEntry_Impl_ {
+export const KeyValue_Impl_ = Register.global("$hxClasses")["js.lib._KeyValue.KeyValue_Impl_"] = 
+class KeyValue_Impl_ {
 	static get key() {
 		return this.get_key()
 	}
@@ -15,12 +15,12 @@ class MapEntry_Impl_ {
 		return this1[1];
 	}
 	static get __name__() {
-		return "js.lib._Map.MapEntry_Impl_"
+		return "js.lib._KeyValue.KeyValue_Impl_"
 	}
 	get __class__() {
-		return MapEntry_Impl_
+		return KeyValue_Impl_
 	}
 }
 
 
-//# sourceMappingURL=Map.js.map
+//# sourceMappingURL=KeyValue.js.map

@@ -4,7 +4,7 @@ import {Register} from "../../../genes/Register"
 export const Helper = Register.global("$hxClasses")["js.node.buffer._Buffer.Helper"] = 
 class Helper {
 	static bytesOfBuffer(b) {
-		var o = Object.create(Bytes.prototype);
+		let o = Object.create(Bytes.prototype);
 		o.length = b.byteLength;
 		o.b = b;
 		b.bufferValue = b;

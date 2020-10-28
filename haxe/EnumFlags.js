@@ -7,7 +7,7 @@ class EnumFlags_Impl_ {
 	Initializes the bitflags to `i`.
 	*/
 	static _new(i = 0) {
-		var this1 = i;
+		let this1 = i;
 		return this1;
 	}
 	
@@ -52,11 +52,11 @@ class EnumFlags_Impl_ {
 	have any impact on speed).
 	*/
 	static ofInt(i) {
-		var i1 = i;
+		let i1 = i;
 		if (i1 == null) {
 			i1 = 0;
 		};
-		var this1 = i1;
+		let this1 = i1;
 		return this1;
 	}
 	

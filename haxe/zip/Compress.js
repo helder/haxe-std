@@ -1,13 +1,13 @@
 import * as Zlib from "zlib"
 import {Helper} from "../../js/node/buffer/Buffer"
-import {HaxeError} from "../../js/Boot"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Buffer} from "buffer"
 
 export const Compress = Register.global("$hxClasses")["haxe.zip.Compress"] = 
 class Compress extends Register.inherits() {
 	new(level) {
-		throw new HaxeError("Not implemented for this platform");
+		throw Exception.thrown("Not implemented for this platform");
 	}
 	execute(src, srcPos, dst, dstPos) {
 		return null;
@@ -17,8 +17,8 @@ class Compress extends Register.inherits() {
 	close() {
 	}
 	static run(s, level) {
-		var data = s.b;
-		var buffer = Zlib.deflateSync(Buffer.from(data.buffer, data.byteOffset, s.length), {"level": level});
+		let data = s.b;
+		let buffer = Zlib.deflateSync(Buffer.from(data.buffer, data.byteOffset, s.length), {"level": level});
 		return Helper.bytesOfBuffer(buffer);
 	}
 	static get __name__() {

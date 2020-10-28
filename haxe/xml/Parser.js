@@ -1,5 +1,6 @@
-import {Boot, HaxeError} from "../../js/Boot"
+import {Boot} from "../../js/Boot"
 import {StringMap} from "../ds/StringMap"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Xml, XmlType_Impl_} from "../../Xml"
 import {StringBuf} from "../../StringBuf"
@@ -14,11 +15,11 @@ class XmlParserException extends Register.inherits() {
 		this.position = position;
 		this.lineNumber = 1;
 		this.positionAtLine = 0;
-		var _g = 0;
-		var _g1 = position;
+		let _g = 0;
+		let _g1 = position;
 		while (_g < _g1) {
-			var i = _g++;
-			var c = xml.charCodeAt(i);
+			let i = _g++;
+			let c = xml.charCodeAt(i);
 			if (c == 10) {
 				this.lineNumber++;
 				this.positionAtLine = 0;
@@ -28,7 +29,7 @@ class XmlParserException extends Register.inherits() {
 		};
 	}
 	toString() {
-		var c = Boot.getClass(this);
+		let c = Boot.getClass(this);
 		return c.__name__ + ": " + this.message + " at line " + this.lineNumber + " char " + this.positionAtLine;
 	}
 	static get __name__() {
@@ -49,22 +50,22 @@ class Parser {
 	@throws haxe.xml.XmlParserException
 	*/
 	static parse(str, strict = false) {
-		var doc = Xml.createDocument();
+		let doc = Xml.createDocument();
 		Parser.doParse(str, strict, 0, doc);
 		return doc;
 	}
 	static doParse(str, strict, p = 0, parent = null) {
-		var xml = null;
-		var state = 1;
-		var next = 1;
-		var aname = null;
-		var start = 0;
-		var nsubs = 0;
-		var nbrackets = 0;
-		var c = str.charCodeAt(p);
-		var buf = new StringBuf();
-		var escapeNext = 1;
-		var attrValQuote = -1;
+		let xml = null;
+		let state = 1;
+		let next = 1;
+		let aname = null;
+		let start = 0;
+		let nsubs = 0;
+		let nbrackets = 0;
+		let c = str.charCodeAt(p);
+		let buf = new StringBuf();
+		let escapeNext = 1;
+		let attrValQuote = -1;
 		while (c == c) {
 			switch (state) {
 				case 0:
@@ -93,20 +94,20 @@ class Parser {
 							if (str.charCodeAt(p + 1) == 91) {
 								p += 2;
 								if (HxOverrides.substr(str, p, 6).toUpperCase() != "CDATA[") {
-									throw new HaxeError(new XmlParserException("Expected <![CDATA[", str, p));
+									throw Exception.thrown(new XmlParserException("Expected <![CDATA[", str, p));
 								};
 								p += 5;
 								state = 17;
 								start = p + 1;
 							} else if (str.charCodeAt(p + 1) == 68 || str.charCodeAt(p + 1) == 100) {
 								if (HxOverrides.substr(str, p + 2, 6).toUpperCase() != "OCTYPE") {
-									throw new HaxeError(new XmlParserException("Expected <!DOCTYPE", str, p));
+									throw Exception.thrown(new XmlParserException("Expected <!DOCTYPE", str, p));
 								};
 								p += 8;
 								state = 16;
 								start = p + 1;
 							} else if (str.charCodeAt(p + 1) != 45 || str.charCodeAt(p + 2) != 45) {
-								throw new HaxeError(new XmlParserException("Expected <!--", str, p));
+								throw Exception.thrown(new XmlParserException("Expected <!--", str, p));
 							} else {
 								p += 2;
 								state = 15;
@@ -115,7 +116,7 @@ class Parser {
 							break
 						case 47:
 							if (parent == null) {
-								throw new HaxeError(new XmlParserException("Expected node name", str, p));
+								throw Exception.thrown(new XmlParserException("Expected node name", str, p));
 							};
 							start = p + 1;
 							state = 0;
@@ -135,7 +136,7 @@ class Parser {
 				case 3:
 					if (!(c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95 || c == 45)) {
 						if (p == start) {
-							throw new HaxeError(new XmlParserException("Expected node name", str, p));
+							throw Exception.thrown(new XmlParserException("Expected node name", str, p));
 						};
 						xml = Xml.createElement(HxOverrides.substr(str, start, p - start));
 						parent.addChild(xml);
@@ -163,12 +164,12 @@ class Parser {
 				case 5:
 					if (!(c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95 || c == 45)) {
 						if (start == p) {
-							throw new HaxeError(new XmlParserException("Expected attribute name", str, p));
+							throw Exception.thrown(new XmlParserException("Expected attribute name", str, p));
 						};
-						var tmp = HxOverrides.substr(str, start, p - start);
+						let tmp = HxOverrides.substr(str, start, p - start);
 						aname = tmp;
 						if (xml.exists(aname)) {
-							throw new HaxeError(new XmlParserException("Duplicate attribute [" + aname + "]", str, p));
+							throw Exception.thrown(new XmlParserException("Duplicate attribute [" + aname + "]", str, p));
 						};
 						state = 0;
 						next = 6;
@@ -180,7 +181,7 @@ class Parser {
 						state = 0;
 						next = 7;
 					} else {
-						throw new HaxeError(new XmlParserException("Expected =", str, p));
+						throw Exception.thrown(new XmlParserException("Expected =", str, p));
 					};
 					break
 				case 7:
@@ -192,14 +193,14 @@ class Parser {
 							attrValQuote = c;
 							break
 						default:
-						throw new HaxeError(new XmlParserException("Expected \"", str, p));
+						throw Exception.thrown(new XmlParserException("Expected \"", str, p));
 						
 					};
 					break
 				case 8:
 					switch (c) {
 						case 38:
-							var len = p - start;
+							let len = p - start;
 							buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
 							state = 18;
 							escapeNext = 8;
@@ -207,11 +208,11 @@ class Parser {
 							break
 						case 60:case 62:
 							if (strict) {
-								throw new HaxeError(new XmlParserException("Invalid unescaped " + String.fromCodePoint(c) + " in attribute value", str, p));
+								throw Exception.thrown(new XmlParserException("Invalid unescaped " + String.fromCodePoint(c) + " in attribute value", str, p));
 							} else if (c == attrValQuote) {
-								var len1 = p - start;
-								buf.b += (len1 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len1);
-								var val = buf.b;
+								let len = p - start;
+								buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
+								let val = buf.b;
 								buf = new StringBuf();
 								xml.set(aname, val);
 								state = 0;
@@ -220,11 +221,11 @@ class Parser {
 							break
 						default:
 						if (c == attrValQuote) {
-							var len2 = p - start;
-							buf.b += (len2 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len2);
-							var val1 = buf.b;
+							let len = p - start;
+							buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
+							let val = buf.b;
 							buf = new StringBuf();
-							xml.set(aname, val1);
+							xml.set(aname, val);
 							state = 0;
 							next = 4;
 						};
@@ -239,20 +240,20 @@ class Parser {
 				case 10:
 					if (!(c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95 || c == 45)) {
 						if (start == p) {
-							throw new HaxeError(new XmlParserException("Expected node name", str, p));
+							throw Exception.thrown(new XmlParserException("Expected node name", str, p));
 						};
-						var v = HxOverrides.substr(str, start, p - start);
+						let v = HxOverrides.substr(str, start, p - start);
 						if (parent == null || parent.nodeType != 0) {
-							throw new HaxeError(new XmlParserException("Unexpected </" + v + ">, tag is not open", str, p));
+							throw Exception.thrown(new XmlParserException("Unexpected </" + v + ">, tag is not open", str, p));
 						};
 						if (parent.nodeType != Xml.Element) {
-							throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(parent.nodeType));
+							throw Exception.thrown("Bad node type, expected Element but found " + ((parent.nodeType == null) ? "null" : XmlType_Impl_.toString(parent.nodeType)));
 						};
 						if (v != parent.nodeName) {
 							if (parent.nodeType != Xml.Element) {
-								throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(parent.nodeType));
+								throw Exception.thrown("Bad node type, expected Element but found " + ((parent.nodeType == null) ? "null" : XmlType_Impl_.toString(parent.nodeType)));
 							};
-							throw new HaxeError(new XmlParserException("Expected </" + parent.nodeName + ">", str, p));
+							throw Exception.thrown(new XmlParserException("Expected </" + parent.nodeName + ">", str, p));
 						};
 						state = 0;
 						next = 12;
@@ -263,7 +264,7 @@ class Parser {
 					if (c == 62) {
 						state = 1;
 					} else {
-						throw new HaxeError(new XmlParserException("Expected >", str, p));
+						throw Exception.thrown(new XmlParserException("Expected >", str, p));
 					};
 					break
 				case 12:
@@ -273,22 +274,22 @@ class Parser {
 						};
 						return p;
 					} else {
-						throw new HaxeError(new XmlParserException("Expected >", str, p));
+						throw Exception.thrown(new XmlParserException("Expected >", str, p));
 					};
 					break
 				case 13:
 					if (c == 60) {
-						var len3 = p - start;
-						buf.b += (len3 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len3);
-						var child = Xml.createPCData(buf.b);
+						let len = p - start;
+						buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
+						let child = Xml.createPCData(buf.b);
 						buf = new StringBuf();
 						parent.addChild(child);
 						++nsubs;
 						state = 0;
 						next = 2;
 					} else if (c == 38) {
-						var len4 = p - start;
-						buf.b += (len4 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len4);
+						let len = p - start;
+						buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
 						state = 18;
 						escapeNext = 13;
 						start = p + 1;
@@ -297,7 +298,7 @@ class Parser {
 				case 14:
 					if (c == 63 && str.charCodeAt(p + 1) == 62) {
 						++p;
-						var str1 = HxOverrides.substr(str, start + 1, p - start - 2);
+						let str1 = HxOverrides.substr(str, start + 1, p - start - 2);
 						parent.addChild(Xml.createProcessingInstruction(str1));
 						++nsubs;
 						state = 1;
@@ -324,8 +325,8 @@ class Parser {
 					break
 				case 17:
 					if (c == 93 && str.charCodeAt(p + 1) == 93 && str.charCodeAt(p + 2) == 62) {
-						var child1 = Xml.createCData(HxOverrides.substr(str, start, p - start));
-						parent.addChild(child1);
+						let child = Xml.createCData(HxOverrides.substr(str, start, p - start));
+						parent.addChild(child);
 						++nsubs;
 						p += 2;
 						state = 1;
@@ -333,13 +334,13 @@ class Parser {
 					break
 				case 18:
 					if (c == 59) {
-						var s = HxOverrides.substr(str, start, p - start);
+						let s = HxOverrides.substr(str, start, p - start);
 						if (s.charCodeAt(0) == 35) {
-							var c1 = (s.charCodeAt(1) == 120) ? Std.parseInt("0" + HxOverrides.substr(s, 1, s.length - 1)) : Std.parseInt(HxOverrides.substr(s, 1, s.length - 1));
-							buf.b += String.fromCodePoint(c1);
+							let c = (s.charCodeAt(1) == 120) ? Std.parseInt("0" + HxOverrides.substr(s, 1, s.length - 1)) : Std.parseInt(HxOverrides.substr(s, 1, s.length - 1));
+							buf.b += String.fromCodePoint(c);
 						} else if (!Parser.escapes.inst.has(s)) {
 							if (strict) {
-								throw new HaxeError(new XmlParserException("Undefined entity: " + s, str, p));
+								throw Exception.thrown(new XmlParserException("Undefined entity: " + s, str, p));
 							};
 							buf.b += Std.string("&" + s + ";");
 						} else {
@@ -349,11 +350,11 @@ class Parser {
 						state = escapeNext;
 					} else if (!(c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95 || c == 45) && c != 35) {
 						if (strict) {
-							throw new HaxeError(new XmlParserException("Invalid character in entity: " + String.fromCodePoint(c), str, p));
+							throw Exception.thrown(new XmlParserException("Invalid character in entity: " + String.fromCodePoint(c), str, p));
 						};
 						buf.b += String.fromCodePoint(38);
-						var len5 = p - start;
-						buf.b += (len5 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len5);
+						let len = p - start;
+						buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
 						--p;
 						start = p + 1;
 						state = escapeNext;
@@ -370,13 +371,13 @@ class Parser {
 		if (state == 13) {
 			if (parent.nodeType == 0) {
 				if (parent.nodeType != Xml.Element) {
-					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(parent.nodeType));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((parent.nodeType == null) ? "null" : XmlType_Impl_.toString(parent.nodeType)));
 				};
-				throw new HaxeError(new XmlParserException("Unclosed node <" + parent.nodeName + ">", str, p));
+				throw Exception.thrown(new XmlParserException("Unclosed node <" + parent.nodeName + ">", str, p));
 			};
 			if (p != start || nsubs == 0) {
-				var len6 = p - start;
-				buf.b += (len6 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len6);
+				let len = p - start;
+				buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
 				parent.addChild(Xml.createPCData(buf.b));
 				++nsubs;
 			};
@@ -384,13 +385,13 @@ class Parser {
 		};
 		if (!strict && state == 18 && escapeNext == 13) {
 			buf.b += String.fromCodePoint(38);
-			var len7 = p - start;
-			buf.b += (len7 == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len7);
+			let len = p - start;
+			buf.b += (len == null) ? HxOverrides.substr(str, start, null) : HxOverrides.substr(str, start, len);
 			parent.addChild(Xml.createPCData(buf.b));
 			++nsubs;
 			return p;
 		};
-		throw new HaxeError(new XmlParserException("Unexpected end", str, p));
+		throw Exception.thrown(new XmlParserException("Unexpected end", str, p));
 	}
 	static isValidChar(c) {
 		if (!(c >= 97 && c <= 122 || c >= 65 && c <= 90 || c >= 48 && c <= 57 || c == 58 || c == 46 || c == 95)) {
@@ -409,7 +410,7 @@ class Parser {
 
 
 Parser.escapes = (function($this) {var $r0
-	var h = new StringMap();
+	let h = new StringMap();
 	h.inst.set("lt", "<");
 	h.inst.set("gt", ">");
 	h.inst.set("amp", "&");

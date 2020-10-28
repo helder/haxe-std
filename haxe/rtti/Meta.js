@@ -1,4 +1,4 @@
-import {HaxeError} from "../../js/Boot"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 /**
@@ -13,7 +13,7 @@ class Meta {
 	Returns the metadata that were declared for the given type (class or enum)
 	*/
 	static getType(t) {
-		var meta = Meta.getMeta(t);
+		let meta = Meta.getMeta(t);
 		if (meta == null || meta.obj == null) {
 			return {};
 		} else {
@@ -21,7 +21,7 @@ class Meta {
 		};
 	}
 	static isInterface(t) {
-		throw new HaxeError("Something went wrong");
+		throw Exception.thrown("Something went wrong");
 	}
 	static getMeta(t) {
 		return t.__meta__;
@@ -31,7 +31,7 @@ class Meta {
 	Returns the metadata that were declared for the given class static fields
 	*/
 	static getStatics(t) {
-		var meta = Meta.getMeta(t);
+		let meta = Meta.getMeta(t);
 		if (meta == null || meta.statics == null) {
 			return {};
 		} else {
@@ -43,7 +43,7 @@ class Meta {
 	Returns the metadata that were declared for the given class fields or enum constructors
 	*/
 	static getFields(t) {
-		var meta = Meta.getMeta(t);
+		let meta = Meta.getMeta(t);
 		if (meta == null || meta.fields == null) {
 			return {};
 		} else {

@@ -12,18 +12,18 @@ class Log {
 	Format the output of `trace` before printing it.
 	*/
 	static formatOutput(v, infos) {
-		var str = Std.string(v);
+		let str = Std.string(v);
 		if (infos == null) {
 			return str;
 		};
-		var pstr = infos.fileName + ":" + infos.lineNumber;
+		let pstr = infos.fileName + ":" + infos.lineNumber;
 		if (infos.customParams != null) {
-			var _g = 0;
-			var _g1 = infos.customParams;
+			let _g = 0;
+			let _g1 = infos.customParams;
 			while (_g < _g1.length) {
-				var v1 = _g1[_g];
+				let v = _g1[_g];
 				++_g;
-				str += ", " + Std.string(v1);
+				str += ", " + Std.string(v);
 			};
 		};
 		return pstr + ": " + str;
@@ -48,7 +48,7 @@ class Log {
 	exception.
 	*/
 	static trace(v, infos = null) {
-		var str = Log.formatOutput(v, infos);
+		let str = Log.formatOutput(v, infos);
 		if (typeof(console) != "undefined" && console.log != null) {
 			console.log(str);
 		};

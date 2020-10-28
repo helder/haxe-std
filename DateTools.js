@@ -1,4 +1,4 @@
-import {HaxeError} from "./js/Boot"
+import {Exception} from "./haxe/Exception"
 import {Register} from "./genes/Register"
 import {StringTools} from "./StringTools"
 import {Std} from "./Std"
@@ -34,7 +34,7 @@ class DateTools {
 				return DateTools.__format(d, "%Y-%m-%d");
 				break
 			case "I":case "l":
-				var hour = d.getHours() % 12;
+				let hour = d.getHours() % 12;
 				return StringTools.lpad(Std.string((hour == 0) ? 12 : hour), (e == "I") ? "0" : " ", 2);
 				break
 			case "M":
@@ -90,7 +90,7 @@ class DateTools {
 				return "\t";
 				break
 			case "u":
-				var t = d.getDay();
+				let t = d.getDay();
 				if (t == 0) {
 					return "7";
 				} else if (t == null) {
@@ -106,25 +106,25 @@ class DateTools {
 				return StringTools.lpad(Std.string(d.getFullYear() % 100), "0", 2);
 				break
 			default:
-			throw new HaxeError("Date.format %" + e + "- not implemented yet.");
+			throw Exception.thrown("Date.format %" + e + "- not implemented yet.");
 			
 		};
 	}
 	static __format(d, f) {
-		var r_b = "";
-		var p = 0;
+		let r_b = "";
+		let p = 0;
 		while (true) {
-			var np = f.indexOf("%", p);
+			let np = f.indexOf("%", p);
 			if (np < 0) {
 				break;
 			};
-			var len = np - p;
+			let len = np - p;
 			r_b += (len == null) ? HxOverrides.substr(f, p, null) : HxOverrides.substr(f, p, len);
 			r_b += Std.string(DateTools.__format_get(d, HxOverrides.substr(f, np + 1, 1)));
 			p = np + 2;
 		};
-		var len1 = f.length - p;
-		r_b += (len1 == null) ? HxOverrides.substr(f, p, null) : HxOverrides.substr(f, p, len1);
+		let len = f.length - p;
+		r_b += (len == null) ? HxOverrides.substr(f, p, null) : HxOverrides.substr(f, p, len);
 		return r_b;
 	}
 	
@@ -169,12 +169,12 @@ class DateTools {
 	This method handles leap years.
 	*/
 	static getMonthDays(d) {
-		var month = d.getMonth();
-		var year = d.getFullYear();
+		let month = d.getMonth();
+		let year = d.getFullYear();
 		if (month != 1) {
 			return DateTools.DAYS_OF_MONTH[month];
 		};
-		var isB = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
+		let isB = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 		if (isB) {
 			return 29;
 		} else {
@@ -214,9 +214,9 @@ class DateTools {
 	Separate a date-time into several components
 	*/
 	static parse(t) {
-		var s = t / 1000;
-		var m = s / 60;
-		var h = m / 60;
+		let s = t / 1000;
+		let m = s / 60;
+		let h = m / 60;
 		return {"ms": t % 1000, "seconds": s % 60 | 0, "minutes": m % 60 | 0, "hours": h % 24 | 0, "days": h / 24 | 0};
 	}
 	

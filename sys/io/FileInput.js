@@ -1,8 +1,8 @@
-import {HaxeError} from "../../js/Boot"
 import {Input} from "../../haxe/io/Input"
 import {Error} from "../../haxe/io/Error"
 import {Eof} from "../../haxe/io/Eof"
-import {CallStack} from "../../haxe/CallStack"
+import {NativeStackTrace} from "../../haxe/NativeStackTrace"
+import {Exception} from "../../haxe/Exception"
 import {Register} from "../../genes/Register"
 import * as Fs from "fs"
 import {Buffer} from "buffer"
@@ -17,42 +17,42 @@ class FileInput extends Register.inherits(Input) {
 		this.pos = 0;
 	}
 	readByte() {
-		var buf = Buffer.alloc(1);
-		var bytesRead;
+		let buf = Buffer.alloc(1);
+		let bytesRead;
 		try {
 			bytesRead = Fs.readSync(this.fd, buf, 0, 1, this.pos);
-		}catch (e) {
-			CallStack.lastException = e;
-			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
-			if (e1.code == "EOF") {
-				throw new HaxeError(new Eof());
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			let e = Exception.caught(_g).unwrap();
+			if (e.code == "EOF") {
+				throw Exception.thrown(new Eof());
 			} else {
-				throw new HaxeError(Error.Custom(e1));
+				throw Exception.thrown(Error.Custom(e));
 			};
 		};
 		if (bytesRead == 0) {
-			throw new HaxeError(new Eof());
+			throw Exception.thrown(new Eof());
 		};
 		this.pos++;
 		return buf[0];
 	}
 	readBytes(s, pos, len) {
-		var data = s.b;
-		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
-		var bytesRead;
+		let data = s.b;
+		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		let bytesRead;
 		try {
 			bytesRead = Fs.readSync(this.fd, buf, pos, len, this.pos);
-		}catch (e) {
-			CallStack.lastException = e;
-			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
-			if (e1.code == "EOF") {
-				throw new HaxeError(new Eof());
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			let e = Exception.caught(_g).unwrap();
+			if (e.code == "EOF") {
+				throw Exception.thrown(new Eof());
 			} else {
-				throw new HaxeError(Error.Custom(e1));
+				throw Exception.thrown(Error.Custom(e));
 			};
 		};
 		if (bytesRead == 0) {
-			throw new HaxeError(new Eof());
+			throw Exception.thrown(new Eof());
 		};
 		this.pos += bytesRead;
 		return bytesRead;

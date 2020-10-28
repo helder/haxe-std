@@ -2,6 +2,11 @@
 export declare class Browser {
 	
 	/**
+	The global scope typed with fields available only in a worker context.
+	*/
+	static readonly self: WorkerGlobalScope
+	
+	/**
 	The global window object.
 	*/
 	static window: Window

@@ -1,4 +1,4 @@
-import {HaxeError} from "../js/Boot"
+import {Exception} from "./Exception"
 import {EntryPoint} from "./EntryPoint"
 import {Register} from "../genes/Register"
 
@@ -16,7 +16,14 @@ class MainEvent extends Register.inherits() {
 	If t is null, the event will be run at tick() time.
 	*/
 	delay(t) {
-		this.nextRun = (t == null) ? -Infinity : Date.now() / 1000 + t;
+		let tmp;
+		if (t == null) {
+			tmp = -Infinity;
+		} else {
+			let hrtime = process.hrtime();
+			tmp = hrtime[0] + hrtime[1] / 1e9 + t;
+		};
+		this.nextRun = tmp;
 	}
 	
 	/**
@@ -64,7 +71,7 @@ class MainLoop {
 		return EntryPoint.threadCount;
 	}
 	static hasEvents() {
-		var p = MainLoop.pending;
+		let p = MainLoop.pending;
 		while (p != null) {
 			if (p.isBlocking) {
 				return true;
@@ -85,10 +92,10 @@ class MainLoop {
 	*/
 	static add(f, priority = 0) {
 		if (f == null) {
-			throw new HaxeError("Event function is null");
+			throw Exception.thrown("Event function is null");
 		};
-		var e = new MainEvent(f, priority);
-		var head = MainLoop.pending;
+		let e = new MainEvent(f, priority);
+		let head = MainLoop.pending;
 		if (head != null) {
 			head.prev = e;
 		};
@@ -97,18 +104,18 @@ class MainLoop {
 		return e;
 	}
 	static sortEvents() {
-		var list = MainLoop.pending;
+		let list = MainLoop.pending;
 		if (list == null) {
 			return;
 		};
-		var insize = 1;
-		var nmerges;
-		var psize = 0;
-		var qsize = 0;
-		var p;
-		var q;
-		var e;
-		var tail;
+		let insize = 1;
+		let nmerges;
+		let psize = 0;
+		let qsize = 0;
+		let p;
+		let q;
+		let e;
+		let tail;
 		while (true) {
 			p = list;
 			list = null;
@@ -118,10 +125,10 @@ class MainLoop {
 				++nmerges;
 				q = p;
 				psize = 0;
-				var _g = 0;
-				var _g1 = insize;
+				let _g = 0;
+				let _g1 = insize;
 				while (_g < _g1) {
-					var i = _g++;
+					let i = _g++;
 					++psize;
 					q = q.next;
 					if (q == null) {
@@ -168,12 +175,13 @@ class MainLoop {
 	*/
 	static tick() {
 		MainLoop.sortEvents();
-		var e = MainLoop.pending;
-		var now = Date.now() / 1000;
-		var wait = 1e9;
+		let e = MainLoop.pending;
+		let hrtime = process.hrtime();
+		let now = hrtime[0] + hrtime[1] / 1e9;
+		let wait = 1e9;
 		while (e != null) {
-			var next = e.next;
-			var wt = e.nextRun - now;
+			let next = e.next;
+			let wt = e.nextRun - now;
 			if (wt <= 0) {
 				wait = 0;
 				if (e.f != null) {

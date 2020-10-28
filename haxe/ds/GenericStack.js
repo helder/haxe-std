@@ -65,7 +65,7 @@ class GenericStack extends Register.inherits() {
 	If the stack is empty, null is returned.
 	*/
 	pop() {
-		var k = this.head;
+		let k = this.head;
 		if (k == null) {
 			return null;
 		} else {
@@ -91,8 +91,8 @@ class GenericStack extends Register.inherits() {
 	If no matching element is found, false is returned.
 	*/
 	remove(v) {
-		var prev = null;
-		var l = this.head;
+		let prev = null;
+		let l = this.head;
 		while (l != null) {
 			if (l.elt == v) {
 				if (prev == null) {
@@ -112,11 +112,11 @@ class GenericStack extends Register.inherits() {
 	Returns an iterator over the elements of `this` GenericStack.
 	*/
 	iterator() {
-		var l = this.head;
+		let l = this.head;
 		return {"hasNext": function () {
 			return l != null;
 		}, "next": function () {
-			var k = l;
+			let k = l;
 			l = k.next;
 			return k.elt;
 		}};
@@ -126,8 +126,8 @@ class GenericStack extends Register.inherits() {
 	Returns a String representation of `this` GenericStack.
 	*/
 	toString() {
-		var a = new Array();
-		var l = this.head;
+		let a = new Array();
+		let l = this.head;
 		while (l != null) {
 			a.push(l.elt);
 			l = l.next;

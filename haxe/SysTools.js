@@ -38,28 +38,28 @@ class SysTools {
 	*/
 	static quoteWinArg(argument, escapeMetaCharacters) {
 		if (!new EReg("^[^ \t\\\\\"]+$", "").match(argument)) {
-			var result_b = "";
-			var needquote = argument.indexOf(" ") != -1 || argument.indexOf("\t") != -1 || argument == "";
+			let result_b = "";
+			let needquote = argument.indexOf(" ") != -1 || argument.indexOf("\t") != -1 || argument == "";
 			if (needquote) {
 				result_b += "\"";
 			};
-			var bs_buf = new StringBuf();
-			var _g = 0;
-			var _g1 = argument.length;
+			let bs_buf = new StringBuf();
+			let _g = 0;
+			let _g1 = argument.length;
 			while (_g < _g1) {
-				var i = _g++;
-				var _g2 = HxOverrides.cca(argument, i);
-				if (_g2 == null) {
-					var c = _g2;
+				let i = _g++;
+				let _g1 = HxOverrides.cca(argument, i);
+				if (_g1 == null) {
+					let c = _g1;
 					if (bs_buf.b.length > 0) {
 						result_b += Std.string(bs_buf.b);
 						bs_buf = new StringBuf();
 					};
 					result_b += String.fromCodePoint(c);
 				} else {
-					switch (_g2) {
+					switch (_g1) {
 						case 34:
-							var bs = bs_buf.b;
+							let bs = bs_buf.b;
 							result_b += (bs == null) ? "null" : "" + bs;
 							result_b += (bs == null) ? "null" : "" + bs;
 							bs_buf = new StringBuf();
@@ -69,12 +69,12 @@ class SysTools {
 							bs_buf.b += "\\";
 							break
 						default:
-						var c1 = _g2;
+						let c = _g1;
 						if (bs_buf.b.length > 0) {
 							result_b += Std.string(bs_buf.b);
 							bs_buf = new StringBuf();
 						};
-						result_b += String.fromCodePoint(c1);
+						result_b += String.fromCodePoint(c);
 						
 					};
 				};
@@ -87,18 +87,18 @@ class SysTools {
 			argument = result_b;
 		};
 		if (escapeMetaCharacters) {
-			var result_b1 = "";
-			var _g3 = 0;
-			var _g11 = argument.length;
-			while (_g3 < _g11) {
-				var i1 = _g3++;
-				var c2 = HxOverrides.cca(argument, i1);
-				if (SysTools.winMetaCharacters.indexOf(c2) >= 0) {
-					result_b1 += String.fromCodePoint(94);
+			let result_b = "";
+			let _g = 0;
+			let _g1 = argument.length;
+			while (_g < _g1) {
+				let i = _g++;
+				let c = HxOverrides.cca(argument, i);
+				if (SysTools.winMetaCharacters.indexOf(c) >= 0) {
+					result_b += String.fromCodePoint(94);
 				};
-				result_b1 += String.fromCodePoint(c2);
+				result_b += String.fromCodePoint(c);
 			};
-			return result_b1;
+			return result_b;
 		} else {
 			return argument;
 		};

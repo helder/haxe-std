@@ -9,7 +9,7 @@ class ObjectMap extends Register.inherits(EsMap) {
 		super.new();
 	}
 	copy() {
-		var copied = new EsMap();
+		let copied = new EsMap();
 		copied.inst = new Map(this.inst);
 		return copied;
 	}

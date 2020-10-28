@@ -1,7 +1,7 @@
-import {HaxeError} from "../../js/Boot"
 import {Input} from "./Input"
 import {Error} from "./Error"
 import {Eof} from "./Eof"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const BytesInput = Register.global("$hxClasses")["haxe.io.BytesInput"] = 
@@ -14,7 +14,7 @@ class BytesInput extends Register.inherits(Input) {
 			len = b.length - pos;
 		};
 		if (pos < 0 || len < 0 || pos + len > b.length) {
-			throw new HaxeError(Error.OutsideBounds);
+			throw Exception.thrown(Error.OutsideBounds);
 		};
 		this.b = b.b;
 		this.pos = pos;
@@ -47,27 +47,27 @@ class BytesInput extends Register.inherits(Input) {
 	}
 	readByte() {
 		if (this.len == 0) {
-			throw new HaxeError(new Eof());
+			throw Exception.thrown(new Eof());
 		};
 		this.len--;
 		return this.b[this.pos++];
 	}
 	readBytes(buf, pos, len) {
 		if (pos < 0 || len < 0 || pos + len > buf.length) {
-			throw new HaxeError(Error.OutsideBounds);
+			throw Exception.thrown(Error.OutsideBounds);
 		};
 		if (this.len == 0 && len > 0) {
-			throw new HaxeError(new Eof());
+			throw Exception.thrown(new Eof());
 		};
 		if (this.len < len) {
 			len = this.len;
 		};
-		var b1 = this.b;
-		var b2 = buf.b;
-		var _g = 0;
-		var _g1 = len;
+		let b1 = this.b;
+		let b2 = buf.b;
+		let _g = 0;
+		let _g1 = len;
 		while (_g < _g1) {
-			var i = _g++;
+			let i = _g++;
 			b2[pos + i] = b1[this.pos + i];
 		};
 		this.pos += len;

@@ -8,8 +8,8 @@ Always works in low-endian encoding.
 export const FPHelper = Register.global("$hxClasses")["haxe.io.FPHelper"] = 
 class FPHelper {
 	static _i32ToFloat(i) {
-		var sign = 1 - (i >>> 31 << 1);
-		var e = i >> 23 & 255;
+		let sign = 1 - (i >>> 31 << 1);
+		let e = i >> 23 & 255;
 		if (e == 255) {
 			if ((i & 8388607) == 0) {
 				if (sign > 0) {
@@ -21,12 +21,12 @@ class FPHelper {
 				return NaN;
 			};
 		};
-		var m = (e == 0) ? (i & 8388607) << 1 : i & 8388607 | 8388608;
+		let m = (e == 0) ? (i & 8388607) << 1 : i & 8388607 | 8388608;
 		return sign * m * Math.pow(2, e - 150);
 	}
 	static _i64ToDouble(lo, hi) {
-		var sign = 1 - (hi >>> 31 << 1);
-		var e = hi >> 20 & 2047;
+		let sign = 1 - (hi >>> 31 << 1);
+		let e = hi >> 20 & 2047;
 		if (e == 2047) {
 			if (lo == 0 && (hi & 1048575) == 0) {
 				if (sign > 0) {
@@ -38,7 +38,7 @@ class FPHelper {
 				return NaN;
 			};
 		};
-		var m = 2.220446049250313e-16 * ((hi & 1048575) * 4294967296. + (lo >>> 31) * 2147483648. + (lo & 2147483647));
+		let m = 2.220446049250313e-16 * ((hi & 1048575) * 4294967296. + (lo >>> 31) * 2147483648. + (lo & 2147483647));
 		if (e == 0) {
 			m *= 2.0;
 		} else {
@@ -50,8 +50,8 @@ class FPHelper {
 		if (f == 0) {
 			return 0;
 		};
-		var af = (f < 0) ? -f : f;
-		var exp = Math.floor(Math.log(af) / 0.6931471805599453);
+		let af = (f < 0) ? -f : f;
+		let exp = Math.floor(Math.log(af) / 0.6931471805599453);
 		if (exp > 127) {
 			return 2139095040;
 		} else {
@@ -65,16 +65,16 @@ class FPHelper {
 		};
 	}
 	static _doubleToI64(v) {
-		var i64 = FPHelper.i64tmp;
+		let i64 = FPHelper.i64tmp;
 		if (v == 0) {
 			i64.low = 0;
 			i64.high = 0;
-		} else if (!isFinite(v)) {
+		} else if (!(isFinite)(v)) {
 			i64.low = 0;
 			i64.high = (v > 0) ? 2146435072 : -1048576;
 		} else {
-			var av = (v < 0) ? -v : v;
-			var exp = Math.floor(Math.log(av) / 0.6931471805599453);
+			let av = (v < 0) ? -v : v;
+			let exp = Math.floor(Math.log(av) / 0.6931471805599453);
 			if (exp > 1023) {
 				i64.low = -1;
 				i64.high = 2146435071;
@@ -85,9 +85,9 @@ class FPHelper {
 				} else {
 					av = av / Math.pow(2, exp) - 1.0;
 				};
-				var sig = Math.round(av * 4503599627370496.);
-				var sig_l = sig | 0;
-				var sig_h = sig / 4294967296.0 | 0;
+				let sig = Math.round(av * 4503599627370496.);
+				let sig_l = sig | 0;
+				let sig_h = sig / 4294967296.0 | 0;
 				i64.low = sig_l;
 				i64.high = ((v < 0) ? -2147483648 : 0) | exp + 1023 << 20 | sig_h;
 			};
@@ -114,7 +114,7 @@ class FPHelper {
 	We still ensure that this is safe to use in a multithread environment
 	*/
 	static doubleToI64(v) {
-		var i64 = FPHelper.i64tmp;
+		let i64 = FPHelper.i64tmp;
 		FPHelper.helper.setFloat64(0, v, true);
 		i64.low = FPHelper.helper.getInt32(0, true);
 		i64.high = FPHelper.helper.getInt32(4, true);
@@ -130,7 +130,7 @@ class FPHelper {
 
 
 FPHelper.i64tmp = (function($this) {var $r0
-	var this1 = new ___Int64(0, 0);
+	let this1 = new ___Int64(0, 0);
 	
 	$r0 = this1
 	return $r0})(this)

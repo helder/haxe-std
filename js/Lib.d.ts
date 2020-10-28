@@ -18,6 +18,14 @@ export declare class Lib {
 	static eval(code: string): any
 	
 	/**
+	Native JavaScript `parseInt` function.
+	
+	Its specification is different from `Std.parseInt`, so one
+	might want to access the native one.
+	*/
+	static parseInt: ((string: string, radix?: number) => number)
+	
+	/**
 	Returns JavaScript `undefined` value.
 	
 	Note that this is only needed in very rare cases when working with external JavaScript code.

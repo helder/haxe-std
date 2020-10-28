@@ -1,1 +1,1 @@
-{"sourceRoot":"","names":[],"mappings":";yBA4BA;aAEC,MAFW,GAAG;qCAAf,OAAY,GAAG;aACd,KADW,GAAG;8BAAH,MAAZ,OAAY,GAAG;;;;;;;oBAAf,OAAY,GAAG;UAEd,MAFW,GAAG;UACd,KADW,GAAG","version":3,"file":"Either.d.ts.map","sources":["../../../../../../../haxe/versions/4.0.5/std/haxe/ds/Either.hx"]}
+{"sourceRoot":"","names":[],"mappings":";yBA4BA;aAEC,MAFW,GAAG;qCAAf,OAAY,GAAG;aACd,KADW,GAAG;8BAAH,MAAZ,OAAY,GAAG;;;;;;;oBAAf,OAAY,GAAG;UAEd,MAFW,GAAG;UACd,KADW,GAAG","version":3,"file":"Either.d.ts.map","sources":["../../../../../../../haxe/versions/4.1.0/std/haxe/ds/Either.hx"]}

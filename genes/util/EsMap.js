@@ -25,10 +25,10 @@ class EsMap extends Register.inherits() {
 		return EsMap.adaptIterator(this.inst.values());
 	}
 	toString() {
-		var _g = [];
-		var key = EsMap.adaptIterator(this.inst.keys());
+		let _g = [];
+		let key = EsMap.adaptIterator(this.inst.keys());
 		while (key.hasNext()) {
-			var key1 = key.next();
+			let key1 = key.next();
 			_g.push("" + Std.string(key1) + " => " + Std.string(this.inst.get(key1)));
 		};
 		return "{" + _g.join(", ") + "}";
@@ -37,10 +37,10 @@ class EsMap extends Register.inherits() {
 		this.inst.clear();
 	}
 	static adaptIterator(from) {
-		var value;
-		var done;
-		var queue = function () {
-			var data = from.next();
+		let value;
+		let done;
+		let queue = function () {
+			let data = from.next();
 			value = data.value;
 			done = data.done;
 		};
@@ -53,7 +53,7 @@ class EsMap extends Register.inherits() {
 			if (done == null) {
 				queue();
 			};
-			var pending = value;
+			let pending = value;
 			queue();
 			return pending;
 		}};

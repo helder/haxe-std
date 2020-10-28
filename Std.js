@@ -8,11 +8,22 @@ export const Std = Register.global("$hxClasses")["Std"] =
 class Std {
 	
 	/**
+	DEPRECATED. Use `Std.isOfType(v, t)` instead.
+	
 	Tells if a value `v` is of the type `t`. Returns `false` if `v` or `t` are null.
 	
 	If `t` is a class or interface with `@:generic` meta, the result is `false`.
 	*/
 	static is(v, t) {
+		return Boot.__instanceof(v, t);
+	}
+	
+	/**
+	Tells if a value `v` is of the type `t`. Returns `false` if `v` or `t` are null.
+	
+	If `t` is a class or interface with `@:generic` meta, the result is `false`.
+	*/
+	static isOfType(v, t) {
 		return Boot.__instanceof(v, t);
 	}
 	
@@ -40,7 +51,11 @@ class Std {
 		};
 	}
 	static instance(value, c) {
-		return (Boot.__downcastCheck(value, c)) ? value : null;
+		if (Boot.__downcastCheck(value, c)) {
+			return value;
+		} else {
+			return null;
+		};
 	}
 	
 	/**
@@ -97,14 +112,15 @@ class Std {
 	*/
 	static parseInt(x) {
 		if (x != null) {
-			var _g = 0;
-			var _g1 = x.length;
+			let _g = 0;
+			let _g1 = x.length;
 			while (_g < _g1) {
-				var i = _g++;
-				var c = x.charCodeAt(i);
+				let i = _g++;
+				let c = x.charCodeAt(i);
 				if (c <= 8 || c >= 14 && c != 32 && c != 45) {
-					var v = parseInt(x, (x[(i + 1)]=="x" || x[(i + 1)]=="X") ? 16 : 10);
-					if (isNaN(v)) {
+					let nc = x.charCodeAt(i + 1);
+					let v = parseInt(x, (nc == 120 || nc == 88) ? 16 : 10);
+					if ((isNaN)(v)) {
 						return null;
 					} else {
 						return v;

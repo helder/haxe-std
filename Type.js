@@ -1,5 +1,6 @@
-import {Boot, HaxeError} from "./js/Boot"
-import {CallStack} from "./haxe/CallStack"
+import {Boot} from "./js/Boot"
+import {NativeStackTrace} from "./haxe/NativeStackTrace"
+import {Exception} from "./haxe/Exception"
 import {Register} from "./genes/Register"
 import {Reflect} from "./Reflect"
 import {HxOverrides} from "./HxOverrides"
@@ -164,7 +165,8 @@ class Type {
 	guaranteed to be taken into account.
 	*/
 	static createInstance(cl, args) {
-		return new (Function.prototype.bind.apply(cl,[null].concat(args)));
+		let ctor = Function.prototype.bind.apply(cl, [null].concat(args));
+		return new (ctor);
 	}
 	
 	/**
@@ -188,18 +190,18 @@ class Type {
 	invalid type, the result is unspecified.
 	*/
 	static createEnum(e, constr, params = null) {
-		var f = Reflect.field(e, constr);
+		let f = Reflect.field(e, constr);
 		if (f == null) {
-			throw new HaxeError("No such constructor " + constr);
+			throw Exception.thrown("No such constructor " + constr);
 		};
 		if (Reflect.isFunction(f)) {
 			if (params == null) {
-				throw new HaxeError("Constructor " + constr + " need parameters");
+				throw Exception.thrown("Constructor " + constr + " need parameters");
 			};
 			return f.apply(e, params);
 		};
 		if (params != null && params.length != 0) {
-			throw new HaxeError("Constructor " + constr + " does not need parameters");
+			throw Exception.thrown("Constructor " + constr + " does not need parameters");
 		};
 		return f;
 	}
@@ -217,9 +219,9 @@ class Type {
 	invalid type, the result is unspecified.
 	*/
 	static createEnumIndex(e, index, params = null) {
-		var c = e.__constructs__[index];
+		let c = e.__constructs__[index];
 		if (c == null) {
-			throw new HaxeError(index + " is not a valid enum constructor index");
+			throw Exception.thrown(index + " is not a valid enum constructor index");
 		};
 		return Type.createEnum(e, c, params);
 	}
@@ -235,16 +237,14 @@ class Type {
 	The order of the fields in the returned Array is unspecified.
 	
 	If `c` is null, the result is unspecified.
-	
-	(As3) This method only returns instance fields that are public.
 	*/
 	static getInstanceFields(c) {
-		var result = [];
+		let result = [];
 		while (c != null) {
-			var _g = 0;
-			var _g1 = Object.getOwnPropertyNames(c.prototype);
+			let _g = 0;
+			let _g1 = Object.getOwnPropertyNames(c.prototype);
 			while (_g < _g1.length) {
-				var name = _g1[_g];
+				let name = _g1[_g];
 				++_g;
 				switch (name) {
 					case "__class__":case "__properties__":case "constructor":
@@ -269,11 +269,9 @@ class Type {
 	The order of the fields in the returned Array is unspecified.
 	
 	If `c` is null, the result is unspecified.
-	
-	(As3) This method only returns class fields that are public.
 	*/
 	static getClassFields(c) {
-		var a = Object.getOwnPropertyNames(c);
+		let a = Object.getOwnPropertyNames(c);
 		HxOverrides.remove(a, "__id__");
 		HxOverrides.remove(a, "hx__closures__");
 		HxOverrides.remove(a, "__name__");
@@ -329,11 +327,11 @@ class Type {
 				if (v == null) {
 					return ValueType.TNull;
 				};
-				var e = v.__enum__;
+				let e = v.__enum__;
 				if (e != null) {
 					return ValueType.TEnum(Register.global("$hxEnums")[e]);
 				};
-				var c = Boot.getClass(v);
+				let c = Boot.getClass(v);
 				if (c != null) {
 					return ValueType.TClass(c);
 				};
@@ -364,27 +362,26 @@ class Type {
 			return true;
 		};
 		try {
-			var e = a.__enum__;
+			let e = a.__enum__;
 			if (e == null || e != b.__enum__) {
 				return false;
 			};
 			if (a._hx_index != b._hx_index) {
 				return false;
 			};
-			var enm = Register.global("$hxEnums")[e];
-			var ctorName = enm.__constructs__[a._hx_index];
-			var params = enm[ctorName].__params__;
-			var _g = 0;
+			let enm = Register.global("$hxEnums")[e];
+			let ctorName = enm.__constructs__[a._hx_index];
+			let params = enm[ctorName].__params__;
+			let _g = 0;
 			while (_g < params.length) {
-				var f = params[_g];
+				let f = params[_g];
 				++_g;
 				if (!Type.enumEq(a[f], b[f])) {
 					return false;
 				};
 			};
-		}catch (e1) {
-			CallStack.lastException = e1;
-			var e2 = (((e1) instanceof HaxeError)) ? e1.val : e1;
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
 			return false;
 		};
 		return true;
@@ -412,14 +409,14 @@ class Type {
 	If `e` is null, the result is unspecified.
 	*/
 	static enumParameters(e) {
-		var enm = Register.global("$hxEnums")[e.__enum__];
-		var ctorName = enm.__constructs__[e._hx_index];
-		var params = enm[ctorName].__params__;
+		let enm = Register.global("$hxEnums")[e.__enum__];
+		let ctorName = enm.__constructs__[e._hx_index];
+		let params = enm[ctorName].__params__;
 		if (params != null) {
-			var _g = [];
-			var _g1 = 0;
+			let _g = [];
+			let _g1 = 0;
 			while (_g1 < params.length) {
-				var p = params[_g1];
+				let p = params[_g1];
 				++_g1;
 				_g.push(e[p]);
 			};

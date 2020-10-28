@@ -1,6 +1,7 @@
-import {HaxeError} from "../js/Boot"
+import {ArrayIterator} from "./iterators/ArrayIterator"
 import {List} from "./ds/List"
-import {CallStack} from "./CallStack"
+import {NativeStackTrace} from "./NativeStackTrace"
+import {Exception} from "./Exception"
 import {Register} from "../genes/Register"
 import {StringBuf} from "../StringBuf"
 import {Std} from "../Std"
@@ -34,10 +35,10 @@ A complete documentation of the supported syntax is available at:
 export const Template = Register.global("$hxClasses")["haxe.Template"] = 
 class Template extends Register.inherits() {
 	new(str) {
-		var tokens = this.parseTokens(str);
+		let tokens = this.parseTokens(str);
 		this.expr = this.parseBlock(tokens);
 		if (!tokens.isEmpty()) {
-			throw new HaxeError("Unexpected '" + Std.string(tokens.first().s) + "'");
+			throw Exception.thrown("Unexpected '" + Std.string(tokens.first().s) + "'");
 		};
 	}
 	
@@ -69,15 +70,15 @@ class Template extends Register.inherits() {
 		if (v == "__current__") {
 			return this.context;
 		};
-		var value = Reflect.getProperty(this.context, v);
+		let value = Reflect.getProperty(this.context, v);
 		if (value != null || Object.prototype.hasOwnProperty.call(this.context, v)) {
 			return value;
 		};
-		var _g_head = this.stack.h;
+		let _g_head = this.stack.h;
 		while (_g_head != null) {
-			var val = _g_head.item;
+			let val = _g_head.item;
 			_g_head = _g_head.next;
-			var ctx = val;
+			let ctx = val;
 			value = Reflect.getProperty(ctx, v);
 			if (value != null || Object.prototype.hasOwnProperty.call(ctx, v)) {
 				return value;
@@ -86,9 +87,9 @@ class Template extends Register.inherits() {
 		return Reflect.field(Template.globals, v);
 	}
 	parseTokens(data) {
-		var tokens = new List();
+		let tokens = new List();
 		while (Template.splitter.match(data)) {
-			var p = Template.splitter.matchedPos();
+			let p = Template.splitter.matchedPos();
 			if (p.pos > 0) {
 				tokens.add({"p": HxOverrides.substr(data, 0, p.pos), "s": true, "l": null});
 			};
@@ -97,12 +98,12 @@ class Template extends Register.inherits() {
 				data = Template.splitter.matchedRight();
 				continue;
 			};
-			var parp = p.pos + p.len;
-			var npar = 1;
-			var params = [];
-			var part = "";
+			let parp = p.pos + p.len;
+			let npar = 1;
+			let params = [];
+			let part = "";
 			while (true) {
-				var c = HxOverrides.cca(data, parp);
+				let c = HxOverrides.cca(data, parp);
 				++parp;
 				if (c == 40) {
 					++npar;
@@ -112,7 +113,7 @@ class Template extends Register.inherits() {
 						break;
 					};
 				} else if (c == null) {
-					throw new HaxeError("Unclosed macro parenthesis");
+					throw Exception.thrown("Unclosed macro parenthesis");
 				};
 				if (c == 44 && npar == 1) {
 					params.push(part);
@@ -131,9 +132,9 @@ class Template extends Register.inherits() {
 		return tokens;
 	}
 	parseBlock(tokens) {
-		var l = new List();
+		let l = new List();
 		while (true) {
-			var t = tokens.first();
+			let t = tokens.first();
 			if (t == null) {
 				break;
 			};
@@ -148,31 +149,31 @@ class Template extends Register.inherits() {
 		return TemplateExpr.OpBlock(l);
 	}
 	parse(tokens) {
-		var t = tokens.pop();
-		var p = t.p;
+		let t = tokens.pop();
+		let p = t.p;
 		if (t.s) {
 			return TemplateExpr.OpStr(p);
 		};
 		if (t.l != null) {
-			var pe = new List();
-			var _g = 0;
-			var _g1 = t.l;
+			let pe = new List();
+			let _g = 0;
+			let _g1 = t.l;
 			while (_g < _g1.length) {
-				var p1 = _g1[_g];
+				let p = _g1[_g];
 				++_g;
-				pe.add(this.parseBlock(this.parseTokens(p1)));
+				pe.add(this.parseBlock(this.parseTokens(p)));
 			};
 			return TemplateExpr.OpMacro(p, pe);
 		};
-		var kwdEnd = function (kwd) {
-			var pos = -1;
-			var length = kwd.length;
+		let kwdEnd = function (kwd) {
+			let pos = -1;
+			let length = kwd.length;
 			if (HxOverrides.substr(p, 0, length) == kwd) {
 				pos = length;
-				var _g_offset = 0;
-				var _g_s = HxOverrides.substr(p, length, null);
+				let _g_offset = 0;
+				let _g_s = HxOverrides.substr(p, length, null);
 				while (_g_offset < _g_s.length) {
-					var c = _g_s.charCodeAt(_g_offset++);
+					let c = _g_s.charCodeAt(_g_offset++);
 					if (c == 32) {
 						++pos;
 					} else {
@@ -182,42 +183,42 @@ class Template extends Register.inherits() {
 			};
 			return pos;
 		};
-		var pos1 = kwdEnd("if");
-		if (pos1 > 0) {
-			p = HxOverrides.substr(p, pos1, p.length - pos1);
-			var e = this.parseExpr(p);
-			var eif = this.parseBlock(tokens);
-			var t1 = tokens.first();
-			var eelse;
-			if (t1 == null) {
-				throw new HaxeError("Unclosed 'if'");
+		let pos = kwdEnd("if");
+		if (pos > 0) {
+			p = HxOverrides.substr(p, pos, p.length - pos);
+			let e = this.parseExpr(p);
+			let eif = this.parseBlock(tokens);
+			let t = tokens.first();
+			let eelse;
+			if (t == null) {
+				throw Exception.thrown("Unclosed 'if'");
 			};
-			if (t1.p == "end") {
+			if (t.p == "end") {
 				tokens.pop();
 				eelse = null;
-			} else if (t1.p == "else") {
+			} else if (t.p == "else") {
 				tokens.pop();
 				eelse = this.parseBlock(tokens);
-				t1 = tokens.pop();
-				if (t1 == null || t1.p != "end") {
-					throw new HaxeError("Unclosed 'else'");
+				t = tokens.pop();
+				if (t == null || t.p != "end") {
+					throw Exception.thrown("Unclosed 'else'");
 				};
 			} else {
-				t1.p = HxOverrides.substr(t1.p, 4, t1.p.length - 4);
+				t.p = HxOverrides.substr(t.p, 4, t.p.length - 4);
 				eelse = this.parse(tokens);
 			};
 			return TemplateExpr.OpIf(e, eif, eelse);
 		};
-		var pos2 = kwdEnd("foreach");
-		if (pos2 >= 0) {
-			p = HxOverrides.substr(p, pos2, p.length - pos2);
-			var e1 = this.parseExpr(p);
-			var efor = this.parseBlock(tokens);
-			var t2 = tokens.pop();
-			if (t2 == null || t2.p != "end") {
-				throw new HaxeError("Unclosed 'foreach'");
+		let pos1 = kwdEnd("foreach");
+		if (pos1 >= 0) {
+			p = HxOverrides.substr(p, pos1, p.length - pos1);
+			let e = this.parseExpr(p);
+			let efor = this.parseBlock(tokens);
+			let t = tokens.pop();
+			if (t == null || t.p != "end") {
+				throw Exception.thrown("Unclosed 'foreach'");
 			};
-			return TemplateExpr.OpForeach(e1, efor);
+			return TemplateExpr.OpForeach(e, efor);
 		};
 		if (Template.expr_splitter.match(p)) {
 			return TemplateExpr.OpExpr(this.parseExpr(p));
@@ -225,53 +226,55 @@ class Template extends Register.inherits() {
 		return TemplateExpr.OpVar(p);
 	}
 	parseExpr(data) {
-		var l = new List();
-		var expr = data;
+		let l = new List();
+		let expr = data;
 		while (Template.expr_splitter.match(data)) {
-			var p = Template.expr_splitter.matchedPos();
-			var k = p.pos + p.len;
+			let p = Template.expr_splitter.matchedPos();
+			let k = p.pos + p.len;
 			if (p.pos != 0) {
 				l.add({"p": HxOverrides.substr(data, 0, p.pos), "s": true});
 			};
-			var p1 = Template.expr_splitter.matched(0);
+			let p1 = Template.expr_splitter.matched(0);
 			l.add({"p": p1, "s": p1.indexOf("\"") >= 0});
 			data = Template.expr_splitter.matchedRight();
 		};
 		if (data.length != 0) {
-			var _g_offset = 0;
-			var _g_s = data;
+			let _g_offset = 0;
+			let _g_s = data;
 			while (_g_offset < _g_s.length) {
-				var _g1_key = _g_offset;
-				var _g1_value = _g_s.charCodeAt(_g_offset++);
-				var i = _g1_key;
-				var c = _g1_value;
+				let _g1_key = _g_offset;
+				let _g1_value = _g_s.charCodeAt(_g_offset++);
+				let i = _g1_key;
+				let c = _g1_value;
 				if (c != 32) {
 					l.add({"p": HxOverrides.substr(data, i, null), "s": true});
 					break;
 				};
 			};
 		};
-		var e;
+		let e;
 		try {
 			e = this.makeExpr(l);
 			if (!l.isEmpty()) {
-				throw new HaxeError(l.first().p);
+				throw Exception.thrown(l.first().p);
 			};
-		}catch (s) {
-			CallStack.lastException = s;
-			var s1 = (((s) instanceof HaxeError)) ? s.val : s;
-			if (typeof(s1) == "string") {
-				throw new HaxeError("Unexpected '" + s1 + "' in " + expr);
+		}catch (_g) {
+			NativeStackTrace.lastError = _g;
+			let _g1 = Exception.caught(_g).unwrap();
+			if (typeof(_g1) == "string") {
+				let s = _g1;
+				throw Exception.thrown("Unexpected '" + s + "' in " + expr);
 			} else {
-				throw s;
+				throw _g;
 			};
 		};
 		return function () {
 			try {
 				return e();
-			}catch (exc) {
-				CallStack.lastException = exc;
-				throw new HaxeError("Error : " + Std.string((((exc) instanceof HaxeError)) ? exc.val : exc) + " in " + expr);
+			}catch (_g) {
+				NativeStackTrace.lastError = _g;
+				let exc = Exception.caught(_g).unwrap();
+				throw Exception.thrown("Error : " + Std.string(exc) + " in " + expr);
 			};
 		};
 	}
@@ -279,39 +282,39 @@ class Template extends Register.inherits() {
 		Template.expr_trim.match(v);
 		v = Template.expr_trim.matched(1);
 		if (HxOverrides.cca(v, 0) == 34) {
-			var str = HxOverrides.substr(v, 1, v.length - 2);
+			let str = HxOverrides.substr(v, 1, v.length - 2);
 			return function () {
 				return str;
 			};
 		};
 		if (Template.expr_int.match(v)) {
-			var i = Std.parseInt(v);
+			let i = Std.parseInt(v);
 			return function () {
 				return i;
 			};
 		};
 		if (Template.expr_float.match(v)) {
-			var f = parseFloat(v);
+			let f = parseFloat(v);
 			return function () {
 				return f;
 			};
 		};
-		var me = this;
+		let me = this;
 		return function () {
 			return me.resolve(v);
 		};
 	}
 	makePath(e, l) {
-		var p = l.first();
+		let p = l.first();
 		if (p == null || p.p != ".") {
 			return e;
 		};
 		l.pop();
-		var field = l.pop();
+		let field = l.pop();
 		if (field == null || !field.s) {
-			throw new HaxeError(field.p);
+			throw Exception.thrown(field.p);
 		};
-		var f = field.p;
+		let f = field.p;
 		Template.expr_trim.match(f);
 		f = Template.expr_trim.matched(1);
 		return this.makePath(function () {
@@ -322,12 +325,12 @@ class Template extends Register.inherits() {
 		return this.makePath(this.makeExpr2(l), l);
 	}
 	skipSpaces(l) {
-		var p = l.first();
+		let p = l.first();
 		while (p != null) {
-			var _g_offset = 0;
-			var _g_s = p.p;
+			let _g_offset = 0;
+			let _g_s = p.p;
 			while (_g_offset < _g_s.length) {
-				var c = _g_s.charCodeAt(_g_offset++);
+				let c = _g_s.charCodeAt(_g_offset++);
 				if (c != 32) {
 					return;
 				};
@@ -338,19 +341,19 @@ class Template extends Register.inherits() {
 	}
 	makeExpr2(l) {
 		this.skipSpaces(l);
-		var p = l.pop();
+		let p = l.pop();
 		this.skipSpaces(l);
 		if (p == null) {
-			throw new HaxeError("<eof>");
+			throw Exception.thrown("<eof>");
 		};
 		if (p.s) {
 			return this.makeConst(p.p);
 		};
 		switch (p.p) {
 			case "!":
-				var e = this.makeExpr(l);
+				let e = this.makeExpr(l);
 				return function () {
-					var v = e();
+					let v = e();
 					if (v != null) {
 						return v == false;
 					} else {
@@ -360,22 +363,22 @@ class Template extends Register.inherits() {
 				break
 			case "(":
 				this.skipSpaces(l);
-				var e1 = this.makeExpr(l);
+				let e1 = this.makeExpr(l);
 				this.skipSpaces(l);
-				var p1 = l.pop();
+				let p1 = l.pop();
 				if (p1 == null || p1.s) {
-					throw new HaxeError(p1);
+					throw Exception.thrown(p1);
 				};
 				if (p1.p == ")") {
 					return e1;
 				};
 				this.skipSpaces(l);
-				var e2 = this.makeExpr(l);
+				let e2 = this.makeExpr(l);
 				this.skipSpaces(l);
-				var p2 = l.pop();
+				let p2 = l.pop();
 				this.skipSpaces(l);
 				if (p2 == null || p2.p != ")") {
-					throw new HaxeError(p2);
+					throw Exception.thrown(p2);
 				};
 				switch (p1.p) {
 					case "!=":
@@ -439,39 +442,39 @@ class Template extends Register.inherits() {
 						};
 						break
 					default:
-					throw new HaxeError("Unknown operation " + p1.p);
+					throw Exception.thrown("Unknown operation " + p1.p);
 					
 				};
 				break
 			case "-":
-				var e3 = this.makeExpr(l);
+				let e3 = this.makeExpr(l);
 				return function () {
 					return -e3();
 				};
 				break
 			
 		};
-		throw new HaxeError(p.p);
+		throw Exception.thrown(p.p);
 	}
 	run(e) {
 		switch (e._hx_index) {
 			case 0:
-				var v = e.v;
-				var _this = this.buf;
-				var x = Std.string(this.resolve(v));
+				let v = e.v;
+				let _this = this.buf;
+				let x = Std.string(this.resolve(v));
 				_this.b += Std.string(x);
 				break
 			case 1:
-				var e1 = e.expr;
-				var _this1 = this.buf;
-				var x1 = Std.string(e1());
+				let e1 = e.expr;
+				let _this1 = this.buf;
+				let x1 = Std.string(e1());
 				_this1.b += Std.string(x1);
 				break
 			case 2:
-				var eelse = e.eelse;
-				var eif = e.eif;
-				var e2 = e.expr;
-				var v1 = e2();
+				let eelse = e.eelse;
+				let eif = e.eif;
+				let e2 = e.expr;
+				let v1 = e2();
 				if (v1 == null || v1 == false) {
 					if (eelse != null) {
 						this.run(eelse);
@@ -481,67 +484,64 @@ class Template extends Register.inherits() {
 				};
 				break
 			case 3:
-				var str = e.str;
+				let str = e.str;
 				this.buf.b += (str == null) ? "null" : "" + str;
 				break
 			case 4:
-				var l = e.l;
-				var _g_head = l.h;
+				let l = e.l;
+				let _g_head = l.h;
 				while (_g_head != null) {
-					var val = _g_head.item;
+					let val = _g_head.item;
 					_g_head = _g_head.next;
-					var e3 = val;
-					this.run(e3);
+					let e = val;
+					this.run(e);
 				};
 				break
 			case 5:
-				var loop = e.loop;
-				var e4 = e.expr;
-				var v2 = e4();
+				let loop = e.loop;
+				let e3 = e.expr;
+				let v2 = e3();
 				try {
-					var x2 = Register.iter(v2);
-					if (x2.hasNext == null) {
-						throw new HaxeError(null);
+					let x = Register.iter(v2);
+					if (x.hasNext == null) {
+						throw Exception.thrown(null);
 					};
-					v2 = x2;
-				}catch (e5) {
-					CallStack.lastException = e5;
-					var e6 = (((e5) instanceof HaxeError)) ? e5.val : e5;
+					v2 = x;
+				}catch (_g) {
+					NativeStackTrace.lastError = _g;
 					try {
 						if (v2.hasNext == null) {
-							throw new HaxeError(null);
+							throw Exception.thrown(null);
 						};
-					}catch (e7) {
-						CallStack.lastException = e7;
-						var e8 = (((e7) instanceof HaxeError)) ? e7.val : e7;
-						throw new HaxeError("Cannot iter on " + Std.string(v2));
+					}catch (_g) {
+						throw Exception.thrown("Cannot iter on " + Std.string(v2));
 					};
 				};
 				this.stack.push(this.context);
-				var v3 = v2;
-				var ctx = v3;
+				let v3 = v2;
+				let ctx = v3;
 				while (ctx.hasNext()) {
-					var ctx1 = ctx.next();
+					let ctx1 = ctx.next();
 					this.context = ctx1;
 					this.run(loop);
 				};
 				this.context = this.stack.pop();
 				break
 			case 6:
-				var params = e.params;
-				var m = e.name;
-				var v4 = Reflect.field(this.macros, m);
-				var pl = new Array();
-				var old = this.buf;
+				let params = e.params;
+				let m = e.name;
+				let v4 = Reflect.field(this.macros, m);
+				let pl = new Array();
+				let old = this.buf;
 				pl.push(Register.bind(this, this.resolve));
-				var _g_head1 = params.h;
+				let _g_head1 = params.h;
 				while (_g_head1 != null) {
-					var val1 = _g_head1.item;
+					let val = _g_head1.item;
 					_g_head1 = _g_head1.next;
-					var p = val1;
+					let p = val;
 					if (p._hx_index == 0) {
-						var v5 = p.v;
-						pl.push(this.resolve(v5));
+						let v = p.v;
+						pl.push(this.resolve(v));
 					} else {
 						this.buf = new StringBuf();
 						this.run(p);
@@ -550,22 +550,20 @@ class Template extends Register.inherits() {
 				};
 				this.buf = old;
 				try {
-					var _this2 = this.buf;
-					var x3 = Std.string(v4.apply(this.macros, pl));
-					_this2.b += Std.string(x3);
-				}catch (e9) {
-					CallStack.lastException = e9;
-					var e10 = (((e9) instanceof HaxeError)) ? e9.val : e9;
-					var plstr;
+					let _this = this.buf;
+					let x = Std.string(v4.apply(this.macros, pl));
+					_this.b += Std.string(x);
+				}catch (_g1) {
+					NativeStackTrace.lastError = _g1;
+					let e = Exception.caught(_g1).unwrap();
+					let plstr;
 					try {
 						plstr = pl.join(",");
-					}catch (e11) {
-						CallStack.lastException = e11;
-						var e12 = (((e11) instanceof HaxeError)) ? e11.val : e11;
+					}catch (_g) {
 						plstr = "???";
 					};
-					var msg = "Macro call " + m + "(" + plstr + ") failed (" + Std.string(e10) + ")";
-					throw new HaxeError(msg);
+					let msg = "Macro call " + m + "(" + plstr + ") failed (" + Std.string(e) + ")";
+					throw Exception.thrown(msg);
 				};
 				break
 			
@@ -586,5 +584,5 @@ Template.expr_trim = new EReg("^[ ]*([^ ]+)[ ]*$", "")
 Template.expr_int = new EReg("^[0-9]+$", "")
 Template.expr_float = new EReg("^([+-]?)(?=\\d|,\\d)\\d*(,\\d*)?([Ee]([+-]?\\d+))?$", "")
 Template.globals = {}
-Template.hxKeepArrayIterator = HxOverrides.iter([])
+Template.hxKeepArrayIterator = new ArrayIterator([])
 //# sourceMappingURL=Template.js.map

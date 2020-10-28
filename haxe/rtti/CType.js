@@ -1,6 +1,5 @@
-import {HaxeError} from "../../js/Boot"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
-import {HxOverrides} from "../../HxOverrides"
 
 /**
 The runtime member types.
@@ -63,28 +62,28 @@ Contains type and equality checks functionalities for RTTI.
 export const TypeApi = Register.global("$hxClasses")["haxe.rtti.TypeApi"] = 
 class TypeApi {
 	static typeInfos(t) {
-		var inf;
+		let inf;
 		switch (t._hx_index) {
 			case 0:
-				var _g4 = t.subs;
-				var _g3 = t.full;
-				var _g2 = t.name;
-				throw new HaxeError("Unexpected Package");
+				let _g = t.subs;
+				let _g1 = t.full;
+				let _g2 = t.name;
+				throw Exception.thrown("Unexpected Package");
 				break
 			case 1:
-				var c = t.c;
+				let c = t.c;
 				inf = c;
 				break
 			case 2:
-				var e = t.e;
+				let e = t.e;
 				inf = e;
 				break
 			case 3:
-				var t1 = t.t;
+				let t1 = t.t;
 				inf = t1;
 				break
 			case 4:
-				var a = t.a;
+				let a = t.a;
 				inf = a;
 				break
 			
@@ -98,28 +97,29 @@ class TypeApi {
 	*/
 	static isVar(t) {
 		if (t._hx_index == 4) {
-			var _g1 = t.ret;
-			var _g = t.args;
+			let _g = t.ret;
+			let _g1 = t.args;
 			return false;
 		} else {
 			return true;
 		};
 	}
 	static leq(f, l1, l2) {
-		var it = HxOverrides.iter(l2);
-		var _g = 0;
+		let it_current = 0;
+		let it_array = l2;
+		let _g = 0;
 		while (_g < l1.length) {
-			var e1 = l1[_g];
+			let e1 = l1[_g];
 			++_g;
-			if (!it.hasNext()) {
+			if (it_current >= it_array.length) {
 				return false;
 			};
-			var e2 = it.next();
+			let e2 = it_array[it_current++];
 			if (!f(e1, e2)) {
 				return false;
 			};
 		};
-		if (it.hasNext()) {
+		if (it_current < it_array.length) {
 			return false;
 		};
 		return true;
@@ -136,9 +136,9 @@ class TypeApi {
 			return true;
 		};
 		if (r1._hx_index == 2) {
-			var m1 = r1.m;
+			let m1 = r1.m;
 			if (r2._hx_index == 2) {
-				var m2 = r2.m;
+				let m2 = r2.m;
 				return m1 == m2;
 			};
 		};
@@ -157,11 +157,11 @@ class TypeApi {
 				return t2 == CType.CUnknown;
 				break
 			case 1:
-				var params = t1.params;
-				var name = t1.name;
+				let params = t1.params;
+				let name = t1.name;
 				if (t2._hx_index == 1) {
-					var params2 = t2.params;
-					var name2 = t2.name;
+					let params2 = t2.params;
+					let name2 = t2.name;
 					if (name == name2) {
 						return TypeApi.leq(TypeApi.typeEq, params, params2);
 					} else {
@@ -170,37 +170,37 @@ class TypeApi {
 				};
 				break
 			case 2:
-				var params1 = t1.params;
-				var name1 = t1.name;
+				let params1 = t1.params;
+				let name1 = t1.name;
 				if (t2._hx_index == 2) {
-					var params21 = t2.params;
-					var name21 = t2.name;
-					if (name1 == name21) {
-						return TypeApi.leq(TypeApi.typeEq, params1, params21);
+					let params2 = t2.params;
+					let name2 = t2.name;
+					if (name1 == name2) {
+						return TypeApi.leq(TypeApi.typeEq, params1, params2);
 					} else {
 						return false;
 					};
 				};
 				break
 			case 3:
-				var params3 = t1.params;
-				var name3 = t1.name;
+				let params2 = t1.params;
+				let name2 = t1.name;
 				if (t2._hx_index == 3) {
-					var params22 = t2.params;
-					var name22 = t2.name;
-					if (name3 == name22) {
-						return TypeApi.leq(TypeApi.typeEq, params3, params22);
+					let params21 = t2.params;
+					let name21 = t2.name;
+					if (name2 == name21) {
+						return TypeApi.leq(TypeApi.typeEq, params2, params21);
 					} else {
 						return false;
 					};
 				};
 				break
 			case 4:
-				var ret = t1.ret;
-				var args = t1.args;
+				let ret = t1.ret;
+				let args = t1.args;
 				if (t2._hx_index == 4) {
-					var ret2 = t2.ret;
-					var args2 = t2.args;
+					let ret2 = t2.ret;
+					let args2 = t2.args;
 					if (TypeApi.leq(function (a, b) {
 						if (a.name == b.name && a.opt == b.opt) {
 							return TypeApi.typeEq(a.t, b.t);
@@ -215,18 +215,18 @@ class TypeApi {
 				};
 				break
 			case 5:
-				var fields = t1.fields;
+				let fields = t1.fields;
 				if (t2._hx_index == 5) {
-					var fields2 = t2.fields;
-					return TypeApi.leq(function (a1, b1) {
-						return TypeApi.fieldEq(a1, b1);
+					let fields2 = t2.fields;
+					return TypeApi.leq(function (a, b) {
+						return TypeApi.fieldEq(a, b);
 					}, fields, fields2);
 				};
 				break
 			case 6:
-				var t = t1.t;
+				let t = t1.t;
 				if (t2._hx_index == 6) {
-					var t21 = t2.t;
+					let t21 = t2.t;
 					if (t == null != (t21 == null)) {
 						return false;
 					};
@@ -238,13 +238,13 @@ class TypeApi {
 				};
 				break
 			case 7:
-				var params4 = t1.params;
-				var name4 = t1.name;
+				let params3 = t1.params;
+				let name3 = t1.name;
 				if (t2._hx_index == 7) {
-					var params23 = t2.params;
-					var name23 = t2.name;
-					if (name4 == name23) {
-						return TypeApi.leq(TypeApi.typeEq, params4, params23);
+					let params2 = t2.params;
+					let name2 = t2.name;
+					if (name3 == name2) {
+						return TypeApi.leq(TypeApi.typeEq, params3, params2);
 					} else {
 						return false;
 					};
@@ -326,7 +326,7 @@ class TypeApi {
 
 
 /**
-The CTypeTools class contains some extra functionalities for handling
+The `CTypeTools` class contains some extra functionalities for handling
 `CType` instances.
 */
 export const CTypeTools = Register.global("$hxClasses")["haxe.rtti.CTypeTools"] = 
@@ -341,51 +341,51 @@ class CTypeTools {
 				return "unknown";
 				break
 			case 1:
-				var params = t.params;
-				var name = t.name;
+				let params = t.params;
+				let name = t.name;
 				return CTypeTools.nameWithParams(name, params);
 				break
 			case 2:
-				var params1 = t.params;
-				var name1 = t.name;
+				let params1 = t.params;
+				let name1 = t.name;
 				return CTypeTools.nameWithParams(name1, params1);
 				break
 			case 3:
-				var params2 = t.params;
-				var name2 = t.name;
+				let params2 = t.params;
+				let name2 = t.name;
 				return CTypeTools.nameWithParams(name2, params2);
 				break
 			case 4:
-				var ret = t.ret;
-				var args = t.args;
+				let ret = t.ret;
+				let args = t.args;
 				if (args.length == 0) {
 					return "Void -> " + CTypeTools.toString(ret);
 				} else {
-					var f = CTypeTools.functionArgumentName;
-					var result = new Array(args.length);
-					var _g = 0;
-					var _g1 = args.length;
+					let f = CTypeTools.functionArgumentName;
+					let result = new Array(args.length);
+					let _g = 0;
+					let _g1 = args.length;
 					while (_g < _g1) {
-						var i = _g++;
+						let i = _g++;
 						result[i] = f(args[i]);
 					};
 					return result.join(" -> ") + " -> " + CTypeTools.toString(ret);
 				};
 				break
 			case 5:
-				var fields = t.fields;
-				var f1 = CTypeTools.classField;
-				var result1 = new Array(fields.length);
-				var _g2 = 0;
-				var _g11 = fields.length;
-				while (_g2 < _g11) {
-					var i1 = _g2++;
-					result1[i1] = f1(fields[i1]);
+				let fields = t.fields;
+				let f = CTypeTools.classField;
+				let result = new Array(fields.length);
+				let _g = 0;
+				let _g1 = fields.length;
+				while (_g < _g1) {
+					let i = _g++;
+					result[i] = f(fields[i]);
 				};
-				return "{ " + result1.join(", ") + "}";
+				return "{ " + result.join(", ") + "}";
 				break
 			case 6:
-				var d = t.t;
+				let d = t.t;
 				if (d == null) {
 					return "Dynamic";
 				} else {
@@ -393,8 +393,8 @@ class CTypeTools {
 				};
 				break
 			case 7:
-				var params3 = t.params;
-				var name3 = t.name;
+				let params3 = t.params;
+				let name3 = t.name;
 				return CTypeTools.nameWithParams(name3, params3);
 				break
 			
@@ -404,13 +404,13 @@ class CTypeTools {
 		if (params.length == 0) {
 			return name;
 		};
-		var tmp = name + "<";
-		var f = CTypeTools.toString;
-		var result = new Array(params.length);
-		var _g = 0;
-		var _g1 = params.length;
+		let tmp = name + "<";
+		let f = CTypeTools.toString;
+		let result = new Array(params.length);
+		let _g = 0;
+		let _g1 = params.length;
 		while (_g < _g1) {
-			var i = _g++;
+			let i = _g++;
 			result[i] = f(params[i]);
 		};
 		return tmp + result.join(", ") + ">";

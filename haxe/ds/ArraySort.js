@@ -23,16 +23,16 @@ class ArraySort {
 		ArraySort.rec(a, cmp, 0, a.length);
 	}
 	static rec(a, cmp, from, to) {
-		var middle = from + to >> 1;
+		let middle = from + to >> 1;
 		if (to - from < 12) {
 			if (to <= from) {
 				return;
 			};
-			var _g = from + 1;
-			var _g1 = to;
+			let _g = from + 1;
+			let _g1 = to;
 			while (_g < _g1) {
-				var i = _g++;
-				var j = i;
+				let i = _g++;
+				let j = i;
 				while (j > from) {
 					if (cmp(a[j], a[j - 1]) < 0) {
 						ArraySort.swap(a, j - 1, j);
@@ -49,10 +49,10 @@ class ArraySort {
 		ArraySort.doMerge(a, cmp, from, middle, to, middle - from, to - middle);
 	}
 	static doMerge(a, cmp, from, pivot, to, len1, len2) {
-		var first_cut;
-		var second_cut;
-		var len11;
-		var len22;
+		let first_cut;
+		let second_cut;
+		let len11;
+		let len22;
 		if (len1 == 0 || len2 == 0) {
 			return;
 		};
@@ -74,7 +74,7 @@ class ArraySort {
 			len11 = first_cut - from;
 		};
 		ArraySort.rotate(a, cmp, first_cut, pivot, second_cut);
-		var new_mid = first_cut + len22;
+		let new_mid = first_cut + len22;
 		ArraySort.doMerge(a, cmp, from, first_cut, new_mid, len11, len22);
 		ArraySort.doMerge(a, cmp, new_mid, second_cut, to, len1 - len11, len2 - len22);
 	}
@@ -82,12 +82,12 @@ class ArraySort {
 		if (from == mid || mid == to) {
 			return;
 		};
-		var n = ArraySort.gcd(to - from, mid - from);
+		let n = ArraySort.gcd(to - from, mid - from);
 		while (n-- != 0) {
-			var val = a[from + n];
-			var shift = mid - from;
-			var p1 = from + n;
-			var p2 = from + n + shift;
+			let val = a[from + n];
+			let shift = mid - from;
+			let p1 = from + n;
+			let p2 = from + n + shift;
 			while (p2 != from + n) {
 				a[p1] = a[p2];
 				p1 = p2;
@@ -102,16 +102,16 @@ class ArraySort {
 	}
 	static gcd(m, n) {
 		while (n != 0) {
-			var t = m % n;
+			let t = m % n;
 			m = n;
 			n = t;
 		};
 		return m;
 	}
 	static upper(a, cmp, from, to, val) {
-		var len = to - from;
-		var half;
-		var mid;
+		let len = to - from;
+		let half;
+		let mid;
 		while (len > 0) {
 			half = len >> 1;
 			mid = from + half;
@@ -125,9 +125,9 @@ class ArraySort {
 		return from;
 	}
 	static lower(a, cmp, from, to, val) {
-		var len = to - from;
-		var half;
-		var mid;
+		let len = to - from;
+		let half;
+		let mid;
 		while (len > 0) {
 			half = len >> 1;
 			mid = from + half;
@@ -141,7 +141,7 @@ class ArraySort {
 		return from;
 	}
 	static swap(a, i, j) {
-		var tmp = a[i];
+		let tmp = a[i];
 		a[i] = a[j];
 		a[j] = tmp;
 	}

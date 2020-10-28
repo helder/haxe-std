@@ -16,7 +16,7 @@ class Vector_Impl_ {
 	If `length` is less than or equal to 0, the result is unspecified.
 	*/
 	static _new(length) {
-		var this1 = new Array(length);
+		let this1 = new Array(length);
 		return this1;
 	}
 	
@@ -56,34 +56,34 @@ class Vector_Impl_ {
 	static blit(src, srcPos, dest, destPos, len) {
 		if (src == dest) {
 			if (srcPos < destPos) {
-				var i = srcPos + len;
-				var j = destPos + len;
-				var _g = 0;
-				var _g1 = len;
+				let i = srcPos + len;
+				let j = destPos + len;
+				let _g = 0;
+				let _g1 = len;
 				while (_g < _g1) {
-					var k = _g++;
+					let k = _g++;
 					--i;
 					--j;
 					src[j] = src[i];
 				};
 			} else if (srcPos > destPos) {
-				var i1 = srcPos;
-				var j1 = destPos;
-				var _g2 = 0;
-				var _g11 = len;
-				while (_g2 < _g11) {
-					var k1 = _g2++;
-					src[j1] = src[i1];
-					++i1;
-					++j1;
+				let i = srcPos;
+				let j = destPos;
+				let _g = 0;
+				let _g1 = len;
+				while (_g < _g1) {
+					let k = _g++;
+					src[j] = src[i];
+					++i;
+					++j;
 				};
 			};
 		} else {
-			var _g3 = 0;
-			var _g12 = len;
-			while (_g3 < _g12) {
-				var i2 = _g3++;
-				dest[destPos + i2] = src[srcPos + i2];
+			let _g = 0;
+			let _g1 = len;
+			while (_g < _g1) {
+				let i = _g++;
+				dest[destPos + i] = src[srcPos + i];
 			};
 		};
 	}
@@ -138,8 +138,8 @@ class Vector_Impl_ {
 	`a == a.copy()` is always false.
 	*/
 	static copy(this1) {
-		var this2 = new Array(this1.length);
-		var r = this2;
+		let this2 = new Array(this1.length);
+		let r = this2;
 		Vector_Impl_.blit(this1, 0, r, 0, this1.length);
 		return r;
 	}
@@ -158,12 +158,12 @@ class Vector_Impl_ {
 	If `sep` is null, the result is unspecified.
 	*/
 	static join(this1, sep) {
-		var b_b = "";
-		var len = this1.length;
-		var _g = 0;
-		var _g1 = len;
+		let b_b = "";
+		let len = this1.length;
+		let _g = 0;
+		let _g1 = len;
 		while (_g < _g1) {
-			var i = _g++;
+			let i = _g++;
 			b_b += Std.string(Std.string(this1[i]));
 			if (i < len - 1) {
 				b_b += (sep == null) ? "null" : "" + sep;
@@ -180,15 +180,15 @@ class Vector_Impl_ {
 	If `f` is null, the result is unspecified.
 	*/
 	static map(this1, f) {
-		var length = this1.length;
-		var this2 = new Array(length);
-		var r = this2;
-		var len = length;
-		var _g = 0;
-		var _g1 = len;
+		let length = this1.length;
+		let this2 = new Array(length);
+		let r = this2;
+		let len = length;
+		let _g = 0;
+		let _g1 = len;
 		while (_g < _g1) {
-			var i = _g++;
-			var v = f(this1[i]);
+			let i = _g++;
+			let v = f(this1[i]);
 			r[i] = v;
 		};
 		return r;

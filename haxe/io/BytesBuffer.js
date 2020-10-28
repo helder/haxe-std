@@ -1,6 +1,6 @@
-import {HaxeError} from "../../js/Boot"
 import {Error} from "./Error"
 import {Bytes} from "./Bytes"
+import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const BytesBuffer = Register.global("$hxClasses")["haxe.io.BytesBuffer"] = 
@@ -28,7 +28,7 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return;
 		};
-		var sub = new Uint8Array(src.b.buffer, src.b.byteOffset, src.length);
+		let sub = new Uint8Array(src.b.buffer, src.b.byteOffset, src.length);
 		this.u8.set(sub, this.pos);
 		this.pos += src.length;
 	}
@@ -66,7 +66,7 @@ class BytesBuffer extends Register.inherits() {
 	}
 	addBytes(src, pos, len) {
 		if (pos < 0 || len < 0 || pos + len > src.length) {
-			throw new HaxeError(Error.OutsideBounds);
+			throw Exception.thrown(Error.OutsideBounds);
 		};
 		if (this.pos + len > this.size) {
 			this.grow(len);
@@ -74,16 +74,16 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return;
 		};
-		var sub = new Uint8Array(src.b.buffer, src.b.byteOffset + pos, len);
+		let sub = new Uint8Array(src.b.buffer, src.b.byteOffset + pos, len);
 		this.u8.set(sub, this.pos);
 		this.pos += len;
 	}
 	grow(delta) {
-		var req = this.pos + delta;
-		var nsize = (this.size == 0) ? 16 : this.size;
+		let req = this.pos + delta;
+		let nsize = (this.size == 0) ? 16 : this.size;
 		while (nsize < req) nsize = nsize * 3 >> 1;
-		var nbuf = new ArrayBuffer(nsize);
-		var nu8 = new Uint8Array(nbuf);
+		let nbuf = new ArrayBuffer(nsize);
+		let nu8 = new Uint8Array(nbuf);
 		if (this.size > 0) {
 			nu8.set(this.u8);
 		};
@@ -101,7 +101,7 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return new Bytes(new ArrayBuffer(0));
 		};
-		var b = new Bytes(this.buffer);
+		let b = new Bytes(this.buffer);
 		b.length = this.pos;
 		return b;
 	}

@@ -14,13 +14,13 @@ class Adler32 extends Register.inherits() {
 		return this.a2 << 16 | this.a1;
 	}
 	update(b, pos, len) {
-		var a1 = this.a1;
-		var a2 = this.a2;
-		var _g = pos;
-		var _g1 = pos + len;
+		let a1 = this.a1;
+		let a2 = this.a2;
+		let _g = pos;
+		let _g1 = pos + len;
 		while (_g < _g1) {
-			var p = _g++;
-			var c = b.b[p];
+			let p = _g++;
+			let c = b.b[p];
 			a1 = (a1 + c) % 65521;
 			a2 = (a2 + a1) % 65521;
 		};
@@ -38,17 +38,17 @@ class Adler32 extends Register.inherits() {
 		return StringTools.hex(this.a2, 8) + StringTools.hex(this.a1, 8);
 	}
 	static read(i) {
-		var a = new Adler32();
-		var a2a = i.readByte();
-		var a2b = i.readByte();
-		var a1a = i.readByte();
-		var a1b = i.readByte();
+		let a = new Adler32();
+		let a2a = i.readByte();
+		let a2b = i.readByte();
+		let a1a = i.readByte();
+		let a1b = i.readByte();
 		a.a1 = a1a << 8 | a1b;
 		a.a2 = a2a << 8 | a2b;
 		return a;
 	}
 	static make(b) {
-		var a = new Adler32();
+		let a = new Adler32();
 		a.update(b, 0, b.length);
 		return a.get();
 	}

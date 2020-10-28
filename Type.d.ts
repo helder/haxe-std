@@ -201,8 +201,6 @@ export declare class Type {
 	The order of the fields in the returned Array is unspecified.
 	
 	If `c` is null, the result is unspecified.
-	
-	(As3) This method only returns instance fields that are public.
 	*/
 	static getInstanceFields(c: any): string[]
 	
@@ -214,8 +212,6 @@ export declare class Type {
 	The order of the fields in the returned Array is unspecified.
 	
 	If `c` is null, the result is unspecified.
-	
-	(As3) This method only returns class fields that are public.
 	*/
 	static getClassFields(c: any): string[]
 	
