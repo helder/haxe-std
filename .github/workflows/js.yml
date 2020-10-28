@@ -1,0 +1,27 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Haxe version'
+        required: true
+        default: '4.1.4'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn
+      - run: yarn lix install haxe ${{ github.event.inputs.version }}
+
+      - run: yarn build:js
+      - run: yarn version:js
+      - run: yarn publish:js
+      - run: npm publish dist/js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
