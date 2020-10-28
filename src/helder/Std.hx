@@ -14,54 +14,54 @@ class Std {
     'StdTypes', 'String', 'StringBuf', 'StringTools', 'Sys', 'Type', 'UInt', 
     'UnicodeString', 'Xml'
   ];
-	static final exclude = ['haxe.macro', 'php.Boot', 'haxe.Exception'];
+  static final exclude = ['haxe.macro', 'php.Boot', 'haxe.Exception'];
 
-	public static function use() {
-		if (Context.defined('php'))
-			excludeAsNative(['php'].concat(stdPaths), (pack, type) -> {
-				final path = if (pack == '') [] else pack.split('.');
-				final name = if (pack == '' && type.name == 'Array') 'Array_hx' else type.name;
-				final native = ['helder', 'std'].concat(path).concat([name]).join('\\');
-				type.meta.add(':native', [macro $v{native}], type.pos);
-			});
-		else if (Context.defined('genes'))
-			excludeAsNative(['js'].concat(stdPaths), (pack, type) -> {
-				final path = type.module.split('.');
-				final name = type.name;
-				final from = ['helder.std'].concat(path).join('/');
-				type.meta.add(':jsRequire', [macro $v{from}, macro $v{name}], type.pos);
-			});
-	}
+  public static function use() {
+    if (Context.defined('php'))
+      excludeAsNative(['php'].concat(stdPaths), (pack, type) -> {
+        final path = if (pack == '') [] else pack.split('.');
+        final name = if (pack == '' && type.name == 'Array') 'Array_hx' else type.name;
+        final native = ['helder', 'std'].concat(path).concat([name]).join('\\');
+        type.meta.add(':native', [macro $v{native}], type.pos);
+      });
+    else if (Context.defined('genes'))
+      excludeAsNative(['js'].concat(stdPaths), (pack, type) -> {
+        final path = type.module.split('.');
+        final name = type.name;
+        final from = ['helder.std'].concat(path).join('/');
+        type.meta.add(':jsRequire', [macro $v{from}, macro $v{name}], type.pos);
+      });
+  }
 
-	static function includesPack(packs:Array<String>, pack:String) {
-		for (p in packs)
-			if (pack == p || StringTools.startsWith(pack, p + '.'))
-				return true;
-		return false;
-	}
+  static function includesPack(packs:Array<String>, pack:String) {
+    for (p in packs)
+      if (pack == p || StringTools.startsWith(pack, p + '.'))
+        return true;
+    return false;
+  }
 
-	static function excludeAsNative(packs:Array<String>, makeNative:(pack:String, type:BaseType) -> Void) {
-		Context.onGenerate(function(types) {
-			for (type in types) {
-				switch type {
-					case TInst((_.get() : BaseType) => base, _) | TEnum((_.get() : BaseType) => base, _):
-						final pack = base.pack.join('.');
-						if (root.indexOf(pack) == -1 && !includesPack(packs, pack))
-							continue;
-						if (base.isExtern)
-							continue;
-						final meta = base.meta;
-						if (includesPack(exclude, base.module))
-							continue;
-						if (!meta.has(":nativeGen")) {
-							meta.add(":hxGen", [], base.pos);
-							makeNative(pack, base);
-						}
-						base.exclude();
-					default:
-				}
-			}
-		}, false);
-	}
+  static function excludeAsNative(packs:Array<String>, makeNative:(pack:String, type:BaseType) -> Void) {
+    Context.onGenerate(function(types) {
+      for (type in types) {
+        switch type {
+          case TInst((_.get() : BaseType) => base, _) | TEnum((_.get() : BaseType) => base, _):
+            final pack = base.pack.join('.');
+            if (root.indexOf(pack) == -1 && !includesPack(packs, pack))
+              continue;
+            if (base.isExtern)
+              continue;
+            final meta = base.meta;
+            if (includesPack(exclude, base.module))
+              continue;
+            if (!meta.has(":nativeGen")) {
+              meta.add(":hxGen", [], base.pos);
+              makeNative(pack, base);
+            }
+            base.exclude();
+          default:
+        }
+      }
+    }, false);
+  }
 }
 #end
