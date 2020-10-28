@@ -19,7 +19,8 @@ jobs:
       - run: yarn
       - run: yarn lix install haxe ${{ github.event.inputs.version }}
       
-      - uses: oleksiyrudenko/gha-git-credentials@v1
+      - run: git config user.name "Github Action"
+      - run: git config user.email "github-action@users.noreply.github.com"
 
       - run: yarn build:php
       - run: yarn publish:php
