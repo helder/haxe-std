@@ -1,0 +1,13 @@
+{
+  "name": "helder/std",
+  "description": "Haxe std",
+  "license": "MIT",
+  "require": {
+		"php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "helder\\std\\": "dist/php/lib/helder/std"
+    }
+  }
+}

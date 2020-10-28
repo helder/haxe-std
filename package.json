@@ -1,0 +1,14 @@
+{
+  "name": "helder.std",
+  "version": "0.0.0-test.0",
+  "main": "dist/js/index.js",
+  "repository": "https://github.com/helder/haxe.std",
+  "license": "MIT",
+  "scripts": {
+    "build:js": "lix build-js.hxml",
+    "build:php": "lix build-php.hxml"
+  },
+  "devDependencies": {
+    "lix": "^15.9.1"
+  }
+}

@@ -1,0 +1,27 @@
+-lib genes
+-D dts
+-D js-source-map
+-lib hxnodejs
+--macro include('', false)
+--macro include('haxe', false)
+--macro include('haxe.crypto')
+--macro include('haxe.ds')
+--macro include('haxe.exceptions')
+--macro include('haxe.format')
+--macro include('haxe.http.HttpBase', false)
+--macro include('haxe.http.HttpMethod', false)
+--macro include('haxe.http.HttpNodeJs', false)
+--macro include('haxe.http.HttpStatus', false)
+--macro include('haxe.io')
+--macro include('haxe.iterators')
+--macro include('haxe.rtti')
+--macro include('haxe.xml')
+--macro include('haxe.zip')
+--macro include('sys.FileSystem', false)
+--macro include('sys.FileStat', false)
+--macro include('sys.io')
+--macro include('js', false)
+--macro include('js.html')
+--macro include('js.lib')
+--dce no
+--js dist/js/index.js
