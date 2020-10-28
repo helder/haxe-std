@@ -5,12 +5,12 @@
     "postinstall": "lix download",
     
     "build:js": "lix build-js.hxml",
-    "version:js": "node version.js",
+    "version:js": "node package.js",
     "publish:js": "ncp build/js dist/js && git-directory-deploy --directory dist/js --branch js",
 
     "build:php": "lix build-php.hxml",
     "publish:php": "ncp build/php dist/php && git-directory-deploy --directory dist/php --branch php",
-    "version:php": "git tag -a $(haxe --version) -m $(haxe --version) $(git log -n 1 --pretty=format:%H php) && git push --tags"
+    "version:php": "git tag -a $(node version.js) -m $(node version.js) $(git log -n 1 --pretty=format:%H php) && git push --tags"
   },
   "devDependencies": {
     "git-directory-deploy": "^1.5.1",
