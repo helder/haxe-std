@@ -1,12 +1,11 @@
 package helder;
 
-#if macro
 import haxe.macro.Type;
 import haxe.macro.Context;
 
 using haxe.macro.TypeTools;
 
-class Std {
+class UseStd {
   static final stdPaths = ['haxe', 'sys'];
   static final root = [
     'Any', 'Array', 'Class', 'Date', 'DateTools', 'EReg', 'Enum', 'EnumValue', 
@@ -66,4 +65,3 @@ class Std {
     }, false);
   }
 }
-#end
