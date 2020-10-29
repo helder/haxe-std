@@ -1,10 +1,10 @@
+import {HaxeError} from "../../js/Boot"
 import {Uncompress} from "./Uncompress"
 import {InflateImpl} from "./InflateImpl"
 import {ExtraField} from "./Entry"
 import {BytesBuffer} from "../io/BytesBuffer"
 import {Bytes} from "../io/Bytes"
 import {List} from "../ds/List"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const Reader = Register.global("$hxClasses")["haxe.zip.Reader"] = 
@@ -13,37 +13,37 @@ class Reader extends Register.inherits() {
 		this.i = i;
 	}
 	readZipDate() {
-		let t = this.i.readUInt16();
-		let hour = t >> 11 & 31;
-		let min = t >> 5 & 63;
-		let sec = t & 31;
-		let d = this.i.readUInt16();
-		let year = d >> 9;
-		let month = d >> 5 & 15;
-		let day = d & 31;
+		var t = this.i.readUInt16();
+		var hour = t >> 11 & 31;
+		var min = t >> 5 & 63;
+		var sec = t & 31;
+		var d = this.i.readUInt16();
+		var year = d >> 9;
+		var month = d >> 5 & 15;
+		var day = d & 31;
 		return new Date(year + 1980, month - 1, day, hour, min, sec << 1);
 	}
 	readExtraFields(length) {
-		let fields = new List();
+		var fields = new List();
 		while (length > 0) {
 			if (length < 4) {
-				throw Exception.thrown("Invalid extra fields data");
+				throw new HaxeError("Invalid extra fields data");
 			};
-			let tag = this.i.readUInt16();
-			let len = this.i.readUInt16();
+			var tag = this.i.readUInt16();
+			var len = this.i.readUInt16();
 			if (length < len) {
-				throw Exception.thrown("Invalid extra fields data");
+				throw new HaxeError("Invalid extra fields data");
 			};
 			if (tag == 28789) {
-				let version = this.i.readByte();
+				var version = this.i.readByte();
 				if (version != 1) {
-					let data = new BytesBuffer();
+					var data = new BytesBuffer();
 					data.addByte(version);
 					data.add(this.i.read(len - 1));
 					fields.add(ExtraField.FUnknown(tag, data.getBytes()));
 				} else {
-					let crc = this.i.readInt32();
-					let name = this.i.read(len - 5).toString();
+					var crc = this.i.readInt32();
+					var name = this.i.read(len - 5).toString();
 					fields.add(ExtraField.FInfoZipUnicodePath(name, crc));
 				};
 			} else {
@@ -54,61 +54,61 @@ class Reader extends Register.inherits() {
 		return fields;
 	}
 	readEntryHeader() {
-		let i = this.i;
-		let h = i.readInt32();
+		var i = this.i;
+		var h = i.readInt32();
 		if (h == 33639248 || h == 101010256) {
 			return null;
 		};
 		if (h != 67324752) {
-			throw Exception.thrown("Invalid Zip Data");
+			throw new HaxeError("Invalid Zip Data");
 		};
-		let version = i.readUInt16();
-		let flags = i.readUInt16();
-		let utf8 = (flags & 2048) != 0;
+		var version = i.readUInt16();
+		var flags = i.readUInt16();
+		var utf8 = (flags & 2048) != 0;
 		if ((flags & 63473) != 0) {
-			throw Exception.thrown("Unsupported flags " + flags);
+			throw new HaxeError("Unsupported flags " + flags);
 		};
-		let compression = i.readUInt16();
-		let compressed = compression != 0;
+		var compression = i.readUInt16();
+		var compressed = compression != 0;
 		if (compressed && compression != 8) {
-			throw Exception.thrown("Unsupported compression " + compression);
+			throw new HaxeError("Unsupported compression " + compression);
 		};
-		let mtime = this.readZipDate();
-		let crc32 = i.readInt32();
-		let csize = i.readInt32();
-		let usize = i.readInt32();
-		let fnamelen = i.readInt16();
-		let elen = i.readInt16();
-		let fname = i.readString(fnamelen);
-		let fields = this.readExtraFields(elen);
+		var mtime = this.readZipDate();
+		var crc32 = i.readInt32();
+		var csize = i.readInt32();
+		var usize = i.readInt32();
+		var fnamelen = i.readInt16();
+		var elen = i.readInt16();
+		var fname = i.readString(fnamelen);
+		var fields = this.readExtraFields(elen);
 		if (utf8) {
 			fields.push(ExtraField.FUtf8);
 		};
-		let data = null;
+		var data = null;
 		if ((flags & 8) != 0) {
 			crc32 = null;
 		};
 		return {"fileName": fname, "fileSize": usize, "fileTime": mtime, "compressed": compressed, "dataSize": csize, "data": data, "crc32": crc32, "extraFields": fields};
 	}
 	read() {
-		let l = new List();
-		let buf = null;
-		let tmp = null;
+		var l = new List();
+		var buf = null;
+		var tmp = null;
 		while (true) {
-			let e = this.readEntryHeader();
+			var e = this.readEntryHeader();
 			if (e == null) {
 				break;
 			};
 			if (e.crc32 == null) {
 				if (e.compressed) {
-					let bufSize = 65536;
+					var bufSize = 65536;
 					if (tmp == null) {
 						tmp = new Bytes(new ArrayBuffer(bufSize));
 					};
-					let out = new BytesBuffer();
-					let z = new InflateImpl(this.i, false, false);
+					var out = new BytesBuffer();
+					var z = new InflateImpl(this.i, false, false);
 					while (true) {
-						let n = z.readBytes(tmp, 0, bufSize);
+						var n = z.readBytes(tmp, 0, bufSize);
 						out.addBytes(tmp, 0, n);
 						if (n < bufSize) {
 							break;
@@ -134,19 +134,19 @@ class Reader extends Register.inherits() {
 		return l;
 	}
 	static readZip(i) {
-		let r = new Reader(i);
+		var r = new Reader(i);
 		return r.read();
 	}
 	static unzip(f) {
 		if (!f.compressed) {
 			return f.data;
 		};
-		let c = new Uncompress(-15);
-		let s = new Bytes(new ArrayBuffer(f.fileSize));
-		let r = c.execute(f.data, 0, s, 0);
+		var c = new Uncompress(-15);
+		var s = new Bytes(new ArrayBuffer(f.fileSize));
+		var r = c.execute(f.data, 0, s, 0);
 		c.close();
 		if (!r.done || r.read != f.data.length || r.write != f.fileSize) {
-			throw Exception.thrown("Invalid compressed data for " + f.fileName);
+			throw new HaxeError("Invalid compressed data for " + f.fileName);
 		};
 		f.compressed = false;
 		f.dataSize = f.fileSize;

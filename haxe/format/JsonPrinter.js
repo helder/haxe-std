@@ -28,7 +28,7 @@ class JsonPrinter extends Register.inherits() {
 	}
 	ipad() {
 		if (this.pretty) {
-			let v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
+			var v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
 			this.buf.b += Std.string(v);
 		};
 	}
@@ -41,7 +41,7 @@ class JsonPrinter extends Register.inherits() {
 		if (this.replacer != null) {
 			v = this.replacer(k, v);
 		};
-		let _g = Type["typeof"](v);
+		var _g = Type["typeof"](v);
 		switch (_g._hx_index) {
 			case 0:
 				this.buf.b += "null";
@@ -50,7 +50,7 @@ class JsonPrinter extends Register.inherits() {
 				this.buf.b += Std.string(v);
 				break
 			case 2:
-				let v1 = ((isFinite)(v)) ? Std.string(v) : "null";
+				var v1 = (isFinite(v)) ? Std.string(v) : "null";
 				this.buf.b += Std.string(v1);
 				break
 			case 3:
@@ -63,18 +63,18 @@ class JsonPrinter extends Register.inherits() {
 				this.buf.b += "\"<fun>\"";
 				break
 			case 6:
-				let c = _g.c;
+				var c = _g.c;
 				if (c == String) {
 					this.quote(v);
 				} else if (c == Array) {
-					let v1 = v;
+					var v2 = v;
 					this.buf.b += String.fromCodePoint(91);
-					let len = v1.length;
-					let last = len - 1;
-					let _g = 0;
-					let _g1 = len;
-					while (_g < _g1) {
-						let i = _g++;
+					var len = v2.length;
+					var last = len - 1;
+					var _g1 = 0;
+					var _g11 = len;
+					while (_g1 < _g11) {
+						var i = _g1++;
 						if (i > 0) {
 							this.buf.b += String.fromCodePoint(44);
 						} else {
@@ -84,43 +84,43 @@ class JsonPrinter extends Register.inherits() {
 							this.buf.b += String.fromCodePoint(10);
 						};
 						if (this.pretty) {
-							let v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
-							this.buf.b += Std.string(v);
+							var v3 = StringTools.lpad("", this.indent, this.nind * this.indent.length);
+							this.buf.b += Std.string(v3);
 						};
-						this.write(i, v1[i]);
+						this.write(i, v2[i]);
 						if (i == last) {
 							this.nind--;
 							if (this.pretty) {
 								this.buf.b += String.fromCodePoint(10);
 							};
 							if (this.pretty) {
-								let v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
-								this.buf.b += Std.string(v);
+								var v4 = StringTools.lpad("", this.indent, this.nind * this.indent.length);
+								this.buf.b += Std.string(v4);
 							};
 						};
 					};
 					this.buf.b += String.fromCodePoint(93);
 				} else if (c == StringMap) {
-					let v1 = v;
-					let o = {};
-					let k = EsMap.adaptIterator(v1.inst.keys());
-					while (k.hasNext()) {
-						let k1 = k.next();
-						o[k1] = v1.inst.get(k1);
+					var v5 = v;
+					var o = {};
+					var k1 = EsMap.adaptIterator(v5.inst.keys());
+					while (k1.hasNext()) {
+						var k2 = k1.next();
+						o[k2] = v5.inst.get(k2);
 					};
-					let v2 = o;
-					this.fieldsString(v2, Reflect.fields(v2));
+					var v6 = o;
+					this.fieldsString(v6, Reflect.fields(v6));
 				} else if (c == Date) {
-					let v1 = v;
-					this.quote(HxOverrides.dateStr(v1));
+					var v7 = v;
+					this.quote(HxOverrides.dateStr(v7));
 				} else {
 					this.classString(v);
 				};
 				break
 			case 7:
-				let _g1 = _g.e;
-				let i = v._hx_index;
-				this.buf.b += Std.string(i);
+				var _g12 = _g.e;
+				var i1 = v._hx_index;
+				this.buf.b += Std.string(i1);
 				break
 			case 8:
 				this.buf.b += "\"???\"";
@@ -136,15 +136,15 @@ class JsonPrinter extends Register.inherits() {
 	}
 	fieldsString(v, fields) {
 		this.buf.b += String.fromCodePoint(123);
-		let len = fields.length;
-		let last = len - 1;
-		let first = true;
-		let _g = 0;
-		let _g1 = len;
+		var len = fields.length;
+		var last = len - 1;
+		var first = true;
+		var _g = 0;
+		var _g1 = len;
 		while (_g < _g1) {
-			let i = _g++;
-			let f = fields[i];
-			let value = Reflect.field(v, f);
+			var i = _g++;
+			var f = fields[i];
+			var value = Reflect.field(v, f);
 			if (Reflect.isFunction(value)) {
 				continue;
 			};
@@ -158,8 +158,8 @@ class JsonPrinter extends Register.inherits() {
 				this.buf.b += String.fromCodePoint(10);
 			};
 			if (this.pretty) {
-				let v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
-				this.buf.b += Std.string(v);
+				var v1 = StringTools.lpad("", this.indent, this.nind * this.indent.length);
+				this.buf.b += Std.string(v1);
 			};
 			this.quote(f);
 			this.buf.b += String.fromCodePoint(58);
@@ -173,8 +173,8 @@ class JsonPrinter extends Register.inherits() {
 					this.buf.b += String.fromCodePoint(10);
 				};
 				if (this.pretty) {
-					let v = StringTools.lpad("", this.indent, this.nind * this.indent.length);
-					this.buf.b += Std.string(v);
+					var v2 = StringTools.lpad("", this.indent, this.nind * this.indent.length);
+					this.buf.b += Std.string(v2);
 				};
 			};
 		};
@@ -182,9 +182,9 @@ class JsonPrinter extends Register.inherits() {
 	}
 	quote(s) {
 		this.buf.b += String.fromCodePoint(34);
-		let i = 0;
+		var i = 0;
 		while (true) {
-			let c = s.charCodeAt(i++);
+			var c = s.charCodeAt(i++);
 			if (c != c) {
 				break;
 			};
@@ -229,7 +229,7 @@ class JsonPrinter extends Register.inherits() {
 	Successive levels will be indented by this string.
 	*/
 	static print(o, replacer = null, space = null) {
-		let printer = new JsonPrinter(replacer, space);
+		var printer = new JsonPrinter(replacer, space);
 		printer.write("", o);
 		return printer.buf.b;
 	}

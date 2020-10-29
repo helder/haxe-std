@@ -16,8 +16,8 @@ class UInt_Impl_ {
 		return a - b;
 	}
 	static gt(a, b) {
-		let aNeg = a < 0;
-		let bNeg = b < 0;
+		var aNeg = a < 0;
+		var bNeg = b < 0;
 		if (aNeg != bNeg) {
 			return aNeg;
 		} else {
@@ -25,8 +25,8 @@ class UInt_Impl_ {
 		};
 	}
 	static gte(a, b) {
-		let aNeg = a < 0;
-		let bNeg = b < 0;
+		var aNeg = a < 0;
+		var bNeg = b < 0;
 		if (aNeg != bNeg) {
 			return aNeg;
 		} else {
@@ -136,13 +136,13 @@ class UInt_Impl_ {
 		return this1--;
 	}
 	static toString(this1, radix = null) {
-		return Std.string(UInt_Impl_.toFloat(this1));
+		return Std.string((this1 == null) ? null : UInt_Impl_.toFloat(this1));
 	}
 	static toInt(this1) {
 		return this1;
 	}
 	static toFloat(this1) {
-		let $int = this1;
+		var $int = this1;
 		if ($int < 0) {
 			return 4294967296.0 + $int;
 		} else {

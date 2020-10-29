@@ -1,4 +1,3 @@
-import {Exception} from "./Exception"
 import {StringBuf} from "../StringBuf"
 
 export declare namespace StackItem {
@@ -24,12 +23,11 @@ export declare type StackItem =
 	| StackItem.FilePos
 	| StackItem.CFunction
 
-export declare class CallStack_Impl_ {
-	
-	/**
-	The length of this stack.
-	*/
-	static readonly length: number
+/**
+Get information about the call stack.
+*/
+export declare class CallStack {
+	static wrapCallSite: ((arg0: any) => any)
 	
 	/**
 	Return the call stack elements, or an empty array if not available.
@@ -40,8 +38,6 @@ export declare class CallStack_Impl_ {
 	Return the exception stack : this is the stack elements between
 	the place the last exception was thrown and the place it was
 	caught, or an empty array if not available.
-	
-	May not work if catch type was a derivative from `haxe.Exception`.
 	*/
 	static exceptionStack(): StackItem[]
 	
@@ -49,18 +45,6 @@ export declare class CallStack_Impl_ {
 	Returns a representation of the stack as a printable string.
 	*/
 	static toString(stack: StackItem[]): string
-	
-	/**
-	Returns a range of entries of current stack from the beginning to the the
-	common part of this and `stack`.
-	*/
-	static subtract($this: StackItem[], stack: StackItem[]): StackItem[]
-	
-	/**
-	Make a copy of the stack.
-	*/
-	static copy($this: StackItem[]): StackItem[]
-	static get($this: StackItem[], index: number): StackItem
 }
 
 //# sourceMappingURL=CallStack.d.ts.map

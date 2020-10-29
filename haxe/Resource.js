@@ -19,11 +19,11 @@ class Resource {
 	of the `--resource file@name` command line parameter.
 	*/
 	static listNames() {
-		let _g = [];
-		let _g1 = 0;
-		let _g2 = Resource.content;
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = Resource.content;
 		while (_g1 < _g2.length) {
-			let x = _g2[_g1];
+			var x = _g2[_g1];
 			++_g1;
 			_g.push(x.name);
 		};
@@ -36,16 +36,16 @@ class Resource {
 	If `name` does not match any resource name, `null` is returned.
 	*/
 	static getString(name) {
-		let _g = 0;
-		let _g1 = Resource.content;
+		var _g = 0;
+		var _g1 = Resource.content;
 		while (_g < _g1.length) {
-			let x = _g1[_g];
+			var x = _g1[_g];
 			++_g;
 			if (x.name == name) {
 				if (x.str != null) {
 					return x.str;
 				};
-				let b = Base64.decode(x.data);
+				var b = Base64.decode(x.data);
 				return b.toString();
 			};
 		};
@@ -59,10 +59,10 @@ class Resource {
 	If `name` does not match any resource name, `null` is returned.
 	*/
 	static getBytes(name) {
-		let _g = 0;
-		let _g1 = Resource.content;
+		var _g = 0;
+		var _g1 = Resource.content;
 		while (_g < _g1.length) {
-			let x = _g1[_g];
+			var x = _g1[_g];
 			++_g;
 			if (x.name == name) {
 				if (x.str != null) {

@@ -1,4 +1,4 @@
-import {Exception} from "../Exception"
+import {HaxeError} from "../../js/Boot"
 import {IMap} from "../Constraints"
 import {Register} from "../../genes/Register"
 
@@ -14,7 +14,7 @@ See `Map` for documentation details.
 export const WeakMap = Register.global("$hxClasses")["haxe.ds.WeakMap"] = 
 class WeakMap extends Register.inherits() {
 	new() {
-		throw Exception.thrown("Not implemented for this platform");
+		throw new HaxeError("Not implemented for this platform");
 	}
 	
 	/**

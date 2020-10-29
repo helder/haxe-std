@@ -5,20 +5,11 @@ The Std class provides standard methods for manipulating basic types.
 export declare class Std {
 	
 	/**
-	DEPRECATED. Use `Std.isOfType(v, t)` instead.
-	
 	Tells if a value `v` is of the type `t`. Returns `false` if `v` or `t` are null.
 	
 	If `t` is a class or interface with `@:generic` meta, the result is `false`.
 	*/
 	static is(v: any, t: any): boolean
-	
-	/**
-	Tells if a value `v` is of the type `t`. Returns `false` if `v` or `t` are null.
-	
-	If `t` is a class or interface with `@:generic` meta, the result is `false`.
-	*/
-	static isOfType(v: any, t: any): boolean
 	
 	/**
 	Checks if object `value` is an instance of class or interface `c`.

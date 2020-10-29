@@ -1,16 +1,10 @@
-import {NativeStackTrace} from "../haxe/NativeStackTrace"
-import {Exception} from "../haxe/Exception"
+import {HaxeError} from "./Boot"
+import {CallStack} from "../haxe/CallStack"
 import {Register} from "../genes/Register"
 import {Std} from "../Std"
 
 export const Browser = Register.global("$hxClasses")["js.Browser"] = 
 class Browser {
-	static get self() {
-		return this.get_self()
-	}
-	static get_self() {
-		return $global;
-	}
 	
 	/**
 	* Safely gets the browser's local storage, or returns null if localStorage is unsupported or
@@ -18,16 +12,17 @@ class Browser {
 	*/
 	static getLocalStorage() {
 		try {
-			let s = window.localStorage;
+			var s = window.localStorage;
 			s.getItem("");
 			if (s.length == 0) {
-				let key = "_hx_" + Math.random();
+				var key = "_hx_" + Math.random();
 				s.setItem(key, key);
 				s.removeItem(key);
 			};
 			return s;
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
 			return null;
 		};
 	}
@@ -38,16 +33,17 @@ class Browser {
 	*/
 	static getSessionStorage() {
 		try {
-			let s = window.sessionStorage;
+			var s = window.sessionStorage;
 			s.getItem("");
 			if (s.length == 0) {
-				let key = "_hx_" + Math.random();
+				var key = "_hx_" + Math.random();
 				s.setItem(key, key);
 				s.removeItem(key);
 			};
 			return s;
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
 			return null;
 		};
 	}
@@ -63,7 +59,7 @@ class Browser {
 		if (typeof ActiveXObject != "undefined") {
 			return new "ActiveXObject"("Microsoft.XMLHTTP");
 		};
-		throw Exception.thrown("Unable to create XMLHttpRequest object.");
+		throw new HaxeError("Unable to create XMLHttpRequest object.");
 	}
 	
 	/**

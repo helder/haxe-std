@@ -8,7 +8,7 @@ export class Register {
 		};
 	}
 	static createStatic(obj, name, get) {
-		let value = null;
+		var value = null;
 		Object.defineProperty(obj, name, {"enumerable": true, "get": function () {
 			if (get != null) {
 				value = get();
@@ -21,6 +21,7 @@ export class Register {
 				get = null;
 			};
 			value = v;
+			return value;
 		}});
 	}
 	static iter(a) {
@@ -78,7 +79,7 @@ export class Register {
 		if (m.__id__ == null) {
 			m.__id__ = Register.fid++;
 		};
-		let f = null;
+		var f = null;
 		if (o.hx__closures__ == null) {
 			o.hx__closures__ = {};
 		} else {

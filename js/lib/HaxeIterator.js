@@ -14,7 +14,7 @@ class HaxeIterator extends Register.inherits() {
 		return !this.lastStep.done;
 	}
 	next() {
-		let v = this.lastStep.value;
+		var v = this.lastStep.value;
 		this.lastStep = this.jsIterator.next();
 		return v;
 	}

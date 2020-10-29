@@ -11,7 +11,7 @@ class Selection extends Register.inherits() {
 		if (this.doc.selectionStart != null) {
 			return this.doc.value.substring(this.doc.selectionStart, this.doc.selectionEnd);
 		};
-		let range = Lib.document.selection.createRange();
+		var range = Lib.document.selection.createRange();
 		if (range.parentElement() != this.doc) {
 			return "";
 		};
@@ -24,11 +24,11 @@ class Selection extends Register.inherits() {
 			this.doc.selectionEnd = end;
 			return;
 		};
-		let value = this.doc.value;
-		let p = 0;
-		let delta = 0;
+		var value = this.doc.value;
+		var p = 0;
+		var delta = 0;
 		while (true) {
-			let i = value.indexOf("\r\n", p);
+			var i = value.indexOf("\r\n", p);
 			if (i < 0 || i > start) {
 				break;
 			};
@@ -37,15 +37,15 @@ class Selection extends Register.inherits() {
 		};
 		start -= delta;
 		while (true) {
-			let i = value.indexOf("\r\n", p);
-			if (i < 0 || i > end) {
+			var i1 = value.indexOf("\r\n", p);
+			if (i1 < 0 || i1 > end) {
 				break;
 			};
 			++delta;
-			p = i + 2;
+			p = i1 + 2;
 		};
 		end -= delta;
-		let r = this.doc.createTextRange();
+		var r = this.doc.createTextRange();
 		r.moveEnd("textedit", -1);
 		r.moveStart("character", start);
 		r.moveEnd("character", end - start);
@@ -54,18 +54,18 @@ class Selection extends Register.inherits() {
 	insert(left, text, right) {
 		this.doc.focus();
 		if (this.doc.selectionStart != null) {
-			let top = this.doc.scrollTop;
-			let start = this.doc.selectionStart;
-			let end = this.doc.selectionEnd;
-			let tmp = Std.string(this.doc.value.substr(0, start)) + left + text + right;
-			let tmp1 = Std.string(this.doc.value.substr(end));
+			var top = this.doc.scrollTop;
+			var start = this.doc.selectionStart;
+			var end = this.doc.selectionEnd;
+			var tmp = Std.string(this.doc.value.substr(0, start)) + left + text + right;
+			var tmp1 = Std.string(this.doc.value.substr(end));
 			this.doc.value = tmp + tmp1;
 			this.doc.selectionStart = start + left.length;
 			this.doc.selectionEnd = start + left.length + text.length;
 			this.doc.scrollTop = top;
 			return;
 		};
-		let range = Lib.document.selection.createRange();
+		var range = Lib.document.selection.createRange();
 		range.text = left + text + right;
 		range.moveStart("character", -text.length - right.length);
 		range.moveEnd("character", -right.length);

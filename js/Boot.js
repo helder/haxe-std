@@ -1,7 +1,38 @@
-import {NativeStackTrace} from "../haxe/NativeStackTrace"
-import {Exception} from "../haxe/Exception"
+import {CallStack} from "../haxe/CallStack"
 import {Register} from "../genes/Register"
 import {Std} from "../Std"
+
+export const HaxeError = Register.global("$hxClasses")["js._Boot.HaxeError"] = 
+class HaxeError extends Register.inherits(Error) {
+	new(val) {
+		Error.call(this, );
+		this.val = val;
+		if (Error.captureStackTrace) {
+			Error.captureStackTrace(this, HaxeError);
+		};
+	}
+	static wrap(val) {
+		if (((val) instanceof Error)) {
+			return val;
+		} else {
+			return new HaxeError(val);
+		};
+	}
+	static get __name__() {
+		return "js._Boot.HaxeError"
+	}
+	static get __super__() {
+		return Error
+	}
+	get __class__() {
+		return HaxeError
+	}
+}
+
+
+;Object.defineProperty(HaxeError.prototype, "message", {"get": function () {
+	return String(this.val);
+}})
 
 export const Boot = Register.global("$hxClasses")["js.Boot"] = 
 class Boot {
@@ -20,11 +51,11 @@ class Boot {
 		} else if (((o) instanceof Array)) {
 			return Array;
 		} else {
-			let cl = o.__class__;
+			var cl = o.__class__;
 			if (cl != null) {
 				return cl;
 			};
-			let name = Boot.__nativeClassName(o);
+			var name = Boot.__nativeClassName(o);
 			if (name != null) {
 				return Boot.__resolveNativeClass(name);
 			};
@@ -38,7 +69,7 @@ class Boot {
 		if (s.length >= 5) {
 			return "<...>";
 		};
-		let t = typeof(o);
+		var t = typeof(o);
 		if (t == "function" && (o.__name__ || o.__ename__)) {
 			t = "object";
 		};
@@ -48,21 +79,21 @@ class Boot {
 				break
 			case "object":
 				if (o.__enum__) {
-					let e = Register.global("$hxEnums")[o.__enum__];
-					let n = e.__constructs__[o._hx_index];
-					let con = e[n];
+					var e = Register.global("$hxEnums")[o.__enum__];
+					var n = e.__constructs__[o._hx_index];
+					var con = e[n];
 					if (con.__params__) {
 						s = s + "\t";
 						return n + "(" + ((function($this) {var $r0
-							let _g = [];
+							var _g = [];
 							{
-								let _g1 = 0;
-								let _g2 = con.__params__;
+								var _g1 = 0;
+								var _g2 = con.__params__;
 								while (true) {
 									if (!(_g1 < _g2.length)) {
 										break;
 									};
-									let p = _g2[_g1];
+									var p = _g2[_g1];
 									_g1 = _g1 + 1;
 									_g.push(Boot.__string_rec(o[p], s));
 								};
@@ -75,34 +106,35 @@ class Boot {
 					};
 				};
 				if (((o) instanceof Array)) {
-					let str = "[";
+					var str = "[";
 					s += "\t";
-					let _g = 0;
-					let _g1 = o.length;
-					while (_g < _g1) {
-						let i = _g++;
+					var _g3 = 0;
+					var _g11 = o.length;
+					while (_g3 < _g11) {
+						var i = _g3++;
 						str += ((i > 0) ? "," : "") + Boot.__string_rec(o[i], s);
 					};
 					str += "]";
 					return str;
 				};
-				let tostr;
+				var tostr;
 				try {
 					tostr = o.toString;
-				}catch (_g) {
-					NativeStackTrace.lastError = _g;
+				}catch (e1) {
+					CallStack.lastException = e1;
+					var e2 = (((e1) instanceof HaxeError)) ? e1.val : e1;
 					return "???";
 				};
 				if (tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
-					let s2 = o.toString();
+					var s2 = o.toString();
 					if (s2 != "[object Object]") {
 						return s2;
 					};
 				};
-				let str = "{\n";
+				var str1 = "{\n";
 				s += "\t";
-				let hasp = o.hasOwnProperty != null;
-				let k = null;
+				var hasp = o.hasOwnProperty != null;
+				var k = null;
 				for( k in o ) {;
 				if (hasp && !o.hasOwnProperty(k)) {
 					continue;
@@ -110,14 +142,14 @@ class Boot {
 				if (k == "prototype" || k == "__class__" || k == "__super__" || k == "__interfaces__" || k == "__properties__") {
 					continue;
 				};
-				if (str.length != 2) {
-					str += ", \n";
+				if (str1.length != 2) {
+					str1 += ", \n";
 				};
-				str += s + k + " : " + Boot.__string_rec(o[k], s);
+				str1 += s + k + " : " + Boot.__string_rec(o[k], s);
 				};
 				s = s.substring(1);
-				str += "\n" + s + "}";
-				return str;
+				str1 += "\n" + s + "}";
+				return str1;
 				break
 			case "string":
 				return o;
@@ -134,13 +166,13 @@ class Boot {
 		if (cc == cl) {
 			return true;
 		};
-		let intf = cc.__interfaces__;
-		if (intf != null && (cc.__super__ == null || cc.__super__.__interfaces__ != intf)) {
-			let _g = 0;
-			let _g1 = intf.length;
+		if (Object.prototype.hasOwnProperty.call(cc, "__interfaces__")) {
+			var intf = cc.__interfaces__;
+			var _g = 0;
+			var _g1 = intf.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let i1 = intf[i];
+				var i = _g++;
+				var i1 = intf[i];
 				if (i1 == cl || Boot.__interfLoop(i1, cl)) {
 					return true;
 				};
@@ -217,11 +249,11 @@ class Boot {
 		if (o == null || Boot.__instanceof(o, t)) {
 			return o;
 		} else {
-			throw Exception.thrown("Cannot cast " + Std.string(o) + " to " + Std.string(t));
+			throw new HaxeError("Cannot cast " + Std.string(o) + " to " + Std.string(t));
 		};
 	}
 	static __nativeClassName(o) {
-		let name = Boot.__toStr.call(o).slice(8, -1);
+		var name = Boot.__toStr.call(o).slice(8, -1);
 		if (name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
 			return null;
 		};

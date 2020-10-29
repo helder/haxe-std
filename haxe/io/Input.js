@@ -1,10 +1,10 @@
+import {HaxeError} from "../../js/Boot"
 import {FPHelper} from "./FPHelper"
 import {Error} from "./Error"
 import {Eof} from "./Eof"
 import {BytesBuffer} from "./BytesBuffer"
 import {Bytes} from "./Bytes"
-import {NativeStackTrace} from "../NativeStackTrace"
-import {Exception} from "../Exception"
+import {CallStack} from "../CallStack"
 import {Register} from "../../genes/Register"
 import {HxOverrides} from "../../HxOverrides"
 
@@ -22,7 +22,7 @@ class Input {
 	Read and return one byte.
 	*/
 	readByte() {
-		throw Exception.thrown("Not implemented");
+		throw new HaxeError("Not implemented");
 	}
 	
 	/**
@@ -33,10 +33,10 @@ class Input {
 	See `readFullBytes` that tries to read the exact amount of specified bytes.
 	*/
 	readBytes(s, pos, len) {
-		let k = len;
-		let b = s.b;
+		var k = len;
+		var b = s.b;
 		if (pos < 0 || len < 0 || pos + len > s.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
 		try {
 			while (k > 0) {
@@ -44,10 +44,13 @@ class Input {
 				++pos;
 				--k;
 			};
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
-			if (!((Exception.caught(_g).unwrap()) instanceof Eof)) {
-				throw _g;
+		}catch (eof) {
+			CallStack.lastException = eof;
+			var eof1 = (((eof) instanceof HaxeError)) ? eof.val : eof;
+			if (((eof1) instanceof Eof)) {
+				var eof2 = eof1;
+			} else {
+				throw eof;
 			};
 		};
 		return len - k;
@@ -75,20 +78,23 @@ class Input {
 		if (bufsize == null) {
 			bufsize = 16384;
 		};
-		let buf = new Bytes(new ArrayBuffer(bufsize));
-		let total = new BytesBuffer();
+		var buf = new Bytes(new ArrayBuffer(bufsize));
+		var total = new BytesBuffer();
 		try {
 			while (true) {
-				let len = this.readBytes(buf, 0, bufsize);
+				var len = this.readBytes(buf, 0, bufsize);
 				if (len == 0) {
-					throw Exception.thrown(Error.Blocked);
+					throw new HaxeError(Error.Blocked);
 				};
 				total.addBytes(buf, 0, len);
 			};
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
-			if (!((Exception.caught(_g).unwrap()) instanceof Eof)) {
-				throw _g;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
+			if (((e1) instanceof Eof)) {
+				var e2 = e1;
+			} else {
+				throw e;
 			};
 		};
 		return total.getBytes();
@@ -101,9 +107,9 @@ class Input {
 	*/
 	readFullBytes(s, pos, len) {
 		while (len > 0) {
-			let k = this.readBytes(s, pos, len);
+			var k = this.readBytes(s, pos, len);
 			if (k == 0) {
-				throw Exception.thrown(Error.Blocked);
+				throw new HaxeError(Error.Blocked);
 			};
 			pos += k;
 			len -= k;
@@ -114,12 +120,12 @@ class Input {
 	Read and return `nbytes` bytes.
 	*/
 	read(nbytes) {
-		let s = new Bytes(new ArrayBuffer(nbytes));
-		let p = 0;
+		var s = new Bytes(new ArrayBuffer(nbytes));
+		var p = 0;
 		while (nbytes > 0) {
-			let k = this.readBytes(s, p, nbytes);
+			var k = this.readBytes(s, p, nbytes);
 			if (k == 0) {
-				throw Exception.thrown(Error.Blocked);
+				throw new HaxeError(Error.Blocked);
 			};
 			p += k;
 			nbytes -= k;
@@ -133,8 +139,8 @@ class Input {
 	The final character is not included in the resulting string.
 	*/
 	readUntil(end) {
-		let buf = new BytesBuffer();
-		let last;
+		var buf = new BytesBuffer();
+		var last;
 		while (true) {
 			last = this.readByte();
 			if (!(last != end)) {
@@ -151,9 +157,9 @@ class Input {
 	The CR/LF characters are not included in the resulting string.
 	*/
 	readLine() {
-		let buf = new BytesBuffer();
-		let last;
-		let s;
+		var buf = new BytesBuffer();
+		var last;
+		var s;
 		try {
 			while (true) {
 				last = this.readByte();
@@ -166,17 +172,16 @@ class Input {
 			if (HxOverrides.cca(s, s.length - 1) == 13) {
 				s = HxOverrides.substr(s, 0, -1);
 			};
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
-			let _g1 = Exception.caught(_g).unwrap();
-			if (((_g1) instanceof Eof)) {
-				let e = _g1;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
+			if (((e1) instanceof Eof)) {
 				s = buf.getBytes().toString();
 				if (s.length == 0) {
-					throw Exception.thrown(e);
+					throw new HaxeError(e1);
 				};
 			} else {
-				throw _g;
+				throw e;
 			};
 		};
 		return s;
@@ -197,8 +202,8 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readDouble() {
-		let i1 = this.readInt32();
-		let i2 = this.readInt32();
+		var i1 = this.readInt32();
+		var i2 = this.readInt32();
 		if (this.bigEndian) {
 			return FPHelper.i64ToDouble(i2, i1);
 		} else {
@@ -210,7 +215,7 @@ class Input {
 	Read a 8-bit signed integer.
 	*/
 	readInt8() {
-		let n = this.readByte();
+		var n = this.readByte();
 		if (n >= 128) {
 			return n - 256;
 		};
@@ -223,9 +228,9 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readInt16() {
-		let ch1 = this.readByte();
-		let ch2 = this.readByte();
-		let n = (this.bigEndian) ? ch2 | ch1 << 8 : ch1 | ch2 << 8;
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		var n = (this.bigEndian) ? ch2 | ch1 << 8 : ch1 | ch2 << 8;
 		if ((n & 32768) != 0) {
 			return n - 65536;
 		};
@@ -238,8 +243,8 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readUInt16() {
-		let ch1 = this.readByte();
-		let ch2 = this.readByte();
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
 		if (this.bigEndian) {
 			return ch2 | ch1 << 8;
 		} else {
@@ -253,10 +258,10 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readInt24() {
-		let ch1 = this.readByte();
-		let ch2 = this.readByte();
-		let ch3 = this.readByte();
-		let n = (this.bigEndian) ? ch3 | ch2 << 8 | ch1 << 16 : ch1 | ch2 << 8 | ch3 << 16;
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		var ch3 = this.readByte();
+		var n = (this.bigEndian) ? ch3 | ch2 << 8 | ch1 << 16 : ch1 | ch2 << 8 | ch3 << 16;
 		if ((n & 8388608) != 0) {
 			return n - 16777216;
 		};
@@ -269,9 +274,9 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readUInt24() {
-		let ch1 = this.readByte();
-		let ch2 = this.readByte();
-		let ch3 = this.readByte();
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		var ch3 = this.readByte();
 		if (this.bigEndian) {
 			return ch3 | ch2 << 8 | ch1 << 16;
 		} else {
@@ -285,10 +290,10 @@ class Input {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	readInt32() {
-		let ch1 = this.readByte();
-		let ch2 = this.readByte();
-		let ch3 = this.readByte();
-		let ch4 = this.readByte();
+		var ch1 = this.readByte();
+		var ch2 = this.readByte();
+		var ch3 = this.readByte();
+		var ch4 = this.readByte();
 		if (this.bigEndian) {
 			return ch4 | ch3 << 8 | ch2 << 16 | ch1 << 24;
 		} else {
@@ -300,7 +305,7 @@ class Input {
 	Read and `len` bytes as a string.
 	*/
 	readString(len, encoding = null) {
-		let b = new Bytes(new ArrayBuffer(len));
+		var b = new Bytes(new ArrayBuffer(len));
 		this.readFullBytes(b, 0, len);
 		return b.getString(0, len, encoding);
 	}

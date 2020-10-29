@@ -1,4 +1,4 @@
-import {Exception} from "./Exception"
+import {HaxeError} from "../js/Boot"
 import {Register} from "../genes/Register"
 import {HxOverrides} from "../HxOverrides"
 
@@ -30,10 +30,10 @@ class Utf8 extends Register.inherits() {
 	Call the `chars` function for each UTF8 char of the string.
 	*/
 	static iter(s, chars) {
-		let _g = 0;
-		let _g1 = s.length;
+		var _g = 0;
+		var _g1 = s.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			chars(HxOverrides.cca(s, i));
 		};
 	}
@@ -42,7 +42,7 @@ class Utf8 extends Register.inherits() {
 	Encode the input ISO string into the corresponding UTF8 one.
 	*/
 	static encode(s) {
-		throw Exception.thrown("Not implemented");
+		throw new HaxeError("Not implemented");
 	}
 	
 	/**
@@ -50,7 +50,7 @@ class Utf8 extends Register.inherits() {
 	Throw an exception if a given UTF8 character is not supported by the decoder.
 	*/
 	static decode(s) {
-		throw Exception.thrown("Not implemented");
+		throw new HaxeError("Not implemented");
 	}
 	
 	/**

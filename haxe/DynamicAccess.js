@@ -10,7 +10,7 @@ class DynamicAccess_Impl_ {
 	Creates a new structure.
 	*/
 	static _new() {
-		let this1 = {};
+		var this1 = {};
 		return this1;
 	}
 	

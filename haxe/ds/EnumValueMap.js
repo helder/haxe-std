@@ -16,27 +16,27 @@ class EnumValueMap extends Register.inherits(BalancedTree) {
 		super.new();
 	}
 	compare(k1, k2) {
-		let d = k1._hx_index - k2._hx_index;
+		var d = k1._hx_index - k2._hx_index;
 		if (d != 0) {
 			return d;
 		};
-		let p1 = Type.enumParameters(k1);
-		let p2 = Type.enumParameters(k2);
+		var p1 = Type.enumParameters(k1);
+		var p2 = Type.enumParameters(k2);
 		if (p1.length == 0 && p2.length == 0) {
 			return 0;
 		};
 		return this.compareArgs(p1, p2);
 	}
 	compareArgs(a1, a2) {
-		let ld = a1.length - a2.length;
+		var ld = a1.length - a2.length;
 		if (ld != 0) {
 			return ld;
 		};
-		let _g = 0;
-		let _g1 = a1.length;
+		var _g = 0;
+		var _g1 = a1.length;
 		while (_g < _g1) {
-			let i = _g++;
-			let d = this.compareArg(a1[i], a2[i]);
+			var i = _g++;
+			var d = this.compareArg(a1[i], a2[i]);
 			if (d != 0) {
 				return d;
 			};
@@ -53,7 +53,7 @@ class EnumValueMap extends Register.inherits(BalancedTree) {
 		};
 	}
 	copy() {
-		let copied = new EnumValueMap();
+		var copied = new EnumValueMap();
 		copied.root = this.root;
 		return copied;
 	}

@@ -1,8 +1,8 @@
+import {HaxeError} from "../../js/Boot"
 import {HuffTools} from "./Huffman"
 import {BytesBuffer} from "../io/BytesBuffer"
 import {Bytes} from "../io/Bytes"
 import {Adler32} from "../crypto/Adler32"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const Window = Register.global("$hxClasses")["haxe.zip._InflateImpl.Window"] = 
@@ -18,7 +18,7 @@ class Window extends Register.inherits() {
 		if (this.crc != null) {
 			this.crc.update(this.buffer, 0, 32768);
 		};
-		let b = new Bytes(new ArrayBuffer(65536));
+		var b = new Bytes(new ArrayBuffer(65536));
 		this.pos -= 32768;
 		b.blit(0, this.buffer, 32768, this.pos);
 		this.buffer = b;
@@ -122,10 +122,10 @@ class InflateImpl extends Register.inherits() {
 		if (InflateImpl.FIXED_HUFFMAN != null) {
 			return InflateImpl.FIXED_HUFFMAN;
 		};
-		let a = new Array();
-		let _g = 0;
+		var a = new Array();
+		var _g = 0;
 		while (_g < 288) {
-			let n = _g++;
+			var n = _g++;
 			a.push((n <= 143) ? 8 : (n <= 255) ? 9 : (n <= 279) ? 7 : 8);
 		};
 		InflateImpl.FIXED_HUFFMAN = this.htools.make(a, 0, 288, 10);
@@ -146,7 +146,7 @@ class InflateImpl extends Register.inherits() {
 			this.bits |= this.input.readByte() << this.nbits;
 			this.nbits += 8;
 		};
-		let b = this.bits & (1 << n) - 1;
+		var b = this.bits & (1 << n) - 1;
 		this.nbits -= n;
 		this.bits >>= n;
 		return b;
@@ -156,7 +156,7 @@ class InflateImpl extends Register.inherits() {
 			this.nbits = 8;
 			this.bits = this.input.readByte();
 		};
-		let b = (this.bits & 1) == 1;
+		var b = (this.bits & 1) == 1;
 		this.nbits--;
 		this.bits >>= 1;
 		return b;
@@ -187,11 +187,11 @@ class InflateImpl extends Register.inherits() {
 		this.outpos++;
 	}
 	addDistOne(n) {
-		let c = this.window.getLastChar();
-		let _g = 0;
-		let _g1 = n;
+		var c = this.window.getLastChar();
+		var _g = 0;
+		var _g1 = n;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			this.addByte(c);
 		};
 	}
@@ -201,27 +201,27 @@ class InflateImpl extends Register.inherits() {
 	applyHuffman(h) {
 		switch (h._hx_index) {
 			case 0:
-				let n = h.i;
+				var n = h.i;
 				return n;
 				break
 			case 1:
-				let b = h.right;
-				let a = h.left;
+				var b = h.right;
+				var a = h.left;
 				return this.applyHuffman((this.getBit()) ? b : a);
 				break
 			case 2:
-				let tbl = h.table;
-				let n1 = h.n;
+				var tbl = h.table;
+				var n1 = h.n;
 				return this.applyHuffman(tbl[this.getBits(n1)]);
 				break
 			
 		};
 	}
 	inflateLengths(a, max) {
-		let i = 0;
-		let prev = 0;
+		var i = 0;
+		var prev = 0;
 		while (i < max) {
-			let n = this.applyHuffman(this.huffman);
+			var n = this.applyHuffman(this.huffman);
 			switch (n) {
 				case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:case 8:case 9:case 10:case 11:case 12:case 13:case 14:case 15:
 					prev = n;
@@ -229,9 +229,9 @@ class InflateImpl extends Register.inherits() {
 					++i;
 					break
 				case 16:
-					let end = i + 3 + this.getBits(2);
+					var end = i + 3 + this.getBits(2);
 					if (end > max) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					while (i < end) {
 						a[i] = prev;
@@ -241,17 +241,17 @@ class InflateImpl extends Register.inherits() {
 				case 17:
 					i += 3 + this.getBits(3);
 					if (i > max) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					break
 				case 18:
 					i += 11 + this.getBits(7);
 					if (i > max) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					break
 				default:
-				throw Exception.thrown("Invalid data");
+				throw new HaxeError("Invalid data");
 				
 			};
 		};
@@ -259,19 +259,19 @@ class InflateImpl extends Register.inherits() {
 	inflateLoop() {
 		switch (this.state._hx_index) {
 			case 0:
-				let cmf = this.input.readByte();
-				let cm = cmf & 15;
-				let cinfo = cmf >> 4;
+				var cmf = this.input.readByte();
+				var cm = cmf & 15;
+				var cinfo = cmf >> 4;
 				if (cm != 8) {
-					throw Exception.thrown("Invalid data");
+					throw new HaxeError("Invalid data");
 				};
-				let flg = this.input.readByte();
-				let fdict = (flg & 32) != 0;
+				var flg = this.input.readByte();
+				var fdict = (flg & 32) != 0;
 				if (((cmf << 8) + flg) % 31 != 0) {
-					throw Exception.thrown("Invalid data");
+					throw new HaxeError("Invalid data");
 				};
 				if (fdict) {
-					throw Exception.thrown("Unsupported dictionary");
+					throw new HaxeError("Unsupported dictionary");
 				};
 				this.state = State.Block;
 				return true;
@@ -281,12 +281,12 @@ class InflateImpl extends Register.inherits() {
 				switch (this.getBits(2)) {
 					case 0:
 						this.len = this.input.readUInt16();
-						let nlen = this.input.readUInt16();
+						var nlen = this.input.readUInt16();
 						if (nlen != 65535 - this.len) {
-							throw Exception.thrown("Invalid data");
+							throw new HaxeError("Invalid data");
 						};
 						this.state = State.Flat;
-						let r = this.inflateLoop();
+						var r = this.inflateLoop();
 						this.resetBits();
 						return r;
 						break
@@ -297,27 +297,27 @@ class InflateImpl extends Register.inherits() {
 						return true;
 						break
 					case 2:
-						let hlit = this.getBits(5) + 257;
-						let hdist = this.getBits(5) + 1;
-						let hclen = this.getBits(4) + 4;
-						let _g = 0;
-						let _g1 = hclen;
+						var hlit = this.getBits(5) + 257;
+						var hdist = this.getBits(5) + 1;
+						var hclen = this.getBits(4) + 4;
+						var _g = 0;
+						var _g1 = hclen;
 						while (_g < _g1) {
-							let i = _g++;
+							var i = _g++;
 							this.lengths[InflateImpl.CODE_LENGTHS_POS[i]] = this.getBits(3);
 						};
-						let _g2 = hclen;
-						let _g3 = 19;
+						var _g2 = hclen;
+						var _g3 = 19;
 						while (_g2 < _g3) {
-							let i = _g2++;
-							this.lengths[InflateImpl.CODE_LENGTHS_POS[i]] = 0;
+							var i1 = _g2++;
+							this.lengths[InflateImpl.CODE_LENGTHS_POS[i1]] = 0;
 						};
 						this.huffman = this.htools.make(this.lengths, 0, 19, 8);
-						let lengths = new Array();
-						let _g4 = 0;
-						let _g5 = hlit + hdist;
+						var lengths = new Array();
+						var _g4 = 0;
+						var _g5 = hlit + hdist;
 						while (_g4 < _g5) {
-							let i = _g4++;
+							var i2 = _g4++;
 							lengths.push(0);
 						};
 						this.inflateLengths(lengths, hlit + hdist);
@@ -327,12 +327,12 @@ class InflateImpl extends Register.inherits() {
 						return true;
 						break
 					default:
-					throw Exception.thrown("Invalid data");
+					throw new HaxeError("Invalid data");
 					
 				};
 				break
 			case 2:
-				let n = this.applyHuffman(this.huffman);
+				var n = this.applyHuffman(this.huffman);
 				if (n < 256) {
 					this.addByte(n);
 					return this.needed > 0;
@@ -341,27 +341,27 @@ class InflateImpl extends Register.inherits() {
 					return true;
 				} else {
 					n -= 257;
-					let extra_bits = InflateImpl.LEN_EXTRA_BITS_TBL[n];
+					var extra_bits = InflateImpl.LEN_EXTRA_BITS_TBL[n];
 					if (extra_bits == -1) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					this.len = InflateImpl.LEN_BASE_VAL_TBL[n] + this.getBits(extra_bits);
-					let dist_code = (this.huffdist == null) ? this.getRevBits(5) : this.applyHuffman(this.huffdist);
+					var dist_code = (this.huffdist == null) ? this.getRevBits(5) : this.applyHuffman(this.huffdist);
 					extra_bits = InflateImpl.DIST_EXTRA_BITS_TBL[dist_code];
 					if (extra_bits == -1) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					this.dist = InflateImpl.DIST_BASE_VAL_TBL[dist_code] + this.getBits(extra_bits);
 					if (this.dist > this.window.available()) {
-						throw Exception.thrown("Invalid data");
+						throw new HaxeError("Invalid data");
 					};
 					this.state = (this.dist == 1) ? State.DistOne : State.Dist;
 					return true;
 				};
 				break
 			case 3:
-				let rlen = (this.len < this.needed) ? this.len : this.needed;
-				let bytes = this.input.read(rlen);
+				var rlen = (this.len < this.needed) ? this.len : this.needed;
+				var bytes = this.input.read(rlen);
 				this.len -= rlen;
 				this.addBytes(bytes, 0, rlen);
 				if (this.len == 0) {
@@ -370,24 +370,24 @@ class InflateImpl extends Register.inherits() {
 				return this.needed > 0;
 				break
 			case 4:
-				let calc = this.window.checksum();
+				var calc = this.window.checksum();
 				if (calc == null) {
 					this.state = State.Done;
 					return true;
 				};
-				let crc = Adler32.read(this.input);
+				var crc = Adler32.read(this.input);
 				if (!calc.equals(crc)) {
-					throw Exception.thrown("Invalid CRC");
+					throw new HaxeError("Invalid CRC");
 				};
 				this.state = State.Done;
 				return true;
 				break
 			case 5:
 				while (this.len > 0 && this.needed > 0) {
-					let rdist = (this.len < this.dist) ? this.len : this.dist;
-					let rlen = (this.needed < rdist) ? this.needed : rdist;
-					this.addDist(this.dist, rlen);
-					this.len -= rlen;
+					var rdist = (this.len < this.dist) ? this.len : this.dist;
+					var rlen1 = (this.needed < rdist) ? this.needed : rdist;
+					this.addDist(this.dist, rlen1);
+					this.len -= rlen1;
 				};
 				if (this.len == 0) {
 					this.state = State.CData;
@@ -395,9 +395,9 @@ class InflateImpl extends Register.inherits() {
 				return this.needed > 0;
 				break
 			case 6:
-				let rlen1 = (this.len < this.needed) ? this.len : this.needed;
-				this.addDistOne(rlen1);
-				this.len -= rlen1;
+				var rlen2 = (this.len < this.needed) ? this.len : this.needed;
+				this.addDistOne(rlen2);
+				this.len -= rlen2;
 				if (this.len == 0) {
 					this.state = State.CData;
 				};
@@ -410,11 +410,11 @@ class InflateImpl extends Register.inherits() {
 		};
 	}
 	static run(i, bufsize = 65536) {
-		let buf = new Bytes(new ArrayBuffer(bufsize));
-		let output = new BytesBuffer();
-		let inflate = new InflateImpl(i);
+		var buf = new Bytes(new ArrayBuffer(bufsize));
+		var output = new BytesBuffer();
+		var inflate = new InflateImpl(i);
 		while (true) {
-			let len = inflate.readBytes(buf, 0, bufsize);
+			var len = inflate.readBytes(buf, 0, bufsize);
 			output.addBytes(buf, 0, len);
 			if (len < bufsize) {
 				break;

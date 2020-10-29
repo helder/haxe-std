@@ -27,6 +27,9 @@ export declare class Reflect {
 	to `Reflect.getProperty` for a function supporting property accessors.
 	
 	If `field` is null, the result is unspecified.
+	
+	(As3) If used on a property field, the getter will be invoked. It is
+	not possible to obtain the value directly.
 	*/
 	static field(o: any, field: string): any
 	
@@ -37,6 +40,9 @@ export declare class Reflect {
 	work for anonymous structures.
 	
 	If `o` or `field` are null, the result is unspecified.
+	
+	(As3) If used on a property field, the setter will be invoked. It is
+	not possible to set the value directly.
 	*/
 	static setField(o: any, field: string, value: any): void
 	

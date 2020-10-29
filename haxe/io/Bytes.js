@@ -1,7 +1,7 @@
+import {HaxeError} from "../../js/Boot"
 import {Error} from "./Error"
 import {Encoding} from "./Encoding"
 import {___Int64} from "../Int64"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {HxOverrides} from "../../HxOverrides"
 
@@ -39,7 +39,7 @@ class Bytes extends Register.inherits() {
 	*/
 	blit(pos, src, srcpos, len) {
 		if (pos < 0 || srcpos < 0 || len < 0 || pos + len > this.length || srcpos + len > src.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
 		if (srcpos == 0 && len == src.b.byteLength) {
 			this.b.set(src.b, pos);
@@ -53,10 +53,10 @@ class Bytes extends Register.inherits() {
 	to `value`.
 	*/
 	fill(pos, len, value) {
-		let _g = 0;
-		let _g1 = len;
+		var _g = 0;
+		var _g1 = len;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			this.b[pos++] = value;
 		};
 	}
@@ -67,7 +67,7 @@ class Bytes extends Register.inherits() {
 	*/
 	sub(pos, len) {
 		if (pos < 0 || len < 0 || pos + len > this.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
 		return new Bytes(this.b.buffer.slice(pos + this.b.byteOffset, pos + this.b.byteOffset + len));
 	}
@@ -85,13 +85,13 @@ class Bytes extends Register.inherits() {
 	instance; otherwise returns a positive value.
 	*/
 	compare(other) {
-		let b1 = this.b;
-		let b2 = other.b;
-		let len = (this.length < other.length) ? this.length : other.length;
-		let _g = 0;
-		let _g1 = len;
+		var b1 = this.b;
+		var b2 = other.b;
+		var len = (this.length < other.length) ? this.length : other.length;
+		var _g = 0;
+		var _g1 = len;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (b1[i] != b2[i]) {
 				return b1[i] - b2[i];
 			};
@@ -201,7 +201,7 @@ class Bytes extends Register.inherits() {
 	encoding).
 	*/
 	getInt64(pos) {
-		let this1 = new ___Int64(this.getInt32(pos + 4), this.getInt32(pos));
+		var this1 = new ___Int64(this.getInt32(pos + 4), this.getInt32(pos));
 		return this1;
 	}
 	
@@ -220,44 +220,44 @@ class Bytes extends Register.inherits() {
 	*/
 	getString(pos, len, encoding = null) {
 		if (pos < 0 || len < 0 || pos + len > this.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
 		if (encoding == null) {
 			encoding = Encoding.UTF8;
 		};
-		let s = "";
-		let b = this.b;
-		let i = pos;
-		let max = pos + len;
+		var s = "";
+		var b = this.b;
+		var i = pos;
+		var max = pos + len;
 		switch (encoding._hx_index) {
 			case 0:
-				let debug = pos > 0;
+				var debug = pos > 0;
 				while (i < max) {
-					let c = b[i++];
+					var c = b[i++];
 					if (c < 128) {
 						if (c == 0) {
 							break;
 						};
 						s += String.fromCodePoint(c);
 					} else if (c < 224) {
-						let code = (c & 63) << 6 | b[i++] & 127;
+						var code = (c & 63) << 6 | b[i++] & 127;
 						s += String.fromCodePoint(code);
 					} else if (c < 240) {
-						let c2 = b[i++];
-						let code = (c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127;
-						s += String.fromCodePoint(code);
+						var c2 = b[i++];
+						var code1 = (c & 31) << 12 | (c2 & 127) << 6 | b[i++] & 127;
+						s += String.fromCodePoint(code1);
 					} else {
-						let c2 = b[i++];
-						let c3 = b[i++];
-						let u = (c & 15) << 18 | (c2 & 127) << 12 | (c3 & 127) << 6 | b[i++] & 127;
+						var c21 = b[i++];
+						var c3 = b[i++];
+						var u = (c & 15) << 18 | (c21 & 127) << 12 | (c3 & 127) << 6 | b[i++] & 127;
 						s += String.fromCodePoint(u);
 					};
 				};
 				break
 			case 1:
 				while (i < max) {
-					let c = b[i++] | b[i++] << 8;
-					s += String.fromCodePoint(c);
+					var c1 = b[i++] | b[i++] << 8;
+					s += String.fromCodePoint(c1);
 				};
 				break
 			
@@ -280,20 +280,20 @@ class Bytes extends Register.inherits() {
 	instance.
 	*/
 	toHex() {
-		let s_b = "";
-		let chars = [];
-		let str = "0123456789abcdef";
-		let _g = 0;
-		let _g1 = str.length;
+		var s_b = "";
+		var chars = [];
+		var str = "0123456789abcdef";
+		var _g = 0;
+		var _g1 = str.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			chars.push(HxOverrides.cca(str, i));
 		};
-		let _g2 = 0;
-		let _g3 = this.length;
+		var _g2 = 0;
+		var _g3 = this.length;
 		while (_g2 < _g3) {
-			let i = _g2++;
-			let c = this.b[i];
+			var i1 = _g2++;
+			var c = this.b[i1];
 			s_b += String.fromCodePoint(chars[c >> 4]);
 			s_b += String.fromCodePoint(chars[c & 15]);
 		};
@@ -321,38 +321,38 @@ class Bytes extends Register.inherits() {
 	*/
 	static ofString(s, encoding = null) {
 		if (encoding == Encoding.RawNative) {
-			let buf = new Uint8Array(s.length << 1);
-			let _g = 0;
-			let _g1 = s.length;
+			var buf = new Uint8Array(s.length << 1);
+			var _g = 0;
+			var _g1 = s.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let c = s.charCodeAt(i);
+				var i = _g++;
+				var c = s.charCodeAt(i);
 				buf[i << 1] = c & 255;
 				buf[i << 1 | 1] = c >> 8;
 			};
 			return new Bytes(buf.buffer);
 		};
-		let a = new Array();
-		let i = 0;
-		while (i < s.length) {
-			let c = s.charCodeAt(i++);
-			if (55296 <= c && c <= 56319) {
-				c = c - 55232 << 10 | s.charCodeAt(i++) & 1023;
+		var a = new Array();
+		var i1 = 0;
+		while (i1 < s.length) {
+			var c1 = s.charCodeAt(i1++);
+			if (55296 <= c1 && c1 <= 56319) {
+				c1 = c1 - 55232 << 10 | s.charCodeAt(i1++) & 1023;
 			};
-			if (c <= 127) {
-				a.push(c);
-			} else if (c <= 2047) {
-				a.push(192 | c >> 6);
-				a.push(128 | c & 63);
-			} else if (c <= 65535) {
-				a.push(224 | c >> 12);
-				a.push(128 | c >> 6 & 63);
-				a.push(128 | c & 63);
+			if (c1 <= 127) {
+				a.push(c1);
+			} else if (c1 <= 2047) {
+				a.push(192 | c1 >> 6);
+				a.push(128 | c1 & 63);
+			} else if (c1 <= 65535) {
+				a.push(224 | c1 >> 12);
+				a.push(128 | c1 >> 6 & 63);
+				a.push(128 | c1 & 63);
 			} else {
-				a.push(240 | c >> 18);
-				a.push(128 | c >> 12 & 63);
-				a.push(128 | c >> 6 & 63);
-				a.push(128 | c & 63);
+				a.push(240 | c1 >> 18);
+				a.push(128 | c1 >> 12 & 63);
+				a.push(128 | c1 >> 6 & 63);
+				a.push(128 | c1 & 63);
 			};
 		};
 		return new Bytes(new Uint8Array(a).buffer);
@@ -362,7 +362,7 @@ class Bytes extends Register.inherits() {
 	Returns the `Bytes` representation of the given `BytesData`.
 	*/
 	static ofData(b) {
-		let hb = b.hxBytes;
+		var hb = b.hxBytes;
 		if (hb != null) {
 			return hb;
 		};
@@ -376,14 +376,14 @@ class Bytes extends Register.inherits() {
 	*/
 	static ofHex(s) {
 		if ((s.length & 1) != 0) {
-			throw Exception.thrown("Not a hex string (odd number of digits)");
+			throw new HaxeError("Not a hex string (odd number of digits)");
 		};
-		let a = new Array();
-		let i = 0;
-		let len = s.length >> 1;
+		var a = new Array();
+		var i = 0;
+		var len = s.length >> 1;
 		while (i < len) {
-			let high = s.charCodeAt(i * 2);
-			let low = s.charCodeAt(i * 2 + 1);
+			var high = s.charCodeAt(i * 2);
+			var low = s.charCodeAt(i * 2 + 1);
 			high = (high & 15) + ((high & 64) >> 6) * 9;
 			low = (low & 15) + ((low & 64) >> 6) * 9;
 			a.push((high << 4 | low) & 255);

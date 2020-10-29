@@ -1,5 +1,5 @@
+import {HaxeError} from "../../js/Boot"
 import {IntMap} from "../ds/IntMap"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const Huffman = 
@@ -21,44 +21,44 @@ class HuffTools extends Register.inherits() {
 	treeDepth(t) {
 		switch (t._hx_index) {
 			case 0:
-				let _g = t.i;
+				var _g = t.i;
 				return 0;
 				break
 			case 1:
-				let b = t.right;
-				let a = t.left;
-				let da = this.treeDepth(a);
-				let db = this.treeDepth(b);
+				var b = t.right;
+				var a = t.left;
+				var da = this.treeDepth(a);
+				var db = this.treeDepth(b);
 				return 1 + ((da < db) ? da : db);
 				break
 			case 2:
-				let _g1 = t.table;
-				let _g2 = t.n;
-				throw Exception.thrown("assert");
+				var _g2 = t.table;
+				var _g1 = t.n;
+				throw new HaxeError("assert");
 				break
 			
 		};
 	}
 	treeCompress(t) {
-		let d = this.treeDepth(t);
+		var d = this.treeDepth(t);
 		if (d == 0) {
 			return t;
 		};
 		if (d == 1) {
 			if (t._hx_index == 1) {
-				let b = t.right;
-				let a = t.left;
+				var b = t.right;
+				var a = t.left;
 				return Huffman.NeedBit(this.treeCompress(a), this.treeCompress(b));
 			} else {
-				throw Exception.thrown("assert");
+				throw new HaxeError("assert");
 			};
 		};
-		let size = 1 << d;
-		let table = new Array();
-		let _g = 0;
-		let _g1 = size;
+		var size = 1 << d;
+		var table = new Array();
+		var _g = 0;
+		var _g1 = size;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			table.push(Huffman.Found(-1));
 		};
 		this.treeWalk(table, 0, 0, d, t);
@@ -66,8 +66,8 @@ class HuffTools extends Register.inherits() {
 	}
 	treeWalk(table, p, cd, d, t) {
 		if (t._hx_index == 1) {
-			let b = t.right;
-			let a = t.left;
+			var b = t.right;
+			var a = t.left;
 			if (d > 0) {
 				this.treeWalk(table, p, cd + 1, d - 1, a);
 				this.treeWalk(table, p | 1 << cd, cd + 1, d - 1, b);
@@ -80,9 +80,9 @@ class HuffTools extends Register.inherits() {
 	}
 	treeMake(bits, maxbits, v, len) {
 		if (len > maxbits) {
-			throw Exception.thrown("Invalid huffman");
+			throw new HaxeError("Invalid huffman");
 		};
-		let idx = v << 5 | len;
+		var idx = v << 5 | len;
 		if (bits.inst.has(idx)) {
 			return Huffman.Found(bits.inst.get(idx));
 		};
@@ -91,49 +91,46 @@ class HuffTools extends Register.inherits() {
 		return Huffman.NeedBit(this.treeMake(bits, maxbits, v, len), this.treeMake(bits, maxbits, v | 1, len));
 	}
 	make(lengths, pos, nlengths, maxbits) {
-		if (nlengths == 1) {
-			return Huffman.NeedBit(Huffman.Found(0), Huffman.Found(0));
-		};
-		let counts = new Array();
-		let tmp = new Array();
+		var counts = new Array();
+		var tmp = new Array();
 		if (maxbits > 32) {
-			throw Exception.thrown("Invalid huffman");
+			throw new HaxeError("Invalid huffman");
 		};
-		let _g = 0;
-		let _g1 = maxbits;
+		var _g = 0;
+		var _g1 = maxbits;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			counts.push(0);
 			tmp.push(0);
 		};
-		let _g2 = 0;
-		let _g3 = nlengths;
+		var _g2 = 0;
+		var _g3 = nlengths;
 		while (_g2 < _g3) {
-			let i = _g2++;
-			let p = lengths[i + pos];
+			var i1 = _g2++;
+			var p = lengths[i1 + pos];
 			if (p >= maxbits) {
-				throw Exception.thrown("Invalid huffman");
+				throw new HaxeError("Invalid huffman");
 			};
 			counts[p]++;
 		};
-		let code = 0;
-		let _g4 = 1;
-		let _g5 = maxbits - 1;
+		var code = 0;
+		var _g4 = 1;
+		var _g5 = maxbits - 1;
 		while (_g4 < _g5) {
-			let i = _g4++;
-			code = code + counts[i] << 1;
-			tmp[i] = code;
+			var i2 = _g4++;
+			code = code + counts[i2] << 1;
+			tmp[i2] = code;
 		};
-		let bits = new IntMap();
-		let _g6 = 0;
-		let _g7 = nlengths;
+		var bits = new IntMap();
+		var _g6 = 0;
+		var _g7 = nlengths;
 		while (_g6 < _g7) {
-			let i = _g6++;
-			let l = lengths[i + pos];
+			var i3 = _g6++;
+			var l = lengths[i3 + pos];
 			if (l != 0) {
-				let n = tmp[l - 1];
+				var n = tmp[l - 1];
 				tmp[l - 1] = n + 1;
-				bits.inst.set(n << 5 | l, i);
+				bits.inst.set(n << 5 | l, i3);
 			};
 		};
 		return this.treeCompress(Huffman.NeedBit(this.treeMake(bits, maxbits, 0, 1), this.treeMake(bits, maxbits, 1, 1)));

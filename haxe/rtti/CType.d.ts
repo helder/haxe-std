@@ -74,7 +74,7 @@ export type ClassField = {doc: null | string, expr: null | string, get: Rights, 
 
 export type TypeInfos = {doc: null | string, file: null | string, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[]}
 
-export type Classdef = {doc: null | string, fields: ClassField[], file: null | string, interfaces: PathParams[], isExtern: boolean, isFinal: boolean, isInterface: boolean, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[], statics: ClassField[], superClass: null | PathParams, tdynamic: null | CType}
+export type Classdef = {doc: null | string, fields: ClassField[], file: null | string, interfaces: PathParams[], isExtern: boolean, isInterface: boolean, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[], statics: ClassField[], superClass: null | PathParams, tdynamic: null | CType}
 
 export type EnumField = {args: null | {name: string, opt: boolean, t: CType}[], doc: string, meta: {name: string, params: string[]}[], name: string, platforms: string[]}
 
@@ -155,7 +155,7 @@ export declare class TypeApi {
 }
 
 /**
-The `CTypeTools` class contains some extra functionalities for handling
+The CTypeTools class contains some extra functionalities for handling
 `CType` instances.
 */
 export declare class CTypeTools {

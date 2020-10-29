@@ -9,7 +9,7 @@ Allows one to encode/decode String and bytes using Base64 encoding.
 export const Base64 = Register.global("$hxClasses")["haxe.crypto.Base64"] = 
 class Base64 {
 	static encode(bytes, complement = true) {
-		let str = new BaseCode(Base64.BYTES).encodeBytes(bytes).toString();
+		var str = new BaseCode(Base64.BYTES).encodeBytes(bytes).toString();
 		if (complement) {
 			switch (bytes.length % 3) {
 				case 1:
@@ -31,7 +31,7 @@ class Base64 {
 		return new BaseCode(Base64.BYTES).decodeBytes(Bytes.ofString(str));
 	}
 	static urlEncode(bytes, complement = false) {
-		let str = new BaseCode(Base64.URL_BYTES).encodeBytes(bytes).toString();
+		var str = new BaseCode(Base64.URL_BYTES).encodeBytes(bytes).toString();
 		if (complement) {
 			switch (bytes.length % 3) {
 				case 1:

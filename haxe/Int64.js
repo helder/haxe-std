@@ -1,12 +1,12 @@
+import {HaxeError} from "../js/Boot"
 import {Int64Helper} from "./Int64Helper"
 import {Int32_Impl_} from "./Int32"
-import {Exception} from "./Exception"
 import {Register} from "../genes/Register"
 
 export const Int64_Impl_ = Register.global("$hxClasses")["haxe._Int64.Int64_Impl_"] = 
 class Int64_Impl_ {
 	static _new(x) {
-		let this1 = x;
+		var this1 = x;
 		return this1;
 	}
 	
@@ -14,7 +14,7 @@ class Int64_Impl_ {
 	Makes a copy of `this` Int64.
 	*/
 	static copy(this1) {
-		let this2 = new ___Int64(this1.high, this1.low);
+		var this2 = new ___Int64(this1.high, this1.low);
 		return this2;
 	}
 	
@@ -22,7 +22,7 @@ class Int64_Impl_ {
 	Construct an Int64 from two 32-bit words `high` and `low`.
 	*/
 	static make(high, low) {
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	
@@ -31,7 +31,7 @@ class Int64_Impl_ {
 	`x` is sign-extended to fill 64 bits.
 	*/
 	static ofInt(x) {
-		let this1 = new ___Int64(x >> 31, x);
+		var this1 = new ___Int64(x >> 31, x);
 		return this1;
 	}
 	
@@ -41,18 +41,15 @@ class Int64_Impl_ {
 	*/
 	static toInt(x) {
 		if (x.high != x.low >> 31) {
-			throw Exception.thrown("Overflow");
+			throw new HaxeError("Overflow");
 		};
 		return x.low;
-	}
-	static is(val) {
-		return ((val) instanceof ___Int64);
 	}
 	
 	/**
 	Returns whether the value `val` is of type `haxe.Int64`
 	*/
-	static isInt64(val) {
+	static is(val) {
 		return ((val) instanceof ___Int64);
 	}
 	
@@ -81,8 +78,8 @@ class Int64_Impl_ {
 	Returns `true` if `x` is exactly zero.
 	*/
 	static isZero(x) {
-		let b_high = 0;
-		let b_low = 0;
+		var b_high = 0;
+		var b_low = 0;
 		if (x.high == b_high) {
 			return x.low == b_low;
 		} else {
@@ -96,10 +93,8 @@ class Int64_Impl_ {
 	or 0 if `a == b`.
 	*/
 	static compare(a, b) {
-		let v = a.high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b.low);
-		};
+		var v = a.high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b.low);
 		if (a.high < 0) {
 			if (b.high < 0) {
 				return v;
@@ -119,7 +114,7 @@ class Int64_Impl_ {
 	or 0 if `a == b`.
 	*/
 	static ucompare(a, b) {
-		let v = Int32_Impl_.ucompare(a.high, b.high);
+		var v = Int32_Impl_.ucompare(a.high, b.high);
 		if (v != 0) {
 			return v;
 		} else {
@@ -134,46 +129,46 @@ class Int64_Impl_ {
 		return Int64_Impl_.toString(x);
 	}
 	static toString(this1) {
-		let i = this1;
-		let b_high = 0;
-		let b_low = 0;
+		var i = this1;
+		var b_high = 0;
+		var b_low = 0;
 		if (i.high == b_high && i.low == b_low) {
 			return "0";
 		};
-		let str = "";
-		let neg = false;
+		var str = "";
+		var neg = false;
 		if (i.high < 0) {
 			neg = true;
 		};
-		let this2 = new ___Int64(0, 10);
-		let ten = this2;
+		var this2 = new ___Int64(0, 10);
+		var ten = this2;
 		while (true) {
-			let b_high = 0;
-			let b_low = 0;
-			if (!(i.high != b_high || i.low != b_low)) {
+			var b_high1 = 0;
+			var b_low1 = 0;
+			if (!(i.high != b_high1 || i.low != b_low1)) {
 				break;
 			};
-			let r = Int64_Impl_.divMod(i, ten);
+			var r = Int64_Impl_.divMod(i, ten);
 			if (r.modulus.high < 0) {
-				let x = r.modulus;
-				let high = ~x.high;
-				let low = ~x.low + 1 | 0;
+				var x = r.modulus;
+				var high = ~x.high;
+				var low = ~x.low + 1 | 0;
 				if (low == 0) {
-					let ret = high++;
+					var ret = high++;
 					high = high | 0;
 				};
-				let this_high = high;
-				let this_low = low;
+				var this_high = high;
+				var this_low = low;
 				str = this_low + str;
-				let x1 = r.quotient;
-				let high1 = ~x1.high;
-				let low1 = ~x1.low + 1 | 0;
+				var x1 = r.quotient;
+				var high1 = ~x1.high;
+				var low1 = ~x1.low + 1 | 0;
 				if (low1 == 0) {
-					let ret = high1++;
+					var ret1 = high1++;
 					high1 = high1 | 0;
 				};
-				let this1 = new ___Int64(high1, low1);
-				i = this1;
+				var this3 = new ___Int64(high1, low1);
+				i = this3;
 			} else {
 				str = r.modulus.low + str;
 				i = r.quotient;
@@ -199,139 +194,141 @@ class Int64_Impl_ {
 		if (divisor.high == 0) {
 			switch (divisor.low) {
 				case 0:
-					throw Exception.thrown("divide by zero");
+					throw new HaxeError("divide by zero");
 					break
 				case 1:
-					let this1 = new ___Int64(dividend.high, dividend.low);
-					let this2 = new ___Int64(0, 0);
+					var this1 = new ___Int64(dividend.high, dividend.low);
+					var this2 = new ___Int64(0, 0);
 					return {"quotient": this1, "modulus": this2};
 					break
 				
 			};
 		};
-		let divSign = dividend.high < 0 != divisor.high < 0;
-		let modulus;
+		var divSign = dividend.high < 0 != divisor.high < 0;
+		var modulus;
 		if (dividend.high < 0) {
-			let high = ~dividend.high;
-			let low = ~dividend.low + 1 | 0;
+			var high = ~dividend.high;
+			var low = ~dividend.low + 1 | 0;
 			if (low == 0) {
-				let ret = high++;
+				var ret = high++;
 				high = high | 0;
 			};
-			let this1 = new ___Int64(high, low);
-			modulus = this1;
+			var this3 = new ___Int64(high, low);
+			modulus = this3;
 		} else {
-			let this1 = new ___Int64(dividend.high, dividend.low);
-			modulus = this1;
+			var this4 = new ___Int64(dividend.high, dividend.low);
+			modulus = this4;
 		};
 		if (divisor.high < 0) {
-			let high = ~divisor.high;
-			let low = ~divisor.low + 1 | 0;
-			if (low == 0) {
-				let ret = high++;
-				high = high | 0;
+			var high1 = ~divisor.high;
+			var low1 = ~divisor.low + 1 | 0;
+			if (low1 == 0) {
+				var ret1 = high1++;
+				high1 = high1 | 0;
 			};
-			let this1 = new ___Int64(high, low);
-			divisor = this1;
+			var this5 = new ___Int64(high1, low1);
+			divisor = this5;
+		} else {
+			divisor = divisor;
 		};
-		let this3 = new ___Int64(0, 0);
-		let quotient = this3;
-		let this4 = new ___Int64(0, 1);
-		let mask = this4;
+		var this6 = new ___Int64(0, 0);
+		var quotient = this6;
+		var this7 = new ___Int64(0, 1);
+		var mask = this7;
 		while (!(divisor.high < 0)) {
-			let v = Int32_Impl_.ucompare(divisor.high, modulus.high);
-			let cmp = (v != 0) ? v : Int32_Impl_.ucompare(divisor.low, modulus.low);
-			let b = 1;
+			var v = Int32_Impl_.ucompare(divisor.high, modulus.high);
+			var cmp = (v != 0) ? v : Int32_Impl_.ucompare(divisor.low, modulus.low);
+			var b = 1;
 			b &= 63;
 			if (b == 0) {
-				let this1 = new ___Int64(divisor.high, divisor.low);
-				divisor = this1;
+				var this8 = new ___Int64(divisor.high, divisor.low);
+				divisor = this8;
 			} else if (b < 32) {
-				let this1 = new ___Int64(divisor.high << b | divisor.low >>> 32 - b, divisor.low << b);
-				divisor = this1;
+				var this9 = new ___Int64(divisor.high << b | divisor.low >>> 32 - b, divisor.low << b);
+				divisor = this9;
 			} else {
-				let this1 = new ___Int64(divisor.low << b - 32, 0);
-				divisor = this1;
+				var this10 = new ___Int64(divisor.low << b - 32, 0);
+				divisor = this10;
 			};
-			let b1 = 1;
+			var b1 = 1;
 			b1 &= 63;
 			if (b1 == 0) {
-				let this1 = new ___Int64(mask.high, mask.low);
-				mask = this1;
+				var this11 = new ___Int64(mask.high, mask.low);
+				mask = this11;
 			} else if (b1 < 32) {
-				let this1 = new ___Int64(mask.high << b1 | mask.low >>> 32 - b1, mask.low << b1);
-				mask = this1;
+				var this12 = new ___Int64(mask.high << b1 | mask.low >>> 32 - b1, mask.low << b1);
+				mask = this12;
 			} else {
-				let this1 = new ___Int64(mask.low << b1 - 32, 0);
-				mask = this1;
+				var this13 = new ___Int64(mask.low << b1 - 32, 0);
+				mask = this13;
 			};
 			if (cmp >= 0) {
 				break;
 			};
 		};
 		while (true) {
-			let b_high = 0;
-			let b_low = 0;
+			var b_high = 0;
+			var b_low = 0;
 			if (!(mask.high != b_high || mask.low != b_low)) {
 				break;
 			};
-			let v = Int32_Impl_.ucompare(modulus.high, divisor.high);
-			if (((v != 0) ? v : Int32_Impl_.ucompare(modulus.low, divisor.low)) >= 0) {
-				let this1 = new ___Int64(quotient.high | mask.high, quotient.low | mask.low);
-				quotient = this1;
-				let high = modulus.high - divisor.high | 0;
-				let low = modulus.low - divisor.low | 0;
+			var v1 = Int32_Impl_.ucompare(modulus.high, divisor.high);
+			if (((v1 != 0) ? v1 : Int32_Impl_.ucompare(modulus.low, divisor.low)) >= 0) {
+				var this14 = new ___Int64(quotient.high | mask.high, quotient.low | mask.low);
+				quotient = this14;
+				var high2 = modulus.high - divisor.high | 0;
+				var low2 = modulus.low - divisor.low | 0;
 				if (Int32_Impl_.ucompare(modulus.low, divisor.low) < 0) {
-					let ret = high--;
-					high = high | 0;
+					var ret2 = high2--;
+					high2 = high2 | 0;
 				};
-				let this2 = new ___Int64(high, low);
-				modulus = this2;
+				var this15 = new ___Int64(high2, low2);
+				modulus = this15;
 			};
-			let b = 1;
-			b &= 63;
-			if (b == 0) {
-				let this1 = new ___Int64(mask.high, mask.low);
-				mask = this1;
-			} else if (b < 32) {
-				let this1 = new ___Int64(mask.high >>> b, mask.high << 32 - b | mask.low >>> b);
-				mask = this1;
+			var b2 = 1;
+			b2 &= 63;
+			if (b2 == 0) {
+				var this16 = new ___Int64(mask.high, mask.low);
+				mask = this16;
+			} else if (b2 < 32) {
+				var this17 = new ___Int64(mask.high >>> b2, mask.high << 32 - b2 | mask.low >>> b2);
+				mask = this17;
 			} else {
-				let this1 = new ___Int64(0, mask.high >>> b - 32);
-				mask = this1;
+				var this18 = new ___Int64(0, mask.high >>> b2 - 32);
+				mask = this18;
 			};
-			let b1 = 1;
-			b1 &= 63;
-			if (b1 == 0) {
-				let this1 = new ___Int64(divisor.high, divisor.low);
-				divisor = this1;
-			} else if (b1 < 32) {
-				let this1 = new ___Int64(divisor.high >>> b1, divisor.high << 32 - b1 | divisor.low >>> b1);
-				divisor = this1;
+			var b3 = 1;
+			b3 &= 63;
+			if (b3 == 0) {
+				var this19 = new ___Int64(divisor.high, divisor.low);
+				divisor = this19;
+			} else if (b3 < 32) {
+				var this20 = new ___Int64(divisor.high >>> b3, divisor.high << 32 - b3 | divisor.low >>> b3);
+				divisor = this20;
 			} else {
-				let this1 = new ___Int64(0, divisor.high >>> b1 - 32);
-				divisor = this1;
+				var this21 = new ___Int64(0, divisor.high >>> b3 - 32);
+				divisor = this21;
 			};
 		};
 		if (divSign) {
-			let high = ~quotient.high;
-			let low = ~quotient.low + 1 | 0;
-			if (low == 0) {
-				let ret = high++;
-				high = high | 0;
+			var high3 = ~quotient.high;
+			var low3 = ~quotient.low + 1 | 0;
+			if (low3 == 0) {
+				var ret3 = high3++;
+				high3 = high3 | 0;
 			};
-			let this1 = new ___Int64(high, low);
-			quotient = this1;
+			var this22 = new ___Int64(high3, low3);
+			quotient = this22;
 		};
 		if (dividend.high < 0) {
-			let high = ~modulus.high;
-			let low = ~modulus.low + 1 | 0;
-			if (low == 0) {
-				let ret = high++;
-				high = high | 0;
+			var high4 = ~modulus.high;
+			var low4 = ~modulus.low + 1 | 0;
+			if (low4 == 0) {
+				var ret4 = high4++;
+				high4 = high4 | 0;
 			};
-			let this1 = new ___Int64(high, low);
-			modulus = this1;
+			var this23 = new ___Int64(high4, low4);
+			modulus = this23;
 		};
 		return {"quotient": quotient, "modulus": modulus};
 	}
@@ -340,58 +337,58 @@ class Int64_Impl_ {
 	Returns the negative of `x`.
 	*/
 	static neg(x) {
-		let high = ~x.high;
-		let low = ~x.low + 1 | 0;
+		var high = ~x.high;
+		var low = ~x.low + 1 | 0;
 		if (low == 0) {
-			let ret = high++;
+			var ret = high++;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	static preIncrement(this1) {
-		let this2 = new ___Int64(this1.high, this1.low);
+		var this2 = new ___Int64(this1.high, this1.low);
 		this1 = this2;
-		let ret = this1.low++;
+		var ret = this1.low++;
 		this1.low = this1.low | 0;
 		if (this1.low == 0) {
-			let ret = this1.high++;
+			var ret1 = this1.high++;
 			this1.high = this1.high | 0;
 		};
 		return this1;
 	}
 	static postIncrement(this1) {
-		let ret = this1;
-		let this2 = new ___Int64(this1.high, this1.low);
+		var ret = this1;
+		var this2 = new ___Int64(this1.high, this1.low);
 		this1 = this2;
-		let ret1 = this1.low++;
+		var ret1 = this1.low++;
 		this1.low = this1.low | 0;
 		if (this1.low == 0) {
-			let ret = this1.high++;
+			var ret2 = this1.high++;
 			this1.high = this1.high | 0;
 		};
 		return ret;
 	}
 	static preDecrement(this1) {
-		let this2 = new ___Int64(this1.high, this1.low);
+		var this2 = new ___Int64(this1.high, this1.low);
 		this1 = this2;
 		if (this1.low == 0) {
-			let ret = this1.high--;
+			var ret = this1.high--;
 			this1.high = this1.high | 0;
 		};
-		let ret = this1.low--;
+		var ret1 = this1.low--;
 		this1.low = this1.low | 0;
 		return this1;
 	}
 	static postDecrement(this1) {
-		let ret = this1;
-		let this2 = new ___Int64(this1.high, this1.low);
+		var ret = this1;
+		var this2 = new ___Int64(this1.high, this1.low);
 		this1 = this2;
 		if (this1.low == 0) {
-			let ret = this1.high--;
+			var ret1 = this1.high--;
 			this1.high = this1.high | 0;
 		};
-		let ret1 = this1.low--;
+		var ret2 = this1.low--;
 		this1.low = this1.low | 0;
 		return ret;
 	}
@@ -400,25 +397,25 @@ class Int64_Impl_ {
 	Returns the sum of `a` and `b`.
 	*/
 	static add(a, b) {
-		let high = a.high + b.high | 0;
-		let low = a.low + b.low | 0;
+		var high = a.high + b.high | 0;
+		var low = a.low + b.low | 0;
 		if (Int32_Impl_.ucompare(low, a.low) < 0) {
-			let ret = high++;
+			var ret = high++;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	static addInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let high = a.high + b_high | 0;
-		let low = a.low + b_low | 0;
+		var b_high = b >> 31;
+		var b_low = b;
+		var high = a.high + b_high | 0;
+		var low = a.low + b_low | 0;
 		if (Int32_Impl_.ucompare(low, a.low) < 0) {
-			let ret = high++;
+			var ret = high++;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	
@@ -426,37 +423,37 @@ class Int64_Impl_ {
 	Returns `a` minus `b`.
 	*/
 	static sub(a, b) {
-		let high = a.high - b.high | 0;
-		let low = a.low - b.low | 0;
+		var high = a.high - b.high | 0;
+		var low = a.low - b.low | 0;
 		if (Int32_Impl_.ucompare(a.low, b.low) < 0) {
-			let ret = high--;
+			var ret = high--;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	static subInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let high = a.high - b_high | 0;
-		let low = a.low - b_low | 0;
+		var b_high = b >> 31;
+		var b_low = b;
+		var high = a.high - b_high | 0;
+		var low = a.low - b_low | 0;
 		if (Int32_Impl_.ucompare(a.low, b_low) < 0) {
-			let ret = high--;
+			var ret = high--;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	static intSub(a, b) {
-		let a_high = a >> 31;
-		let a_low = a;
-		let high = a_high - b.high | 0;
-		let low = a_low - b.low | 0;
+		var a_high = a >> 31;
+		var a_low = a;
+		var high = a_high - b.high | 0;
+		var low = a_low - b.low | 0;
 		if (Int32_Impl_.ucompare(a_low, b.low) < 0) {
-			let ret = high--;
+			var ret = high--;
 			high = high | 0;
 		};
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	
@@ -464,61 +461,61 @@ class Int64_Impl_ {
 	Returns the product of `a` and `b`.
 	*/
 	static mul(a, b) {
-		let mask = 65535;
-		let al = a.low & mask;
-		let ah = a.low >>> 16;
-		let bl = b.low & mask;
-		let bh = b.low >>> 16;
-		let p00 = Int32_Impl_._mul(al, bl);
-		let p10 = Int32_Impl_._mul(ah, bl);
-		let p01 = Int32_Impl_._mul(al, bh);
-		let p11 = Int32_Impl_._mul(ah, bh);
-		let low = p00;
-		let high = (p11 + (p01 >>> 16) | 0) + (p10 >>> 16) | 0;
-		p01 <<= 16;
+		var mask = 65535;
+		var al = a.low & mask;
+		var ah = a.low >>> 16;
+		var bl = b.low & mask;
+		var bh = b.low >>> 16;
+		var p00 = Int32_Impl_._mul(al, bl);
+		var p10 = Int32_Impl_._mul(ah, bl);
+		var p01 = Int32_Impl_._mul(al, bh);
+		var p11 = Int32_Impl_._mul(ah, bh);
+		var low = p00;
+		var high = (p11 + (p01 >>> 16) | 0) + (p10 >>> 16) | 0;
+		p01 = p01 << 16;
 		low = low + p01 | 0;
 		if (Int32_Impl_.ucompare(low, p01) < 0) {
-			let ret = high++;
+			var ret = high++;
 			high = high | 0;
 		};
-		p10 <<= 16;
+		p10 = p10 << 16;
 		low = low + p10 | 0;
 		if (Int32_Impl_.ucompare(low, p10) < 0) {
-			let ret = high++;
+			var ret1 = high++;
 			high = high | 0;
 		};
 		high = high + (Int32_Impl_._mul(a.low, b.high) + Int32_Impl_._mul(a.high, b.low) | 0) | 0;
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	static mulInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let mask = 65535;
-		let al = a.low & mask;
-		let ah = a.low >>> 16;
-		let bl = b_low & mask;
-		let bh = b_low >>> 16;
-		let p00 = Int32_Impl_._mul(al, bl);
-		let p10 = Int32_Impl_._mul(ah, bl);
-		let p01 = Int32_Impl_._mul(al, bh);
-		let p11 = Int32_Impl_._mul(ah, bh);
-		let low = p00;
-		let high = (p11 + (p01 >>> 16) | 0) + (p10 >>> 16) | 0;
-		p01 <<= 16;
+		var b_high = b >> 31;
+		var b_low = b;
+		var mask = 65535;
+		var al = a.low & mask;
+		var ah = a.low >>> 16;
+		var bl = b_low & mask;
+		var bh = b_low >>> 16;
+		var p00 = Int32_Impl_._mul(al, bl);
+		var p10 = Int32_Impl_._mul(ah, bl);
+		var p01 = Int32_Impl_._mul(al, bh);
+		var p11 = Int32_Impl_._mul(ah, bh);
+		var low = p00;
+		var high = (p11 + (p01 >>> 16) | 0) + (p10 >>> 16) | 0;
+		p01 = p01 << 16;
 		low = low + p01 | 0;
 		if (Int32_Impl_.ucompare(low, p01) < 0) {
-			let ret = high++;
+			var ret = high++;
 			high = high | 0;
 		};
-		p10 <<= 16;
+		p10 = p10 << 16;
 		low = low + p10 | 0;
 		if (Int32_Impl_.ucompare(low, p10) < 0) {
-			let ret = high++;
+			var ret1 = high++;
 			high = high | 0;
 		};
 		high = high + (Int32_Impl_._mul(a.low, b_high) + Int32_Impl_._mul(a.high, b_low) | 0) | 0;
-		let this1 = new ___Int64(high, low);
+		var this1 = new ___Int64(high, low);
 		return this1;
 	}
 	
@@ -529,17 +526,17 @@ class Int64_Impl_ {
 		return Int64_Impl_.divMod(a, b).quotient;
 	}
 	static divInt(a, b) {
-		let this1 = new ___Int64(b >> 31, b);
+		var this1 = new ___Int64(b >> 31, b);
 		return Int64_Impl_.divMod(a, this1).quotient;
 	}
 	static intDiv(a, b) {
-		let this1 = new ___Int64(a >> 31, a);
-		let x = Int64_Impl_.divMod(this1, b).quotient;
+		var this1 = new ___Int64(a >> 31, a);
+		var x = Int64_Impl_.divMod(this1, b).quotient;
 		if (x.high != x.low >> 31) {
-			throw Exception.thrown("Overflow");
+			throw new HaxeError("Overflow");
 		};
-		let x1 = x.low;
-		let this2 = new ___Int64(x1 >> 31, x1);
+		var x1 = x.low;
+		var this2 = new ___Int64(x1 >> 31, x1);
 		return this2;
 	}
 	
@@ -550,23 +547,23 @@ class Int64_Impl_ {
 		return Int64_Impl_.divMod(a, b).modulus;
 	}
 	static modInt(a, b) {
-		let this1 = new ___Int64(b >> 31, b);
-		let x = Int64_Impl_.divMod(a, this1).modulus;
+		var this1 = new ___Int64(b >> 31, b);
+		var x = Int64_Impl_.divMod(a, this1).modulus;
 		if (x.high != x.low >> 31) {
-			throw Exception.thrown("Overflow");
+			throw new HaxeError("Overflow");
 		};
-		let x1 = x.low;
-		let this2 = new ___Int64(x1 >> 31, x1);
+		var x1 = x.low;
+		var this2 = new ___Int64(x1 >> 31, x1);
 		return this2;
 	}
 	static intMod(a, b) {
-		let this1 = new ___Int64(a >> 31, a);
-		let x = Int64_Impl_.divMod(this1, b).modulus;
+		var this1 = new ___Int64(a >> 31, a);
+		var x = Int64_Impl_.divMod(this1, b).modulus;
 		if (x.high != x.low >> 31) {
-			throw Exception.thrown("Overflow");
+			throw new HaxeError("Overflow");
 		};
-		let x1 = x.low;
-		let this2 = new ___Int64(x1 >> 31, x1);
+		var x1 = x.low;
+		var this2 = new ___Int64(x1 >> 31, x1);
 		return this2;
 	}
 	
@@ -581,8 +578,8 @@ class Int64_Impl_ {
 		};
 	}
 	static eqInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
+		var b_high = b >> 31;
+		var b_low = b;
 		if (a.high == b_high) {
 			return a.low == b_low;
 		} else {
@@ -594,119 +591,95 @@ class Int64_Impl_ {
 	Returns `true` if `a` is not equal to `b`.
 	*/
 	static neq(a, b) {
-		if (a.high == b.high) {
+		if (!(a.high != b.high)) {
 			return a.low != b.low;
 		} else {
 			return true;
 		};
 	}
 	static neqInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		if (a.high == b_high) {
+		var b_high = b >> 31;
+		var b_low = b;
+		if (!(a.high != b_high)) {
 			return a.low != b_low;
 		} else {
 			return true;
 		};
 	}
 	static lt(a, b) {
-		let v = a.high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b.low);
-		};
+		var v = a.high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b.low);
 		return ((a.high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) < 0;
 	}
 	static ltInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let v = a.high - b_high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b_low);
-		};
+		var b_high = b >> 31;
+		var b_low = b;
+		var v = a.high - b_high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b_low);
 		return ((a.high < 0) ? (b_high < 0) ? v : -1 : (b_high >= 0) ? v : 1) < 0;
 	}
 	static intLt(a, b) {
-		let a_high = a >> 31;
-		let a_low = a;
-		let v = a_high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a_low, b.low);
-		};
+		var a_high = a >> 31;
+		var a_low = a;
+		var v = a_high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a_low, b.low);
 		return ((a_high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) < 0;
 	}
 	static lte(a, b) {
-		let v = a.high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b.low);
-		};
+		var v = a.high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b.low);
 		return ((a.high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) <= 0;
 	}
 	static lteInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let v = a.high - b_high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b_low);
-		};
+		var b_high = b >> 31;
+		var b_low = b;
+		var v = a.high - b_high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b_low);
 		return ((a.high < 0) ? (b_high < 0) ? v : -1 : (b_high >= 0) ? v : 1) <= 0;
 	}
 	static intLte(a, b) {
-		let a_high = a >> 31;
-		let a_low = a;
-		let v = a_high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a_low, b.low);
-		};
+		var a_high = a >> 31;
+		var a_low = a;
+		var v = a_high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a_low, b.low);
 		return ((a_high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) <= 0;
 	}
 	static gt(a, b) {
-		let v = a.high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b.low);
-		};
+		var v = a.high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b.low);
 		return ((a.high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) > 0;
 	}
 	static gtInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let v = a.high - b_high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b_low);
-		};
+		var b_high = b >> 31;
+		var b_low = b;
+		var v = a.high - b_high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b_low);
 		return ((a.high < 0) ? (b_high < 0) ? v : -1 : (b_high >= 0) ? v : 1) > 0;
 	}
 	static intGt(a, b) {
-		let a_high = a >> 31;
-		let a_low = a;
-		let v = a_high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a_low, b.low);
-		};
+		var a_high = a >> 31;
+		var a_low = a;
+		var v = a_high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a_low, b.low);
 		return ((a_high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) > 0;
 	}
 	static gte(a, b) {
-		let v = a.high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b.low);
-		};
+		var v = a.high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b.low);
 		return ((a.high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) >= 0;
 	}
 	static gteInt(a, b) {
-		let b_high = b >> 31;
-		let b_low = b;
-		let v = a.high - b_high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a.low, b_low);
-		};
+		var b_high = b >> 31;
+		var b_low = b;
+		var v = a.high - b_high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a.low, b_low);
 		return ((a.high < 0) ? (b_high < 0) ? v : -1 : (b_high >= 0) ? v : 1) >= 0;
 	}
 	static intGte(a, b) {
-		let a_high = a >> 31;
-		let a_low = a;
-		let v = a_high - b.high | 0;
-		if (v == 0) {
-			v = Int32_Impl_.ucompare(a_low, b.low);
-		};
+		var a_high = a >> 31;
+		var a_low = a;
+		var v = a_high - b.high | 0;
+		v = (v != 0) ? v : Int32_Impl_.ucompare(a_low, b.low);
 		return ((a_high < 0) ? (b.high < 0) ? v : -1 : (b.high >= 0) ? v : 1) >= 0;
 	}
 	
@@ -714,7 +687,7 @@ class Int64_Impl_ {
 	Returns the bitwise NOT of `a`.
 	*/
 	static complement(a) {
-		let this1 = new ___Int64(~a.high, ~a.low);
+		var this1 = new ___Int64(~a.high, ~a.low);
 		return this1;
 	}
 	
@@ -722,7 +695,7 @@ class Int64_Impl_ {
 	Returns the bitwise AND of `a` and `b`.
 	*/
 	static and(a, b) {
-		let this1 = new ___Int64(a.high & b.high, a.low & b.low);
+		var this1 = new ___Int64(a.high & b.high, a.low & b.low);
 		return this1;
 	}
 	
@@ -730,7 +703,7 @@ class Int64_Impl_ {
 	Returns the bitwise OR of `a` and `b`.
 	*/
 	static or(a, b) {
-		let this1 = new ___Int64(a.high | b.high, a.low | b.low);
+		var this1 = new ___Int64(a.high | b.high, a.low | b.low);
 		return this1;
 	}
 	
@@ -738,7 +711,7 @@ class Int64_Impl_ {
 	Returns the bitwise XOR of `a` and `b`.
 	*/
 	static xor(a, b) {
-		let this1 = new ___Int64(a.high ^ b.high, a.low ^ b.low);
+		var this1 = new ___Int64(a.high ^ b.high, a.low ^ b.low);
 		return this1;
 	}
 	
@@ -748,14 +721,14 @@ class Int64_Impl_ {
 	static shl(a, b) {
 		b &= 63;
 		if (b == 0) {
-			let this1 = new ___Int64(a.high, a.low);
+			var this1 = new ___Int64(a.high, a.low);
 			return this1;
 		} else if (b < 32) {
-			let this1 = new ___Int64(a.high << b | a.low >>> 32 - b, a.low << b);
-			return this1;
+			var this2 = new ___Int64(a.high << b | a.low >>> 32 - b, a.low << b);
+			return this2;
 		} else {
-			let this1 = new ___Int64(a.low << b - 32, 0);
-			return this1;
+			var this3 = new ___Int64(a.low << b - 32, 0);
+			return this3;
 		};
 	}
 	
@@ -766,14 +739,14 @@ class Int64_Impl_ {
 	static shr(a, b) {
 		b &= 63;
 		if (b == 0) {
-			let this1 = new ___Int64(a.high, a.low);
+			var this1 = new ___Int64(a.high, a.low);
 			return this1;
 		} else if (b < 32) {
-			let this1 = new ___Int64(a.high >> b, a.high << 32 - b | a.low >>> b);
-			return this1;
+			var this2 = new ___Int64(a.high >> b, a.high << 32 - b | a.low >>> b);
+			return this2;
 		} else {
-			let this1 = new ___Int64(a.high >> 31, a.high >> b - 32);
-			return this1;
+			var this3 = new ___Int64(a.high >> 31, a.high >> b - 32);
+			return this3;
 		};
 	}
 	
@@ -784,14 +757,14 @@ class Int64_Impl_ {
 	static ushr(a, b) {
 		b &= 63;
 		if (b == 0) {
-			let this1 = new ___Int64(a.high, a.low);
+			var this1 = new ___Int64(a.high, a.low);
 			return this1;
 		} else if (b < 32) {
-			let this1 = new ___Int64(a.high >>> b, a.high << 32 - b | a.low >>> b);
-			return this1;
+			var this2 = new ___Int64(a.high >>> b, a.high << 32 - b | a.low >>> b);
+			return this2;
 		} else {
-			let this1 = new ___Int64(0, a.high >>> b - 32);
-			return this1;
+			var this3 = new ___Int64(0, a.high >>> b - 32);
+			return this3;
 		};
 	}
 	static get high() {

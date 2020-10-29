@@ -1,8 +1,8 @@
+import {HaxeError} from "../../js/Boot"
 import {BytesOutput} from "../io/BytesOutput"
 import {Bytes} from "../io/Bytes"
 import {List} from "../ds/List"
 import {Crc32} from "../crypto/Crc32"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const Writer = Register.global("$hxClasses")["haxe.zip.Writer"] = 
@@ -12,24 +12,24 @@ class Writer extends Register.inherits() {
 		this.files = new List();
 	}
 	writeZipDate(date) {
-		let hour = date.getHours();
-		let min = date.getMinutes();
-		let sec = date.getSeconds() >> 1;
+		var hour = date.getHours();
+		var min = date.getMinutes();
+		var sec = date.getSeconds() >> 1;
 		this.o.writeUInt16(hour << 11 | min << 5 | sec);
-		let year = date.getFullYear() - 1980;
-		let month = date.getMonth() + 1;
-		let day = date.getDate();
+		var year = date.getFullYear() - 1980;
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
 		this.o.writeUInt16(year << 9 | month << 5 | day);
 	}
 	writeEntryHeader(f) {
-		let o = this.o;
-		let flags = 0;
+		var o = this.o;
+		var flags = 0;
 		if (f.extraFields != null) {
-			let _g_head = f.extraFields.h;
+			var _g_head = f.extraFields.h;
 			while (_g_head != null) {
-				let val = _g_head.item;
+				var val = _g_head.item;
 				_g_head = _g_head.next;
-				let e = val;
+				var e = val;
 				if (e._hx_index == 2) {
 					flags |= 2048;
 				};
@@ -47,7 +47,7 @@ class Writer extends Register.inherits() {
 		} else {
 			if (f.crc32 == null) {
 				if (f.compressed) {
-					throw Exception.thrown("CRC32 must be processed before compression");
+					throw new HaxeError("CRC32 must be processed before compression");
 				};
 				f.crc32 = Crc32.make(f.data);
 			};
@@ -62,30 +62,30 @@ class Writer extends Register.inherits() {
 		o.writeInt32(f.dataSize);
 		o.writeInt32(f.fileSize);
 		o.writeUInt16(f.fileName.length);
-		let e = new BytesOutput();
+		var e1 = new BytesOutput();
 		if (f.extraFields != null) {
-			let _g_head = f.extraFields.h;
-			while (_g_head != null) {
-				let val = _g_head.item;
-				_g_head = _g_head.next;
-				let f = val;
-				switch (f._hx_index) {
+			var _g_head1 = f.extraFields.h;
+			while (_g_head1 != null) {
+				var val1 = _g_head1.item;
+				_g_head1 = _g_head1.next;
+				var f1 = val1;
+				switch (f1._hx_index) {
 					case 0:
-						let bytes = f.bytes;
-						let tag = f.tag;
-						e.writeUInt16(tag);
-						e.writeUInt16(bytes.length);
-						e.write(bytes);
+						var bytes = f1.bytes;
+						var tag = f1.tag;
+						e1.writeUInt16(tag);
+						e1.writeUInt16(bytes.length);
+						e1.write(bytes);
 						break
 					case 1:
-						let crc = f.crc;
-						let name = f.name;
-						let namebytes = Bytes.ofString(name);
-						e.writeUInt16(28789);
-						e.writeUInt16(namebytes.length + 5);
-						e.writeByte(1);
-						e.writeInt32(crc);
-						e.write(namebytes);
+						var crc = f1.crc;
+						var name = f1.name;
+						var namebytes = Bytes.ofString(name);
+						e1.writeUInt16(28789);
+						e1.writeUInt16(namebytes.length + 5);
+						e1.writeByte(1);
+						e1.writeInt32(crc);
+						e1.write(namebytes);
 						break
 					case 2:
 						break
@@ -93,33 +93,33 @@ class Writer extends Register.inherits() {
 				};
 			};
 		};
-		let ebytes = e.getBytes();
+		var ebytes = e1.getBytes();
 		o.writeUInt16(ebytes.length);
 		o.writeString(f.fileName);
 		o.write(ebytes);
 		this.files.add({"name": f.fileName, "compressed": f.compressed, "clen": f.data.length, "size": f.fileSize, "crc": f.crc32, "date": f.fileTime, "fields": ebytes});
 	}
 	write(files) {
-		let _g_head = files.h;
+		var _g_head = files.h;
 		while (_g_head != null) {
-			let val = _g_head.item;
+			var val = _g_head.item;
 			_g_head = _g_head.next;
-			let f = val;
+			var f = val;
 			this.writeEntryHeader(f);
 			this.o.writeFullBytes(f.data, 0, f.data.length);
 		};
 		this.writeCDR();
 	}
 	writeCDR() {
-		let cdr_size = 0;
-		let cdr_offset = 0;
-		let _g_head = this.files.h;
+		var cdr_size = 0;
+		var cdr_offset = 0;
+		var _g_head = this.files.h;
 		while (_g_head != null) {
-			let val = _g_head.item;
+			var val = _g_head.item;
 			_g_head = _g_head.next;
-			let f = val;
-			let namelen = f.name.length;
-			let extraFieldsLength = f.fields.length;
+			var f = val;
+			var namelen = f.name.length;
+			var extraFieldsLength = f.fields.length;
 			this.o.writeInt32(33639248);
 			this.o.writeUInt16(20);
 			this.o.writeUInt16(20);

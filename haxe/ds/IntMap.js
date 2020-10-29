@@ -9,7 +9,7 @@ class IntMap extends Register.inherits(EsMap) {
 		super.new();
 	}
 	copy() {
-		let copied = new EsMap();
+		var copied = new EsMap();
 		copied.inst = new Map(this.inst);
 		return copied;
 	}

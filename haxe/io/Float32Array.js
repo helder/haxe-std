@@ -1,5 +1,5 @@
+import {HaxeError} from "../../js/Boot"
 import {Error} from "./Error"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 
 export const Float32Array_Impl_ = Register.global("$hxClasses")["haxe.io._Float32Array.Float32Array_Impl_"] = 
@@ -11,7 +11,7 @@ class Float32Array_Impl_ {
 		return this.get_view()
 	}
 	static _new(elements) {
-		let this1 = new Float32Array(elements);
+		var this1 = new Float32Array(elements);
 		return this1;
 	}
 	static get_length(this1) {
@@ -43,17 +43,17 @@ class Float32Array_Impl_ {
 			length = a.length - pos;
 		};
 		if (pos < 0 || length < 0 || pos + length > a.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
 		if (pos == 0 && length == a.length) {
 			return new Float32Array(a);
 		};
-		let this1 = new Float32Array(a.length);
-		let i = this1;
-		let _g = 0;
-		let _g1 = length;
+		var this1 = new Float32Array(a.length);
+		var i = this1;
+		var _g = 0;
+		var _g1 = length;
 		while (_g < _g1) {
-			let idx = _g++;
+			var idx = _g++;
 			i[idx] = a[idx + pos];
 		};
 		return i;

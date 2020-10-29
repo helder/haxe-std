@@ -47,21 +47,21 @@ class StringTools {
 	- `'` becomes `&#039`;
 	*/
 	static htmlEscape(s, quotes = null) {
-		let buf_b = "";
-		let _g_offset = 0;
-		let _g_s = s;
+		var buf_b = "";
+		var _g_offset = 0;
+		var _g_s = s;
 		while (_g_offset < _g_s.length) {
-			let s = _g_s;
-			let index = _g_offset++;
-			let c = s.charCodeAt(index);
+			var s1 = _g_s;
+			var index = _g_offset++;
+			var c = s1.charCodeAt(index);
 			if (c >= 55296 && c <= 56319) {
-				c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
+				c = c - 55232 << 10 | s1.charCodeAt(index + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (c1 >= 65536) {
 				++_g_offset;
 			};
-			let code = c1;
+			var code = c1;
 			switch (code) {
 				case 34:
 					if (quotes) {
@@ -144,8 +144,8 @@ class StringTools {
 	If `end` is the empty String `""`, the result is true.
 	*/
 	static endsWith(s, end) {
-		let elen = end.length;
-		let slen = s.length;
+		var elen = end.length;
+		var slen = s.length;
 		if (slen >= elen) {
 			return s.indexOf(end, slen - elen) == slen - elen;
 		} else {
@@ -163,7 +163,7 @@ class StringTools {
 	`s`, the result is false.
 	*/
 	static isSpace(s, pos) {
-		let c = HxOverrides.cca(s, pos);
+		var c = HxOverrides.cca(s, pos);
 		if (!(c > 8 && c < 14)) {
 			return c == 32;
 		} else {
@@ -181,8 +181,8 @@ class StringTools {
 	result is the empty String `""`.
 	*/
 	static ltrim(s) {
-		let l = s.length;
-		let r = 0;
+		var l = s.length;
+		var r = 0;
 		while (r < l && StringTools.isSpace(s, r)) ++r;
 		if (r > 0) {
 			return HxOverrides.substr(s, r, l - r);
@@ -201,8 +201,8 @@ class StringTools {
 	result is the empty String `""`.
 	*/
 	static rtrim(s) {
-		let l = s.length;
-		let r = 0;
+		var l = s.length;
+		var r = 0;
 		while (r < l && StringTools.isSpace(s, l - r - 1)) ++r;
 		if (r > 0) {
 			return HxOverrides.substr(s, 0, l - r);
@@ -236,7 +236,7 @@ class StringTools {
 		if (c.length <= 0) {
 			return s;
 		};
-		let buf_b = "";
+		var buf_b = "";
 		l -= s.length;
 		while (buf_b.length < l) buf_b += (c == null) ? "null" : "" + c;
 		buf_b += (s == null) ? "null" : "" + s;
@@ -259,7 +259,7 @@ class StringTools {
 		if (c.length <= 0) {
 			return s;
 		};
-		let buf_b = "";
+		var buf_b = "";
 		buf_b += (s == null) ? "null" : "" + s;
 		while (buf_b.length < l) buf_b += (c == null) ? "null" : "" + c;
 		return buf_b;
@@ -286,8 +286,8 @@ class StringTools {
 	its `length` equals `digits`.
 	*/
 	static hex(n, digits = null) {
-		let s = "";
-		let hexChars = "0123456789ABCDEF";
+		var s = "";
+		var hexChars = "0123456789ABCDEF";
 		while (true) {
 			s = hexChars.charAt(n & 15) + s;
 			n >>>= 4;
@@ -377,30 +377,30 @@ class StringTools {
 	```
 	*/
 	static quoteWinArg(argument, escapeMetaCharacters) {
-		let argument1 = argument;
+		var argument1 = argument;
 		if (!new EReg("^[^ \t\\\\\"]+$", "").match(argument1)) {
-			let result_b = "";
-			let needquote = argument1.indexOf(" ") != -1 || argument1.indexOf("\t") != -1 || argument1 == "";
+			var result_b = "";
+			var needquote = argument1.indexOf(" ") != -1 || argument1.indexOf("\t") != -1 || argument1 == "";
 			if (needquote) {
 				result_b += "\"";
 			};
-			let bs_buf = new StringBuf();
-			let _g = 0;
-			let _g1 = argument1.length;
+			var bs_buf = new StringBuf();
+			var _g = 0;
+			var _g1 = argument1.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let _g1 = HxOverrides.cca(argument1, i);
-				if (_g1 == null) {
-					let c = _g1;
+				var i = _g++;
+				var _g2 = HxOverrides.cca(argument1, i);
+				if (_g2 == null) {
+					var c = _g2;
 					if (bs_buf.b.length > 0) {
 						result_b += Std.string(bs_buf.b);
 						bs_buf = new StringBuf();
 					};
 					result_b += String.fromCodePoint(c);
 				} else {
-					switch (_g1) {
+					switch (_g2) {
 						case 34:
-							let bs = bs_buf.b;
+							var bs = bs_buf.b;
 							result_b += Std.string(bs);
 							result_b += Std.string(bs);
 							bs_buf = new StringBuf();
@@ -410,12 +410,12 @@ class StringTools {
 							bs_buf.b += "\\";
 							break
 						default:
-						let c = _g1;
+						var c1 = _g2;
 						if (bs_buf.b.length > 0) {
 							result_b += Std.string(bs_buf.b);
 							bs_buf = new StringBuf();
 						};
-						result_b += String.fromCodePoint(c);
+						result_b += String.fromCodePoint(c1);
 						
 					};
 				};
@@ -428,24 +428,24 @@ class StringTools {
 			argument1 = result_b;
 		};
 		if (escapeMetaCharacters) {
-			let result_b = "";
-			let _g = 0;
-			let _g1 = argument1.length;
-			while (_g < _g1) {
-				let i = _g++;
-				let c = HxOverrides.cca(argument1, i);
-				if (SysTools.winMetaCharacters.indexOf(c) >= 0) {
-					result_b += String.fromCodePoint(94);
+			var result_b1 = "";
+			var _g3 = 0;
+			var _g11 = argument1.length;
+			while (_g3 < _g11) {
+				var i1 = _g3++;
+				var c2 = HxOverrides.cca(argument1, i1);
+				if (SysTools.winMetaCharacters.indexOf(c2) >= 0) {
+					result_b1 += String.fromCodePoint(94);
 				};
-				result_b += String.fromCodePoint(c);
+				result_b1 += String.fromCodePoint(c2);
 			};
-			return result_b;
+			return result_b1;
 		} else {
 			return argument1;
 		};
 	}
 	static utf16CodePointAt(s, index) {
-		let c = s.charCodeAt(index);
+		var c = s.charCodeAt(index);
 		if (c >= 55296 && c <= 56319) {
 			c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
 		};

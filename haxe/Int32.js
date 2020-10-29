@@ -10,7 +10,7 @@ class Int32_Impl_ {
 		return this1;
 	}
 	static postIncrement(this1) {
-		let ret = this1++;
+		var ret = this1++;
 		this1 |= 0;
 		return ret;
 	}
@@ -19,7 +19,7 @@ class Int32_Impl_ {
 		return this1;
 	}
 	static postDecrement(this1) {
-		let ret = this1--;
+		var ret = this1--;
 		this1 |= 0;
 		return ret;
 	}

@@ -28,19 +28,19 @@ class HttpNodeJs extends Register.inherits(HttpBase) {
 	request(post = null) {
 		this.responseAsString = null;
 		this.responseBytes = null;
-		let parsedUrl = Url.parse(this.url);
-		let _gthis = this;
-		let secure = parsedUrl.protocol == "https:";
-		let host = parsedUrl.hostname;
-		let path = parsedUrl.path;
-		let port = (parsedUrl.port != null) ? Std.parseInt(parsedUrl.port) : (secure) ? 443 : 80;
-		let h = {};
-		let _g = 0;
-		let _g1 = this.headers;
+		var parsedUrl = Url.parse(this.url);
+		var _gthis = this;
+		var secure = parsedUrl.protocol == "https:";
+		var host = parsedUrl.hostname;
+		var path = parsedUrl.path;
+		var port = (parsedUrl.port != null) ? Std.parseInt(parsedUrl.port) : (secure) ? 443 : 80;
+		var h = {};
+		var _g = 0;
+		var _g1 = this.headers;
 		while (_g < _g1.length) {
-			let i = _g1[_g];
+			var i = _g1[_g];
 			++_g;
-			let arr = Reflect.field(h, i.name);
+			var arr = Reflect.field(h, i.name);
 			if (arr == null) {
 				arr = new Array();
 				h[i.name] = arr;
@@ -50,46 +50,47 @@ class HttpNodeJs extends Register.inherits(HttpBase) {
 		if (this.postData != null || this.postBytes != null) {
 			post = true;
 		};
-		let uri = null;
-		let _g2 = 0;
-		let _g3 = this.params;
+		var uri = null;
+		var _g2 = 0;
+		var _g3 = this.params;
 		while (_g2 < _g3.length) {
-			let p = _g3[_g2];
+			var p = _g3[_g2];
 			++_g2;
 			if (uri == null) {
 				uri = "";
 			} else {
 				uri += "&";
 			};
-			let s = p.name;
-			let uri1 = encodeURIComponent(s) + "=";
-			let s1 = p.value;
+			var s = p.name;
+			var uri1 = encodeURIComponent(s) + "=";
+			var s1 = p.value;
 			uri += uri1 + encodeURIComponent(s1);
 		};
-		let question = path.split("?").length <= 1;
+		var question = path.split("?").length <= 1;
 		if (uri != null) {
 			path += ((question) ? "?" : "&") + uri;
 		};
-		let opts = {"protocol": parsedUrl.protocol, "hostname": host, "port": port, "method": (post) ? "POST" : "GET", "path": path, "headers": h};
-		let httpResponse = function (res) {
+		var opts = {"protocol": parsedUrl.protocol, "hostname": host, "port": port, "method": (post) ? "POST" : "GET", "path": path, "headers": h};
+		var httpResponse = function (res) {
 			res.setEncoding("binary");
-			let s = res.statusCode;
-			if (s != null) {
-				_gthis.onStatus(s);
+			var s2 = res.statusCode;
+			if (s2 != null) {
+				_gthis.onStatus(s2);
 			};
-			let data = [];
+			var data = [];
 			res.on("data", function (chunk) {
-				data.push(Buffer.from(chunk, "binary"));
+				var httpResponse1 = Buffer.from(chunk, "binary");
+				data.push(httpResponse1);
 			});
 			res.on("end", function (_) {
-				let buf = (data.length == 1) ? data[0] : Buffer.concat(data);
-				let httpResponse = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-				_gthis.responseBytes = Bytes.ofData(httpResponse);
+				var buf = (data.length == 1) ? data[0] : Buffer.concat(data);
+				var httpResponse2 = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+				_gthis.responseBytes = Bytes.ofData(httpResponse2);
 				_gthis.req = null;
-				if (s != null && s >= 200 && s < 400) {
+				if (s2 != null && s2 >= 200 && s2 < 400) {
 					_gthis.success(_gthis.responseBytes);
 				} else {
-					_gthis.onError("Http Error #" + s);
+					_gthis.onError("Http Error #" + s2);
 				};
 			});
 		};

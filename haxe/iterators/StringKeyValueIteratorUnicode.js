@@ -29,13 +29,13 @@ class StringKeyValueIteratorUnicode extends Register.inherits() {
 	See `Iterator.next`
 	*/
 	next() {
-		let s = this.s;
-		let index = this.byteOffset++;
-		let c = s.charCodeAt(index);
+		var s = this.s;
+		var index = this.byteOffset++;
+		var c = s.charCodeAt(index);
 		if (c >= 55296 && c <= 56319) {
 			c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
 		};
-		let c1 = c;
+		var c1 = c;
 		if (c1 >= 65536) {
 			this.byteOffset++;
 		};

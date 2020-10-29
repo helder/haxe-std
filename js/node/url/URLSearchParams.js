@@ -9,7 +9,7 @@ class URLSearchParamsEntry_Impl_ {
 		return this.get_value()
 	}
 	static _new(name, value) {
-		let this1 = [name, value];
+		var this1 = [name, value];
 		return this1;
 	}
 	static get_name(this1) {

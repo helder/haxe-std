@@ -1,4 +1,5 @@
-import {NativeStackTrace} from "./haxe/NativeStackTrace"
+import {HaxeError} from "./js/Boot"
+import {CallStack} from "./haxe/CallStack"
 import {Register} from "./genes/Register"
 
 /**
@@ -32,12 +33,16 @@ class Reflect {
 	to `Reflect.getProperty` for a function supporting property accessors.
 	
 	If `field` is null, the result is unspecified.
+	
+	(As3) If used on a property field, the getter will be invoked. It is
+	not possible to obtain the value directly.
 	*/
 	static field(o, field) {
 		try {
 			return o[field];
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
 			return null;
 		};
 	}
@@ -49,6 +54,9 @@ class Reflect {
 	work for anonymous structures.
 	
 	If `o` or `field` are null, the result is unspecified.
+	
+	(As3) If used on a property field, the setter will be invoked. It is
+	not possible to set the value directly.
 	*/
 	static setField(o, field, value) {
 		o[field] = value;
@@ -64,11 +72,11 @@ class Reflect {
 	If `o` or `field` are null, the result is unspecified.
 	*/
 	static getProperty(o, field) {
-		let tmp;
+		var tmp;
 		if (o == null) {
 			return null;
 		} else {
-			let tmp1;
+			var tmp1;
 			if (o.__properties__) {
 				tmp = o.__properties__["get_" + field];
 				tmp1 = tmp;
@@ -93,8 +101,8 @@ class Reflect {
 	If `field` is null, the result is unspecified.
 	*/
 	static setProperty(o, field, value) {
-		let tmp;
-		let tmp1;
+		var tmp;
+		var tmp1;
 		if (o.__properties__) {
 			tmp = o.__properties__["set_" + field];
 			tmp1 = tmp;
@@ -134,9 +142,9 @@ class Reflect {
 	If `o` is null, the result is unspecified.
 	*/
 	static fields(o) {
-		let a = [];
+		var a = [];
 		if (o != null) {
-			let hasOwnProperty = Object.prototype.hasOwnProperty;
+			var hasOwnProperty = Object.prototype.hasOwnProperty;
 			for( var f in o ) {;
 			if (f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o, f)) {
 				a.push(f);
@@ -232,7 +240,7 @@ class Reflect {
 		if (v == null) {
 			return false;
 		};
-		let t = typeof(v);
+		var t = typeof(v);
 		if (!(t == "string" || t == "object" && v.__enum__ == null)) {
 			if (t == "function") {
 				return (v.__name__ || v.__ename__) != null;
@@ -286,11 +294,11 @@ class Reflect {
 		if (o == null) {
 			return null;
 		};
-		let o2 = {};
-		let _g = 0;
-		let _g1 = Reflect.fields(o);
+		var o2 = {};
+		var _g = 0;
+		var _g1 = Reflect.fields(o);
 		while (_g < _g1.length) {
-			let f = _g1[_g];
+			var f = _g1[_g];
 			++_g;
 			o2[f] = Reflect.field(o, f);
 		};
@@ -303,10 +311,8 @@ class Reflect {
 	*/
 	static makeVarArgs(f) {
 		return function () {
-			let a = Array.prototype.slice;
-			let a1 = arguments;
-			let a2 = a.call(a1);
-			return f(a2);
+			var a = Array.prototype.slice.call(arguments);
+			return f(a);
 		};
 	}
 	static get __name__() {

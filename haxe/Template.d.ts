@@ -1,6 +1,6 @@
-import {ArrayIterator} from "./iterators/ArrayIterator"
 import {List} from "./ds/List"
 import {StringBuf} from "../StringBuf"
+import {Iterator} from "../StdTypes"
 import {EReg} from "../EReg"
 
 export declare namespace TemplateExpr {

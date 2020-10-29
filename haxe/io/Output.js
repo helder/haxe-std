@@ -1,9 +1,9 @@
+import {HaxeError} from "../../js/Boot"
 import {FPHelper} from "./FPHelper"
 import {Error} from "./Error"
 import {Eof} from "./Eof"
 import {Bytes} from "./Bytes"
-import {NativeStackTrace} from "../NativeStackTrace"
-import {Exception} from "../Exception"
+import {CallStack} from "../CallStack"
 import {Register} from "../../genes/Register"
 
 /**
@@ -19,7 +19,7 @@ class Output {
 	Write one byte.
 	*/
 	writeByte(c) {
-		throw Exception.thrown("Not implemented");
+		throw new HaxeError("Not implemented");
 	}
 	
 	/**
@@ -31,10 +31,10 @@ class Output {
 	*/
 	writeBytes(s, pos, len) {
 		if (pos < 0 || len < 0 || pos + len > s.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw new HaxeError(Error.OutsideBounds);
 		};
-		let b = s.b;
-		let k = len;
+		var b = s.b;
+		var k = len;
 		while (k > 0) {
 			this.writeByte(b[pos]);
 			++pos;
@@ -65,12 +65,12 @@ class Output {
 	Write all bytes stored in `s`.
 	*/
 	write(s) {
-		let l = s.length;
-		let p = 0;
+		var l = s.length;
+		var p = 0;
 		while (l > 0) {
-			let k = this.writeBytes(s, p, l);
+			var k = this.writeBytes(s, p, l);
 			if (k == 0) {
-				throw Exception.thrown(Error.Blocked);
+				throw new HaxeError(Error.Blocked);
 			};
 			p += k;
 			l -= k;
@@ -84,7 +84,7 @@ class Output {
 	*/
 	writeFullBytes(s, pos, len) {
 		while (len > 0) {
-			let k = this.writeBytes(s, pos, len);
+			var k = this.writeBytes(s, pos, len);
 			pos += k;
 			len -= k;
 		};
@@ -105,7 +105,7 @@ class Output {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	writeDouble(x) {
-		let i64 = FPHelper.doubleToI64(x);
+		var i64 = FPHelper.doubleToI64(x);
 		if (this.bigEndian) {
 			this.writeInt32(i64.high);
 			this.writeInt32(i64.low);
@@ -120,7 +120,7 @@ class Output {
 	*/
 	writeInt8(x) {
 		if (x < -128 || x >= 128) {
-			throw Exception.thrown(Error.Overflow);
+			throw new HaxeError(Error.Overflow);
 		};
 		this.writeByte(x & 255);
 	}
@@ -132,7 +132,7 @@ class Output {
 	*/
 	writeInt16(x) {
 		if (x < -32768 || x >= 32768) {
-			throw Exception.thrown(Error.Overflow);
+			throw new HaxeError(Error.Overflow);
 		};
 		this.writeUInt16(x & 65535);
 	}
@@ -144,7 +144,7 @@ class Output {
 	*/
 	writeUInt16(x) {
 		if (x < 0 || x >= 65536) {
-			throw Exception.thrown(Error.Overflow);
+			throw new HaxeError(Error.Overflow);
 		};
 		if (this.bigEndian) {
 			this.writeByte(x >> 8);
@@ -162,7 +162,7 @@ class Output {
 	*/
 	writeInt24(x) {
 		if (x < -8388608 || x >= 8388608) {
-			throw Exception.thrown(Error.Overflow);
+			throw new HaxeError(Error.Overflow);
 		};
 		this.writeUInt24(x & 16777215);
 	}
@@ -174,7 +174,7 @@ class Output {
 	*/
 	writeUInt24(x) {
 		if (x < 0 || x >= 16777216) {
-			throw Exception.thrown(Error.Overflow);
+			throw new HaxeError(Error.Overflow);
 		};
 		if (this.bigEndian) {
 			this.writeByte(x >> 16);
@@ -226,27 +226,30 @@ class Output {
 		if (bufsize == null) {
 			bufsize = 4096;
 		};
-		let buf = new Bytes(new ArrayBuffer(bufsize));
+		var buf = new Bytes(new ArrayBuffer(bufsize));
 		try {
 			while (true) {
-				let len = i.readBytes(buf, 0, bufsize);
+				var len = i.readBytes(buf, 0, bufsize);
 				if (len == 0) {
-					throw Exception.thrown(Error.Blocked);
+					throw new HaxeError(Error.Blocked);
 				};
-				let p = 0;
+				var p = 0;
 				while (len > 0) {
-					let k = this.writeBytes(buf, p, len);
+					var k = this.writeBytes(buf, p, len);
 					if (k == 0) {
-						throw Exception.thrown(Error.Blocked);
+						throw new HaxeError(Error.Blocked);
 					};
 					p += k;
 					len -= k;
 				};
 			};
-		}catch (_g) {
-			NativeStackTrace.lastError = _g;
-			if (!((Exception.caught(_g).unwrap()) instanceof Eof)) {
-				throw _g;
+		}catch (e) {
+			CallStack.lastException = e;
+			var e1 = (((e) instanceof HaxeError)) ? e.val : e;
+			if (((e1) instanceof Eof)) {
+				var e2 = e1;
+			} else {
+				throw e;
 			};
 		};
 	}
@@ -255,7 +258,7 @@ class Output {
 	Write `s` string.
 	*/
 	writeString(s, encoding = null) {
-		let b = Bytes.ofString(s, encoding);
+		var b = Bytes.ofString(s, encoding);
 		this.writeFullBytes(b, 0, b.length);
 	}
 	static get __name__() {

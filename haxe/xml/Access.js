@@ -1,31 +1,31 @@
+import {HaxeError} from "../../js/Boot"
 import {Printer} from "./Printer"
-import {ArrayIterator} from "../iterators/ArrayIterator"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Xml, XmlType_Impl_} from "../../Xml"
 import {StringTools} from "../../StringTools"
 import {Std} from "../../Std"
+import {HxOverrides} from "../../HxOverrides"
 
 export const NodeAccess_Impl_ = Register.global("$hxClasses")["haxe.xml._Access.NodeAccess_Impl_"] = 
 class NodeAccess_Impl_ {
 	static resolve(this1, name) {
-		let x = this1.elementsNamed(name).next();
+		var x = this1.elementsNamed(name).next();
 		if (x == null) {
-			let xname;
+			var xname;
 			if (this1.nodeType == Xml.Document) {
 				xname = "Document";
 			} else {
 				if (this1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 				};
 				xname = this1.nodeName;
 			};
-			throw Exception.thrown(xname + " is missing element " + name);
+			throw new HaxeError(xname + " is missing element " + name);
 		};
 		if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+			throw new HaxeError("Invalid nodeType " + XmlType_Impl_.toString(x.nodeType));
 		};
-		let this2 = x;
+		var this2 = x;
 		return this2;
 	}
 	static get __name__() {
@@ -41,20 +41,20 @@ export const AttribAccess_Impl_ = Register.global("$hxClasses")["haxe.xml._Acces
 class AttribAccess_Impl_ {
 	static resolve(this1, name) {
 		if (this1.nodeType == Xml.Document) {
-			throw Exception.thrown("Cannot access document attribute " + name);
+			throw new HaxeError("Cannot access document attribute " + name);
 		};
-		let v = this1.get(name);
+		var v = this1.get(name);
 		if (v == null) {
 			if (this1.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+				throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 			};
-			throw Exception.thrown(this1.nodeName + " is missing attribute " + name);
+			throw new HaxeError(this1.nodeName + " is missing attribute " + name);
 		};
 		return v;
 	}
 	static _hx_set(this1, name, value) {
 		if (this1.nodeType == Xml.Document) {
-			throw Exception.thrown("Cannot access document attribute " + name);
+			throw new HaxeError("Cannot access document attribute " + name);
 		};
 		this1.set(name, value);
 		return value;
@@ -72,7 +72,7 @@ export const HasAttribAccess_Impl_ = Register.global("$hxClasses")["haxe.xml._Ac
 class HasAttribAccess_Impl_ {
 	static resolve(this1, name) {
 		if (this1.nodeType == Xml.Document) {
-			throw Exception.thrown("Cannot access document attribute " + name);
+			throw new HaxeError("Cannot access document attribute " + name);
 		};
 		return this1.exists(name);
 	}
@@ -102,15 +102,15 @@ class HasNodeAccess_Impl_ {
 export const NodeListAccess_Impl_ = Register.global("$hxClasses")["haxe.xml._Access.NodeListAccess_Impl_"] = 
 class NodeListAccess_Impl_ {
 	static resolve(this1, name) {
-		let l = [];
-		let x = this1.elementsNamed(name);
+		var l = [];
+		var x = this1.elementsNamed(name);
 		while (x.hasNext()) {
-			let x1 = x.next();
+			var x1 = x.next();
 			if (x1.nodeType != Xml.Document && x1.nodeType != Xml.Element) {
-				throw Exception.thrown("Invalid nodeType " + ((x1.nodeType == null) ? "null" : XmlType_Impl_.toString(x1.nodeType)));
+				throw new HaxeError("Invalid nodeType " + XmlType_Impl_.toString(x1.nodeType));
 			};
-			let this1 = x1;
-			l.push(this1);
+			var this2 = x1;
+			l.push(this2);
 		};
 		return l;
 	}
@@ -139,7 +139,7 @@ class Access_Impl_ {
 			return "Document";
 		} else {
 			if (this1.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+				throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 			};
 			return this1.nodeName;
 		};
@@ -188,102 +188,101 @@ class Access_Impl_ {
 	}
 	static _new(x) {
 		if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+			throw new HaxeError("Invalid nodeType " + XmlType_Impl_.toString(x.nodeType));
 		};
-		let this1 = x;
+		var this1 = x;
 		return this1;
 	}
 	static get_innerData(this1) {
 		if (this1.nodeType != Xml.Document && this1.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+			throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(this1.nodeType));
 		};
-		let it = new ArrayIterator(this1.children);
+		var it = HxOverrides.iter(this1.children);
 		if (!it.hasNext()) {
-			let tmp;
+			var tmp;
 			if (this1.nodeType == Xml.Document) {
 				tmp = "Document";
 			} else {
 				if (this1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 				};
 				tmp = this1.nodeName;
 			};
-			throw Exception.thrown(tmp + " does not have data");
+			throw new HaxeError(tmp + " does not have data");
 		};
-		let v = it.next();
+		var v = it.next();
 		if (it.hasNext()) {
-			let n = it.next();
-			let tmp;
+			var n = it.next();
+			var tmp1;
 			if (v.nodeType == Xml.PCData && n.nodeType == Xml.CData) {
 				if (v.nodeType == Xml.Document || v.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((v.nodeType == null) ? "null" : XmlType_Impl_.toString(v.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(v.nodeType));
 				};
-				tmp = StringTools.trim(v.nodeValue) == "";
+				tmp1 = StringTools.trim(v.nodeValue) == "";
 			} else {
-				tmp = false;
+				tmp1 = false;
 			};
-			if (tmp) {
+			if (tmp1) {
 				if (!it.hasNext()) {
 					if (n.nodeType == Xml.Document || n.nodeType == Xml.Element) {
-						throw Exception.thrown("Bad node type, unexpected " + ((n.nodeType == null) ? "null" : XmlType_Impl_.toString(n.nodeType)));
+						throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(n.nodeType));
 					};
 					return n.nodeValue;
 				};
-				let n2 = it.next();
-				let tmp;
+				var n2 = it.next();
+				var tmp2;
 				if (n2.nodeType == Xml.PCData) {
 					if (n2.nodeType == Xml.Document || n2.nodeType == Xml.Element) {
-						throw Exception.thrown("Bad node type, unexpected " + ((n2.nodeType == null) ? "null" : XmlType_Impl_.toString(n2.nodeType)));
+						throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(n2.nodeType));
 					};
-					tmp = StringTools.trim(n2.nodeValue) == "";
+					tmp2 = StringTools.trim(n2.nodeValue) == "";
 				} else {
-					tmp = false;
+					tmp2 = false;
 				};
-				if (tmp && !it.hasNext()) {
+				if (tmp2 && !it.hasNext()) {
 					if (n.nodeType == Xml.Document || n.nodeType == Xml.Element) {
-						throw Exception.thrown("Bad node type, unexpected " + ((n.nodeType == null) ? "null" : XmlType_Impl_.toString(n.nodeType)));
+						throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(n.nodeType));
 					};
 					return n.nodeValue;
 				};
 			};
-			let tmp1;
+			var tmp3;
 			if (this1.nodeType == Xml.Document) {
-				tmp1 = "Document";
+				tmp3 = "Document";
 			} else {
 				if (this1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 				};
-				tmp1 = this1.nodeName;
+				tmp3 = this1.nodeName;
 			};
-			throw Exception.thrown(tmp1 + " does not only have data");
+			throw new HaxeError(tmp3 + " does not only have data");
 		};
 		if (v.nodeType != Xml.PCData && v.nodeType != Xml.CData) {
-			let tmp;
+			var tmp4;
 			if (this1.nodeType == Xml.Document) {
-				tmp = "Document";
+				tmp4 = "Document";
 			} else {
 				if (this1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(this1.nodeType));
 				};
-				tmp = this1.nodeName;
+				tmp4 = this1.nodeName;
 			};
-			throw Exception.thrown(tmp + " does not have data");
+			throw new HaxeError(tmp4 + " does not have data");
 		};
 		if (v.nodeType == Xml.Document || v.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((v.nodeType == null) ? "null" : XmlType_Impl_.toString(v.nodeType)));
+			throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(v.nodeType));
 		};
 		return v.nodeValue;
 	}
 	static get_innerHTML(this1) {
-		let s_b = "";
+		var s_b = "";
 		if (this1.nodeType != Xml.Document && this1.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this1.nodeType == null) ? "null" : XmlType_Impl_.toString(this1.nodeType)));
+			throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(this1.nodeType));
 		};
-		let _g_current = 0;
-		let _g_array = this1.children;
-		while (_g_current < _g_array.length) {
-			let x = _g_array[_g_current++];
-			s_b += Std.string(Printer.print(x));
+		var x = HxOverrides.iter(this1.children);
+		while (x.hasNext()) {
+			var x1 = x.next();
+			s_b += Std.string(Printer.print(x1));
 		};
 		return s_b;
 	}

@@ -23,7 +23,7 @@ class DynamicAccessKeyValueIterator extends Register.inherits() {
 	See `Iterator.next`
 	*/
 	next() {
-		let key = this.keys[this.index++];
+		var key = this.keys[this.index++];
 		return {"value": this.access[key], "key": key};
 	}
 	static get __name__() {

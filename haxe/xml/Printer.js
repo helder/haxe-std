@@ -1,9 +1,10 @@
-import {Exception} from "../Exception"
+import {HaxeError} from "../../js/Boot"
 import {Register} from "../../genes/Register"
 import {Xml, XmlType_Impl_} from "../../Xml"
 import {StringTools} from "../../StringTools"
 import {StringBuf} from "../../StringBuf"
 import {Std} from "../../Std"
+import {HxOverrides} from "../../HxOverrides"
 
 /**
 This class provides utility methods to convert Xml instances to
@@ -20,14 +21,14 @@ class Printer extends Register.inherits() {
 			case 0:
 				this.output.b += Std.string(tabs + "<");
 				if (value.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(value.nodeType));
 				};
 				this.output.b += Std.string(value.nodeName);
-				let attribute = value.attributes();
+				var attribute = value.attributes();
 				while (attribute.hasNext()) {
-					let attribute1 = attribute.next();
+					var attribute1 = attribute.next();
 					this.output.b += Std.string(" " + attribute1 + "=\"");
-					let input = StringTools.htmlEscape(value.get(attribute1), true);
+					var input = StringTools.htmlEscape(value.get(attribute1), true);
 					this.output.b += Std.string(input);
 					this.output.b += "\"";
 				};
@@ -37,17 +38,16 @@ class Printer extends Register.inherits() {
 						this.output.b += "\n";
 					};
 					if (value.nodeType != Xml.Document && value.nodeType != Xml.Element) {
-						throw Exception.thrown("Bad node type, expected Element or Document but found " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+						throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(value.nodeType));
 					};
-					let _g_current = 0;
-					let _g_array = value.children;
-					while (_g_current < _g_array.length) {
-						let child = _g_array[_g_current++];
-						this.writeNode(child, (this.pretty) ? tabs + "\t" : tabs);
+					var child = HxOverrides.iter(value.children);
+					while (child.hasNext()) {
+						var child1 = child.next();
+						this.writeNode(child1, (this.pretty) ? tabs + "\t" : tabs);
 					};
 					this.output.b += Std.string(tabs + "</");
 					if (value.nodeType != Xml.Element) {
-						throw Exception.thrown("Bad node type, expected Element but found " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+						throw new HaxeError("Bad node type, expected Element but found " + XmlType_Impl_.toString(value.nodeType));
 					};
 					this.output.b += Std.string(value.nodeName);
 					this.output.b += ">";
@@ -63,12 +63,12 @@ class Printer extends Register.inherits() {
 				break
 			case 1:
 				if (value.nodeType == Xml.Document || value.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(value.nodeType));
 				};
-				let nodeValue = value.nodeValue;
+				var nodeValue = value.nodeValue;
 				if (nodeValue.length != 0) {
-					let input = tabs + StringTools.htmlEscape(nodeValue);
-					this.output.b += Std.string(input);
+					var input1 = tabs + StringTools.htmlEscape(nodeValue);
+					this.output.b += Std.string(input1);
 					if (this.pretty) {
 						this.output.b += "\n";
 					};
@@ -77,7 +77,7 @@ class Printer extends Register.inherits() {
 			case 2:
 				this.output.b += Std.string(tabs + "<![CDATA[");
 				if (value.nodeType == Xml.Document || value.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(value.nodeType));
 				};
 				this.output.b += Std.string(value.nodeValue);
 				this.output.b += "]]>";
@@ -87,22 +87,22 @@ class Printer extends Register.inherits() {
 				break
 			case 3:
 				if (value.nodeType == Xml.Document || value.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(value.nodeType));
 				};
-				let commentContent = value.nodeValue;
-				let _this_r = new RegExp("[\n\r\t]+", "g".split("u").join(""));
+				var commentContent = value.nodeValue;
+				var _this_r = new RegExp("[\n\r\t]+", "g".split("u").join(""));
 				commentContent = commentContent.replace(_this_r, "");
 				commentContent = "<!--" + commentContent + "-->";
 				this.output.b += (tabs == null) ? "null" : "" + tabs;
-				let input = StringTools.trim(commentContent);
-				this.output.b += Std.string(input);
+				var input2 = StringTools.trim(commentContent);
+				this.output.b += Std.string(input2);
 				if (this.pretty) {
 					this.output.b += "\n";
 				};
 				break
 			case 4:
 				if (value.nodeType == Xml.Document || value.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(value.nodeType));
 				};
 				this.output.b += Std.string("<!DOCTYPE " + value.nodeValue + ">");
 				if (this.pretty) {
@@ -111,7 +111,7 @@ class Printer extends Register.inherits() {
 				break
 			case 5:
 				if (value.nodeType == Xml.Document || value.nodeType == Xml.Element) {
-					throw Exception.thrown("Bad node type, unexpected " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(value.nodeType));
 				};
 				this.output.b += Std.string("<?" + value.nodeValue + "?>");
 				if (this.pretty) {
@@ -120,13 +120,12 @@ class Printer extends Register.inherits() {
 				break
 			case 6:
 				if (value.nodeType != Xml.Document && value.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element or Document but found " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+					throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(value.nodeType));
 				};
-				let _g_current = 0;
-				let _g_array = value.children;
-				while (_g_current < _g_array.length) {
-					let child = _g_array[_g_current++];
-					this.writeNode(child, tabs);
+				var child2 = HxOverrides.iter(value.children);
+				while (child2.hasNext()) {
+					var child3 = child2.next();
+					this.writeNode(child3, tabs);
 				};
 				break
 			
@@ -142,21 +141,20 @@ class Printer extends Register.inherits() {
 	}
 	hasChildren(value) {
 		if (value.nodeType != Xml.Document && value.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((value.nodeType == null) ? "null" : XmlType_Impl_.toString(value.nodeType)));
+			throw new HaxeError("Bad node type, expected Element or Document but found " + XmlType_Impl_.toString(value.nodeType));
 		};
-		let _g_current = 0;
-		let _g_array = value.children;
-		while (_g_current < _g_array.length) {
-			let child = _g_array[_g_current++];
-			switch (child.nodeType) {
+		var child = HxOverrides.iter(value.children);
+		while (child.hasNext()) {
+			var child1 = child.next();
+			switch (child1.nodeType) {
 				case 0:case 1:
 					return true;
 					break
 				case 2:case 3:
-					if (child.nodeType == Xml.Document || child.nodeType == Xml.Element) {
-						throw Exception.thrown("Bad node type, unexpected " + ((child.nodeType == null) ? "null" : XmlType_Impl_.toString(child.nodeType)));
+					if (child1.nodeType == Xml.Document || child1.nodeType == Xml.Element) {
+						throw new HaxeError("Bad node type, unexpected " + XmlType_Impl_.toString(child1.nodeType));
 					};
-					if (StringTools.ltrim(child.nodeValue).length != 0) {
+					if (StringTools.ltrim(child1.nodeValue).length != 0) {
 						return true;
 					};
 					break
@@ -173,7 +171,7 @@ class Printer extends Register.inherits() {
 	Set `pretty` to `true` to prettify the result.
 	*/
 	static print(xml, pretty = false) {
-		let printer = new Printer(pretty);
+		var printer = new Printer(pretty);
 		printer.writeNode(xml, "");
 		return printer.output.b;
 	}

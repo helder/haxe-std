@@ -1,5 +1,5 @@
+import {HaxeError} from "../../js/Boot"
 import {XmlParser} from "./XmlParser"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Xml} from "../../Xml"
 import {Type} from "../../Type"
@@ -24,18 +24,18 @@ class Rtti {
 	If `c` is `null`, the result is unspecified.
 	*/
 	static getRtti(c) {
-		let rtti = Reflect.field(c, "__rtti");
+		var rtti = Reflect.field(c, "__rtti");
 		if (rtti == null) {
-			throw Exception.thrown("Class " + c.__name__ + " has no RTTI information, consider adding @:rtti");
+			throw new HaxeError("Class " + c.__name__ + " has no RTTI information, consider adding @:rtti");
 		};
-		let x = Xml.parse(rtti).firstElement();
-		let infos = new XmlParser().processElement(x);
+		var x = Xml.parse(rtti).firstElement();
+		var infos = new XmlParser().processElement(x);
 		if (infos._hx_index == 1) {
-			let c = infos.c;
-			return c;
+			var c1 = infos.c;
+			return c1;
 		} else {
-			let t = infos;
-			throw Exception.thrown("Enum mismatch: expected TClassDecl but found " + Std.string(t));
+			var t = infos;
+			throw new HaxeError("Enum mismatch: expected TClassDecl but found " + Std.string(t));
 		};
 	}
 	

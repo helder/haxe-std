@@ -124,13 +124,6 @@ export declare class Lambda {
 	static fold<A, B>(it: Iterable<A>, f: ((item: A, result: B) => B), first: B): B
 	
 	/**
-	Similar to fold, but also passes the index of each element to `f`.
-	
-	If `it` or `f` are null, the result is unspecified.
-	*/
-	static foldi<A, B>(it: Iterable<A>, f: ((item: A, result: B, index: number) => B), first: B): B
-	
-	/**
 	Returns the number of elements in `it` for which `pred` is true, or the
 	total number of elements in `it` if `pred` is null.
 	
@@ -163,18 +156,6 @@ export declare class Lambda {
 	If `f` is null, the result is unspecified.
 	*/
 	static find<T>(it: Iterable<T>, f: ((item: T) => boolean)): null | T
-	
-	/**
-	Returns the index of the first element of `it` for which `f` is true.
-	
-	This function returns as soon as an element is found for which a call to
-	`f` returns true.
-	
-	If no such element is found, the result is -1.
-	
-	If `f` is null, the result is unspecified.
-	*/
-	static findIndex<T>(it: Iterable<T>, f: ((item: T) => boolean)): number
 	
 	/**
 	Returns a new Array containing all elements of Iterable `a` followed by

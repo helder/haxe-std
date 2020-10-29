@@ -1,5 +1,5 @@
+import {HaxeError} from "../../js/Boot"
 import {Encoding} from "../io/Encoding"
-import {Exception} from "../Exception"
 import {Register} from "../../genes/Register"
 import {Reflect} from "../../Reflect"
 
@@ -32,10 +32,10 @@ class HttpBase extends Register.inherits() {
 	This method provides a fluent interface.
 	*/
 	setHeader(name, value) {
-		let _g = 0;
-		let _g1 = this.headers.length;
+		var _g = 0;
+		var _g1 = this.headers.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (this.headers[i].name == name) {
 				this.headers[i] = {"name": name, "value": value};
 				return;
@@ -55,10 +55,10 @@ class HttpBase extends Register.inherits() {
 	This method provides a fluent interface.
 	*/
 	setParameter(name, value) {
-		let _g = 0;
-		let _g1 = this.params.length;
+		var _g = 0;
+		var _g1 = this.params.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (this.params[i].name == name) {
 				this.params[i] = {"name": name, "value": value};
 				return;
@@ -118,7 +118,7 @@ class HttpBase extends Register.inherits() {
 	this method returns.
 	*/
 	request(post = null) {
-		throw Exception.thrown("not implemented");
+		throw new HaxeError("not implemented");
 	}
 	
 	/**
