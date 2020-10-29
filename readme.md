@@ -23,7 +23,7 @@ At runtime the classes will be loaded from one of the distributions below.
 
 ## php
 
-Haxe 4.x std is published to [helder/std](https://packagist.org/packages/helder/std) (and available in [#php](https://github.com/helder/std/tree/php))
+Haxe 4.x std is published to [helder/std](https://packagist.org/packages/helder/std)
 
 Install according to your haxe version:
 
@@ -33,7 +33,7 @@ composer require helder/std:4.1.4
 
 ## js
 
-Haxe 4.x std is published to [helder.std](https://www.npmjs.com/package/helder.std) (and available in [#js](https://github.com/helder/std/tree/js))
+Haxe 4.x std is published to [helder.std](https://www.npmjs.com/package/helder.std)
 
 Install according to your haxe version:
 
