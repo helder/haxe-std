@@ -1,0 +1,4 @@
+
+export type DragEventInit = {altKey?: null | boolean, bubbles?: null | boolean, button?: null | number, buttons?: null | number, cancelable?: null | boolean, clientX?: null | number, clientY?: null | number, composed?: null | boolean, ctrlKey?: null | boolean, dataTransfer?: null | DataTransfer, detail?: null | number, metaKey?: null | boolean, modifierAltGraph?: null | boolean, modifierCapsLock?: null | boolean, modifierFn?: null | boolean, modifierFnLock?: null | boolean, modifierNumLock?: null | boolean, modifierOS?: null | boolean, modifierScrollLock?: null | boolean, modifierSymbol?: null | boolean, modifierSymbolLock?: null | boolean, movementX?: null | number, movementY?: null | number, relatedTarget?: null | EventTarget, screenX?: null | number, screenY?: null | number, shiftKey?: null | boolean, view?: null | Window}
+
+//# sourceMappingURL=DragEventInit.d.ts.map
