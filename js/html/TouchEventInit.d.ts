@@ -1,0 +1,4 @@
+
+export type TouchEventInit = {altKey?: null | boolean, bubbles?: null | boolean, cancelable?: null | boolean, changedTouches?: null | Touch[], composed?: null | boolean, ctrlKey?: null | boolean, detail?: null | number, metaKey?: null | boolean, modifierAltGraph?: null | boolean, modifierCapsLock?: null | boolean, modifierFn?: null | boolean, modifierFnLock?: null | boolean, modifierNumLock?: null | boolean, modifierOS?: null | boolean, modifierScrollLock?: null | boolean, modifierSymbol?: null | boolean, modifierSymbolLock?: null | boolean, shiftKey?: null | boolean, targetTouches?: null | Touch[], touches?: null | Touch[], view?: null | Window}
+
+//# sourceMappingURL=TouchEventInit.d.ts.map
