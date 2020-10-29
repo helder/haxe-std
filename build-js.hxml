@@ -1,6 +1,7 @@
 -lib genes
 -D dts
 -D js-source-map
+-D source_map_content
 -lib hxnodejs
 --macro include('', false)
 --macro include('haxe', false)

@@ -5,7 +5,7 @@ fs.writeFileSync(
   JSON.stringify({
     type: "module",
     name: "helder.std",
-    version: version,
+    version: `${version}-sources`,
     repository: "https://github.com/helder/std",
     license: "MIT",
   }, null, '  ')
