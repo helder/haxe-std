@@ -6,10 +6,10 @@
     "submit": "bestzip submit.zip src/* haxelib.json readme.md extraParams.hxml && haxelib submit submit.zip && rm submit.zip",
     "build:js": "lix build-js.hxml",
     "version:js": "node package.js",
-    "publish:js": "ncp build/js dist/js && git-directory-deploy --directory dist/js --branch js",
+    "publish:js": "ncp build/js dist/js && git-directory-deploy --directory dist/js --branch js-$(node version.js)",
     "build:php": "lix build-php.hxml",
-    "publish:php": "ncp build/php dist/php && git-directory-deploy --directory dist/php --branch php",
-    "version:php": "git tag -a $(node version.js) -m $(node version.js) $(git log -n 1 --pretty=format:%H php) && git push --tags"
+    "publish:php": "ncp build/php dist/php && git-directory-deploy --directory dist/php --branch php-$(node version.js)",
+    "version:php": "git tag -a $(node version.js) -m $(node version.js) $(git log -n 1 --pretty=format:%H php-$(node version.js)) && git push origin php-$(node version.js)"
   },
   "devDependencies": {
     "bestzip": "^2.1.7",
