@@ -1,3 +1,4 @@
 const fs = require("fs");
-const version = JSON.parse(fs.readFileSync(".haxerc")).version;
-console.log(version);
+const libVersion = JSON.parse(fs.readFileSync("haxelib.json")).version;
+const haxeVersion = JSON.parse(fs.readFileSync(".haxerc")).version;
+console.log(`${haxeVersion}-${libVersion}`);
