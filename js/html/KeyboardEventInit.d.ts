@@ -1,0 +1,4 @@
+
+export type KeyboardEventInit = {altKey?: null | boolean, bubbles?: null | boolean, cancelable?: null | boolean, charCode?: null | number, code?: null | string, composed?: null | boolean, ctrlKey?: null | boolean, detail?: null | number, isComposing?: null | boolean, key?: null | string, keyCode?: null | number, location?: null | number, metaKey?: null | boolean, modifierAltGraph?: null | boolean, modifierCapsLock?: null | boolean, modifierFn?: null | boolean, modifierFnLock?: null | boolean, modifierNumLock?: null | boolean, modifierOS?: null | boolean, modifierScrollLock?: null | boolean, modifierSymbol?: null | boolean, modifierSymbolLock?: null | boolean, repeat?: null | boolean, shiftKey?: null | boolean, view?: null | Window, which?: null | number}
+
+//# sourceMappingURL=KeyboardEventInit.d.ts.map
