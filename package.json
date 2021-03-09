@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "name": "helder.std",
+  "version": "4.2.0-0.1.1",
+  "repository": "https://github.com/helder/std",
+  "license": "MIT"
+}
