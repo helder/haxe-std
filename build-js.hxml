@@ -1,4 +1,5 @@
 -lib genes
+-D genes.include_extension
 -D dts
 -D js-source-map
 -D source_map_content
