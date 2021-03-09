@@ -6,7 +6,7 @@
 	"description": "Import std from an external package (php / genes)",
 	"contributors": ["benmerckx"],
 	"releasenote": "See repository",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"url": "https://github.com/helder/std",
 	"dependencies": {}
 }
