@@ -1,7 +1,8 @@
-# @install: lix --silent download "gh://github.com/benmerckx/genes#c0832e2c0971599e5139e57795981c7a450426d6" into genes/0.3.2/github/c0832e2c0971599e5139e57795981c7a450426d6
+# @install: lix --silent download "gh://github.com/benmerckx/genes#179cb495c2d785321879e8afe765aa04d639783d" into genes/0.4.1/github/179cb495c2d785321879e8afe765aa04d639783d
 -lib helder.set
--cp ${HAXE_LIBCACHE}/genes/0.3.2/github/c0832e2c0971599e5139e57795981c7a450426d6/src
--D genes=0.3.2
--D js-es=6
+-cp ${HAXE_LIBCACHE}/genes/0.4.1/github/179cb495c2d785321879e8afe765aa04d639783d/src
+-D genes=0.4.1
+# -D js-es=6
 genes.Register
 --macro genes.Generator.use()
+--macro addMetadata('@:genes.disableNativeAccessors', 'haxe.Exception')
