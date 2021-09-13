@@ -1,0 +1,160 @@
+<?php
+/**
+ */
+
+namespace helder\std\haxe\io\_BytesData;
+
+use \helder\std\php\Boot;
+
+final class BytesDataAbstract_Impl_ {
+
+	/**
+	 * @param int $length
+	 * 
+	 * @return Container
+	 */
+	public static function alloc ($length) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:42: characters 3-50
+		return new Container(\str_repeat(\chr(0), $length));
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $pos
+	 * @param Container $src
+	 * @param int $srcpos
+	 * @param int $len
+	 * 
+	 * @return void
+	 */
+	public static function blit ($this1, $pos, $src, $srcpos, $len) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:68: characters 3-122
+		$this1->s = ((\substr($this1->s, 0, $pos) . \substr($src->s, $srcpos, $len)) . \substr($this1->s, $pos + $len));
+	}
+
+	/**
+	 * @param Container $this
+	 * @param Container $other
+	 * 
+	 * @return int
+	 */
+	public static function compare ($this1, $other) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:56: characters 10-57
+		return ($this1->s <=> $other->s);
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $pos
+	 * @param int $len
+	 * @param int $value
+	 * 
+	 * @return void
+	 */
+	public static function fill ($this1, $pos, $len, $value) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:72: characters 3-132
+		$this1->s = ((\substr($this1->s, 0, $pos) . \str_repeat(\chr($value), $len)) . \substr($this1->s, $pos + $len));
+	}
+
+	/**
+	 * @param mixed $s
+	 * 
+	 * @return Container
+	 */
+	public static function fromNativeString ($s) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:81: characters 3-26
+		return new Container($s);
+	}
+
+	/**
+	 * @param string $s
+	 * 
+	 * @return Container
+	 */
+	public static function fromString ($s) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:91: characters 3-26
+		return new Container($s);
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $pos
+	 * 
+	 * @return int
+	 */
+	public static function get ($this1, $pos) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:47: characters 3-33
+		return \ord($this1->s[$pos]);
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $pos
+	 * @param int $len
+	 * 
+	 * @return string
+	 */
+	public static function getString ($this1, $pos, $len) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:60: characters 3-41
+		return \substr($this1->s, $pos, $len);
+	}
+
+	/**
+	 * @param Container $this
+	 * 
+	 * @return int
+	 */
+	public static function get_length ($this1) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:76: characters 3-31
+		return \strlen($this1->s);
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $index
+	 * @param int $val
+	 * 
+	 * @return void
+	 */
+	public static function set ($this1, $index, $val) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:52: characters 3-34
+		$this1->s[$index] = \chr($val);
+	}
+
+	/**
+	 * @param Container $this
+	 * @param int $pos
+	 * @param int $len
+	 * 
+	 * @return Container
+	 */
+	public static function sub ($this1, $pos, $len) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:64: characters 3-52
+		return new Container(\substr($this1->s, $pos, $len));
+	}
+
+	/**
+	 * @param Container $this
+	 * 
+	 * @return mixed
+	 */
+	public static function toNativeString ($this1) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:86: characters 3-16
+		return $this1->s;
+	}
+
+	/**
+	 * @param Container $this
+	 * 
+	 * @return string
+	 */
+	public static function toString ($this1) {
+		#/home/runner/haxe/versions/4.2.3/std/php/_std/haxe/io/BytesData.hx:96: characters 3-16
+		return $this1->s;
+	}
+}
+
+Boot::registerClass(BytesDataAbstract_Impl_::class, 'haxe.io._BytesData.BytesDataAbstract_Impl_');
+Boot::registerGetters('helder\\std\\haxe\\io\\_BytesData\\BytesDataAbstract_Impl_', [
+	'length' => true
+]);
