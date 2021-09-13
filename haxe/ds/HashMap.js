@@ -3,14 +3,16 @@ import {IntMap} from "./IntMap.js"
 import {EsMap} from "../../genes/util/EsMap.js"
 import {Register} from "../../genes/Register.js"
 
-export const HashMap_Impl_ = Register.global("$hxClasses")["haxe.ds._HashMap.HashMap_Impl_"] = 
-class HashMap_Impl_ {
+const $global = Register.$global
+
+export const HashMap = Register.global("$hxClasses")["haxe.ds._HashMap.HashMap"] = 
+class HashMap {
 	
 	/**
 	Creates a new HashMap.
 	*/
 	static _new() {
-		let this1 = new HashMapData();
+		var this1 = new HashMapData();
 		return this1;
 	}
 	
@@ -18,20 +20,20 @@ class HashMap_Impl_ {
 	See `Map.set`
 	*/
 	static set(this1, k, v) {
-		let _this = this1.keys;
-		let key = k.hashCode();
+		var _this = this1.keys;
+		var key = k.hashCode();
 		_this.inst.set(key, k);
-		let _this1 = this1.values;
-		let key1 = k.hashCode();
-		_this1.inst.set(key1, v);
+		var _this = this1.values;
+		var key = k.hashCode();
+		_this.inst.set(key, v);
 	}
 	
 	/**
 	See `Map.get`
 	*/
 	static get(this1, k) {
-		let _this = this1.values;
-		let key = k.hashCode();
+		var _this = this1.values;
+		var key = k.hashCode();
 		return _this.inst.get(key);
 	}
 	
@@ -39,8 +41,8 @@ class HashMap_Impl_ {
 	See `Map.exists`
 	*/
 	static exists(this1, k) {
-		let _this = this1.values;
-		let key = k.hashCode();
+		var _this = this1.values;
+		var key = k.hashCode();
 		return _this.inst.has(key);
 	}
 	
@@ -48,12 +50,12 @@ class HashMap_Impl_ {
 	See `Map.remove`
 	*/
 	static remove(this1, k) {
-		let _this = this1.values;
-		let key = k.hashCode();
+		var _this = this1.values;
+		var key = k.hashCode();
 		_this.inst["delete"](key);
-		let _this1 = this1.keys;
-		let key1 = k.hashCode();
-		return _this1.inst["delete"](key1);
+		var _this = this1.keys;
+		var key = k.hashCode();
+		return _this.inst["delete"](key);
 	}
 	
 	/**
@@ -67,15 +69,15 @@ class HashMap_Impl_ {
 	See `Map.copy`
 	*/
 	static copy(this1) {
-		let copied = new HashMapData();
-		let _this = this1.keys;
-		let copied1 = new EsMap();
+		var copied = new HashMapData();
+		var _this = this1.keys;
+		var copied1 = new IntMap();
 		copied1.inst = new Map(_this.inst);
 		copied.keys = copied1;
-		let _this1 = this1.values;
-		let copied2 = new EsMap();
-		copied2.inst = new Map(_this1.inst);
-		copied.values = copied2;
+		var _this = this1.values;
+		var copied1 = new IntMap();
+		copied1.inst = new Map(_this.inst);
+		copied.values = copied1;
 		return copied;
 	}
 	
@@ -104,7 +106,7 @@ class HashMap_Impl_ {
 		return "haxe.ds._HashMap.HashMap_Impl_"
 	}
 	get __class__() {
-		return HashMap_Impl_
+		return HashMap
 	}
 }
 

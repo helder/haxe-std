@@ -2,8 +2,10 @@ import {Boot} from "./js/Boot.js"
 import {NativeStackTrace} from "./haxe/NativeStackTrace.js"
 import {Exception} from "./haxe/Exception.js"
 import {Register} from "./genes/Register.js"
-import {Reflect} from "./Reflect.js"
+import {Reflect as Reflect__1} from "./Reflect.js"
 import {HxOverrides} from "./HxOverrides.js"
+
+const $global = Register.$global
 
 export const ValueType = 
 Register.global("$hxEnums")["ValueType"] = 
@@ -16,8 +18,8 @@ Register.global("$hxEnums")["ValueType"] =
 	TBool: {_hx_name: "TBool", _hx_index: 3, __enum__: "ValueType"},
 	TObject: {_hx_name: "TObject", _hx_index: 4, __enum__: "ValueType"},
 	TFunction: {_hx_name: "TFunction", _hx_index: 5, __enum__: "ValueType"},
-	TClass: Object.assign((c) => ({_hx_index: 6, __enum__: "ValueType", c}), {_hx_name: "TClass", __params__: ["c"]}),
-	TEnum: Object.assign((e) => ({_hx_index: 7, __enum__: "ValueType", e}), {_hx_name: "TEnum", __params__: ["e"]}),
+	TClass: Object.assign((c) => ({_hx_index: 6, __enum__: "ValueType", "c": c}), {_hx_name: "TClass", __params__: ["c"]}),
+	TEnum: Object.assign((e) => ({_hx_index: 7, __enum__: "ValueType", "e": e}), {_hx_name: "TEnum", __params__: ["e"]}),
 	TUnknown: {_hx_name: "TUnknown", _hx_index: 8, __enum__: "ValueType"}
 }
 ValueType.__constructs__ = [ValueType.TNull, ValueType.TInt, ValueType.TFloat, ValueType.TBool, ValueType.TObject, ValueType.TFunction, ValueType.TClass, ValueType.TEnum, ValueType.TUnknown]
@@ -165,7 +167,7 @@ class Type {
 	guaranteed to be taken into account.
 	*/
 	static createInstance(cl, args) {
-		let ctor = Function.prototype.bind.apply(cl, [null].concat(args));
+		var ctor = Function.prototype.bind.apply(cl, [null].concat(args));
 		return new (ctor);
 	}
 	
@@ -189,12 +191,12 @@ class Type {
 	expected number of constructor arguments, or if any argument has an
 	invalid type, the result is unspecified.
 	*/
-	static createEnum(e, constr, params = null) {
-		let f = Reflect.field(e, constr);
+	static createEnum(e, constr, params) {
+		var f = Reflect__1.field(e, constr);
 		if (f == null) {
 			throw Exception.thrown("No such constructor " + constr);
 		};
-		if (Reflect.isFunction(f)) {
+		if (Reflect__1.isFunction(f)) {
 			if (params == null) {
 				throw Exception.thrown("Constructor " + constr + " need parameters");
 			};
@@ -218,13 +220,13 @@ class Type {
 	expected number of constructor arguments, or if any argument has an
 	invalid type, the result is unspecified.
 	*/
-	static createEnumIndex(e, index, params = null) {
-		let c;
-		let _g = e.__constructs__[index];
+	static createEnumIndex(e, index, params) {
+		var c;
+		var _g = e.__constructs__[index];
 		if (_g == null) {
 			c = null;
 		} else {
-			let ctor = _g;
+			var ctor = _g;
 			c = ctor._hx_name;
 		};
 		if (c == null) {
@@ -246,26 +248,11 @@ class Type {
 	If `c` is null, the result is unspecified.
 	*/
 	static getInstanceFields(c) {
-		let result = [];
-		while (c != null) {
-			let _g = 0;
-			let _g1 = Object.getOwnPropertyNames(c.prototype);
-			while (_g < _g1.length) {
-				let name = _g1[_g];
-				++_g;
-				switch (name) {
-					case "__class__":case "__properties__":case "constructor":
-						break
-					default:
-					if (result.indexOf(name) == -1) {
-						result.push(name);
-					};
-					
-				};
-			};
-			c = c.__super__;
-		};
-		return result;
+		var a = [];
+		for(var i in c.prototype) a.push(i);
+		HxOverrides.remove(a, "__class__");
+		HxOverrides.remove(a, "__properties__");
+		return a;
 	}
 	
 	/**
@@ -278,19 +265,13 @@ class Type {
 	If `c` is null, the result is unspecified.
 	*/
 	static getClassFields(c) {
-		let a = Object.getOwnPropertyNames(c);
-		HxOverrides.remove(a, "__id__");
-		HxOverrides.remove(a, "hx__closures__");
+		var a = Reflect__1.fields(c);
 		HxOverrides.remove(a, "__name__");
 		HxOverrides.remove(a, "__interfaces__");
-		HxOverrides.remove(a, "__isInterface__");
 		HxOverrides.remove(a, "__properties__");
-		HxOverrides.remove(a, "__instanceFields__");
 		HxOverrides.remove(a, "__super__");
 		HxOverrides.remove(a, "__meta__");
 		HxOverrides.remove(a, "prototype");
-		HxOverrides.remove(a, "name");
-		HxOverrides.remove(a, "length");
 		return a;
 	}
 	
@@ -303,12 +284,12 @@ class Type {
 	If `e` is null, the result is unspecified.
 	*/
 	static getEnumConstructs(e) {
-		let _this = e.__constructs__;
-		let result = new Array(_this.length);
-		let _g = 0;
-		let _g1 = _this.length;
+		var _this = e.__constructs__;
+		var result = new Array(_this.length);
+		var _g = 0;
+		var _g1 = _this.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			result[i] = _this[i]._hx_name;
 		};
 		return result;
@@ -342,11 +323,11 @@ class Type {
 				if (v == null) {
 					return ValueType.TNull;
 				};
-				let e = v.__enum__;
+				var e = v.__enum__;
 				if (e != null) {
 					return ValueType.TEnum(Register.global("$hxEnums")[e]);
 				};
-				let c = Boot.getClass(v);
+				var c = Boot.getClass(v);
 				if (c != null) {
 					return ValueType.TClass(c);
 				};
@@ -377,18 +358,18 @@ class Type {
 			return true;
 		};
 		try {
-			let e = a.__enum__;
+			var e = a.__enum__;
 			if (e == null || e != b.__enum__) {
 				return false;
 			};
 			if (a._hx_index != b._hx_index) {
 				return false;
 			};
-			let enm = Register.global("$hxEnums")[e];
-			let params = enm.__constructs__[a._hx_index].__params__;
-			let _g = 0;
+			var enm = Register.global("$hxEnums")[e];
+			var params = enm.__constructs__[a._hx_index].__params__;
+			var _g = 0;
 			while (_g < params.length) {
-				let f = params[_g];
+				var f = params[_g];
 				++_g;
 				if (!Type.enumEq(a[f], b[f])) {
 					return false;
@@ -423,13 +404,13 @@ class Type {
 	If `e` is null, the result is unspecified.
 	*/
 	static enumParameters(e) {
-		let enm = Register.global("$hxEnums")[e.__enum__];
-		let params = enm.__constructs__[e._hx_index].__params__;
+		var enm = Register.global("$hxEnums")[e.__enum__];
+		var params = enm.__constructs__[e._hx_index].__params__;
 		if (params != null) {
-			let _g = [];
-			let _g1 = 0;
+			var _g = [];
+			var _g1 = 0;
 			while (_g1 < params.length) {
-				let p = params[_g1];
+				var p = params[_g1];
 				++_g1;
 				_g.push(e[p]);
 			};

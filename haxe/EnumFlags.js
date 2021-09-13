@@ -1,13 +1,18 @@
 import {Register} from "../genes/Register.js"
 
-export const EnumFlags_Impl_ = Register.global("$hxClasses")["haxe._EnumFlags.EnumFlags_Impl_"] = 
-class EnumFlags_Impl_ {
+const $global = Register.$global
+
+export const EnumFlags = Register.global("$hxClasses")["haxe._EnumFlags.EnumFlags"] = 
+class EnumFlags {
 	
 	/**
 	Initializes the bitflags to `i`.
 	*/
-	static _new(i = 0) {
-		let this1 = i;
+	static _new(i) {
+		if (i == null) {
+			i = 0;
+		};
+		var this1 = i;
 		return this1;
 	}
 	
@@ -52,11 +57,11 @@ class EnumFlags_Impl_ {
 	have any impact on speed).
 	*/
 	static ofInt(i) {
-		let i1 = i;
+		var i1 = i;
 		if (i1 == null) {
 			i1 = 0;
 		};
-		let this1 = i1;
+		var this1 = i1;
 		return this1;
 	}
 	
@@ -71,7 +76,7 @@ class EnumFlags_Impl_ {
 		return "haxe._EnumFlags.EnumFlags_Impl_"
 	}
 	get __class__() {
-		return EnumFlags_Impl_
+		return EnumFlags
 	}
 }
 

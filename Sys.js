@@ -1,6 +1,6 @@
 import {Output} from "./haxe/io/Output.js"
 import {Input} from "./haxe/io/Input.js"
-import {Error} from "./haxe/io/Error.js"
+import {Error as Error__1} from "./haxe/io/Error.js"
 import {Eof} from "./haxe/io/Eof.js"
 import {StringMap} from "./haxe/ds/StringMap.js"
 import {NativeStackTrace} from "./haxe/NativeStackTrace.js"
@@ -10,7 +10,9 @@ import * as Fs from "fs"
 import * as ChildProcess from "child_process"
 import {Buffer} from "buffer"
 import {Std} from "./Std.js"
-import {Reflect} from "./Reflect.js"
+import {Reflect as Reflect__1} from "./Reflect.js"
+
+const $global = Register.$global
 
 /**
 This class provides access to various base functions of system platforms.
@@ -69,13 +71,13 @@ class Sys {
 	Returns all environment variables.
 	*/
 	static environment() {
-		let m = new StringMap();
-		let _g = 0;
-		let _g1 = Reflect.fields(process.env);
+		var m = new StringMap();
+		var _g = 0;
+		var _g1 = Reflect__1.fields(process.env);
 		while (_g < _g1.length) {
-			let key = _g1[_g];
+			var key = _g1[_g];
 			++_g;
-			let v = process.env[key];
+			var v = process.env[key];
 			m.inst.set(key, v);
 		};
 		return m;
@@ -113,7 +115,7 @@ class Sys {
 	- `"Mac"`
 	*/
 	static systemName() {
-		let _g = process.platform;
+		var _g = process.platform;
 		switch (_g) {
 			case "darwin":
 				return "Mac";
@@ -128,7 +130,7 @@ class Sys {
 				return "Windows";
 				break
 			default:
-			let other = _g;
+			var other = _g;
 			return other;
 			
 		};
@@ -149,7 +151,7 @@ class Sys {
 	
 	Use the `sys.io.Process` API for more complex tasks, such as background processes, or providing input to the command.
 	*/
-	static command(cmd, args = null) {
+	static command(cmd, args) {
 		if (args == null) {
 			return ChildProcess.spawnSync(cmd, {"shell": true, "stdio": "inherit"}).status;
 		} else {
@@ -210,7 +212,7 @@ class Sys {
 	Suspends execution for the given length of time (in seconds).
 	*/
 	static sleep(seconds) {
-		let end = Date.now() + seconds * 1000;
+		var end = Date.now() + seconds * 1000;
 		while (Date.now() <= end) {
 		};
 	}
@@ -255,10 +257,10 @@ class FileOutput extends Register.inherits(Output) {
 		Fs.writeSync(this.fd, String.fromCodePoint(c));
 	}
 	writeBytes(s, pos, len) {
-		let data = s.b;
+		var data = s.b;
 		return Fs.writeSync(this.fd, Buffer.from(data.buffer, data.byteOffset, s.length), pos, len);
 	}
-	writeString(s, encoding = null) {
+	writeString(s, encoding) {
 		Fs.writeSync(this.fd, s);
 	}
 	flush() {
@@ -285,32 +287,32 @@ class FileInput extends Register.inherits(Input) {
 		this.fd = fd;
 	}
 	readByte() {
-		let buf = Buffer.alloc(1);
+		var buf = Buffer.alloc(1);
 		try {
 			Fs.readSync(this.fd, buf, 0, 1, null);
 		}catch (_g) {
 			NativeStackTrace.lastError = _g;
-			let e = Exception.caught(_g).unwrap();
+			var e = Exception.caught(_g).unwrap();
 			if (e.code == "EOF") {
 				throw Exception.thrown(new Eof());
 			} else {
-				throw Exception.thrown(Error.Custom(e));
+				throw Exception.thrown(Error__1.Custom(e));
 			};
 		};
 		return buf[0];
 	}
 	readBytes(s, pos, len) {
-		let data = s.b;
-		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		var data = s.b;
+		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
 		try {
 			return Fs.readSync(this.fd, buf, pos, len, null);
 		}catch (_g) {
 			NativeStackTrace.lastError = _g;
-			let e = Exception.caught(_g).unwrap();
+			var e = Exception.caught(_g).unwrap();
 			if (e.code == "EOF") {
 				throw Exception.thrown(new Eof());
 			} else {
-				throw Exception.thrown(Error.Custom(e));
+				throw Exception.thrown(Error__1.Custom(e));
 			};
 		};
 	}

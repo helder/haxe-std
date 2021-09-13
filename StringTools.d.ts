@@ -244,6 +244,8 @@ export declare class StringTools {
 	```
 	*/
 	static quoteWinArg(argument: string, escapeMetaCharacters: boolean): string
+	protected static MIN_SURROGATE_CODE_POINT: number
+	protected static utf16CodePointAt(s: string, index: number): number
 }
 
 //# sourceMappingURL=StringTools.d.ts.map

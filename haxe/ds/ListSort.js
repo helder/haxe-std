@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 ListSort provides a stable implementation of merge sort through its `sort`
 method. It has a O(N.log(N)) complexity and does not require additional memory allocation.
@@ -21,14 +23,14 @@ class ListSort {
 		if (list == null) {
 			return null;
 		};
-		let insize = 1;
-		let nmerges;
-		let psize = 0;
-		let qsize = 0;
-		let p;
-		let q;
-		let e;
-		let tail = null;
+		var insize = 1;
+		var nmerges;
+		var psize = 0;
+		var qsize = 0;
+		var p;
+		var q;
+		var e;
+		var tail = null;
 		while (true) {
 			p = list;
 			list = null;
@@ -38,10 +40,10 @@ class ListSort {
 				++nmerges;
 				q = p;
 				psize = 0;
-				let _g = 0;
-				let _g1 = insize;
+				var _g = 0;
+				var _g1 = insize;
 				while (_g < _g1) {
-					let i = _g++;
+					var i = _g++;
 					++psize;
 					q = q.next;
 					if (q == null) {
@@ -90,14 +92,14 @@ class ListSort {
 		if (list == null) {
 			return null;
 		};
-		let insize = 1;
-		let nmerges;
-		let psize = 0;
-		let qsize = 0;
-		let p;
-		let q;
-		let e;
-		let tail;
+		var insize = 1;
+		var nmerges;
+		var psize = 0;
+		var qsize = 0;
+		var p;
+		var q;
+		var e;
+		var tail;
 		while (true) {
 			p = list;
 			list = null;
@@ -107,10 +109,10 @@ class ListSort {
 				++nmerges;
 				q = p;
 				psize = 0;
-				let _g = 0;
-				let _g1 = insize;
+				var _g = 0;
+				var _g1 = insize;
 				while (_g < _g1) {
-					let i = _g++;
+					var i = _g++;
 					++psize;
 					q = q.next;
 					if (q == null) {

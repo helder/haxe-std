@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 `HaxeIterator` wraps a JavaScript native iterator object to enable for-in iteration in haxe.
 It can be used directly: `new HaxeIterator(jsIterator)` or via using: `using HaxeIterator`.
@@ -14,7 +16,7 @@ class HaxeIterator extends Register.inherits() {
 		return !this.lastStep.done;
 	}
 	next() {
-		let v = this.lastStep.value;
+		var v = this.lastStep.value;
 		this.lastStep = this.jsIterator.next();
 		return v;
 	}

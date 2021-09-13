@@ -1,6 +1,8 @@
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 The runtime member types.
 */
@@ -10,13 +12,13 @@ Register.global("$hxEnums")["haxe.rtti.CType"] =
 	__ename__: "haxe.rtti.CType",
 	
 	CUnknown: {_hx_name: "CUnknown", _hx_index: 0, __enum__: "haxe.rtti.CType"},
-	CEnum: Object.assign((name, params) => ({_hx_index: 1, __enum__: "haxe.rtti.CType", name, params}), {_hx_name: "CEnum", __params__: ["name", "params"]}),
-	CClass: Object.assign((name, params) => ({_hx_index: 2, __enum__: "haxe.rtti.CType", name, params}), {_hx_name: "CClass", __params__: ["name", "params"]}),
-	CTypedef: Object.assign((name, params) => ({_hx_index: 3, __enum__: "haxe.rtti.CType", name, params}), {_hx_name: "CTypedef", __params__: ["name", "params"]}),
-	CFunction: Object.assign((args, ret) => ({_hx_index: 4, __enum__: "haxe.rtti.CType", args, ret}), {_hx_name: "CFunction", __params__: ["args", "ret"]}),
-	CAnonymous: Object.assign((fields) => ({_hx_index: 5, __enum__: "haxe.rtti.CType", fields}), {_hx_name: "CAnonymous", __params__: ["fields"]}),
-	CDynamic: Object.assign((t) => ({_hx_index: 6, __enum__: "haxe.rtti.CType", t}), {_hx_name: "CDynamic", __params__: ["t"]}),
-	CAbstract: Object.assign((name, params) => ({_hx_index: 7, __enum__: "haxe.rtti.CType", name, params}), {_hx_name: "CAbstract", __params__: ["name", "params"]})
+	CEnum: Object.assign((name, params) => ({_hx_index: 1, __enum__: "haxe.rtti.CType", "name": name, "params": params}), {_hx_name: "CEnum", __params__: ["name", "params"]}),
+	CClass: Object.assign((name, params) => ({_hx_index: 2, __enum__: "haxe.rtti.CType", "name": name, "params": params}), {_hx_name: "CClass", __params__: ["name", "params"]}),
+	CTypedef: Object.assign((name, params) => ({_hx_index: 3, __enum__: "haxe.rtti.CType", "name": name, "params": params}), {_hx_name: "CTypedef", __params__: ["name", "params"]}),
+	CFunction: Object.assign((args, ret) => ({_hx_index: 4, __enum__: "haxe.rtti.CType", "args": args, "ret": ret}), {_hx_name: "CFunction", __params__: ["args", "ret"]}),
+	CAnonymous: Object.assign((fields) => ({_hx_index: 5, __enum__: "haxe.rtti.CType", "fields": fields}), {_hx_name: "CAnonymous", __params__: ["fields"]}),
+	CDynamic: Object.assign((t) => ({_hx_index: 6, __enum__: "haxe.rtti.CType", "t": t}), {_hx_name: "CDynamic", __params__: ["t"]}),
+	CAbstract: Object.assign((name, params) => ({_hx_index: 7, __enum__: "haxe.rtti.CType", "name": name, "params": params}), {_hx_name: "CAbstract", __params__: ["name", "params"]})
 }
 CType.__constructs__ = [CType.CUnknown, CType.CEnum, CType.CClass, CType.CTypedef, CType.CFunction, CType.CAnonymous, CType.CDynamic, CType.CAbstract]
 CType.__empty_constructs__ = [CType.CUnknown]
@@ -31,7 +33,7 @@ Register.global("$hxEnums")["haxe.rtti.Rights"] =
 	
 	RNormal: {_hx_name: "RNormal", _hx_index: 0, __enum__: "haxe.rtti.Rights"},
 	RNo: {_hx_name: "RNo", _hx_index: 1, __enum__: "haxe.rtti.Rights"},
-	RCall: Object.assign((m) => ({_hx_index: 2, __enum__: "haxe.rtti.Rights", m}), {_hx_name: "RCall", __params__: ["m"]}),
+	RCall: Object.assign((m) => ({_hx_index: 2, __enum__: "haxe.rtti.Rights", "m": m}), {_hx_name: "RCall", __params__: ["m"]}),
 	RMethod: {_hx_name: "RMethod", _hx_index: 3, __enum__: "haxe.rtti.Rights"},
 	RDynamic: {_hx_name: "RDynamic", _hx_index: 4, __enum__: "haxe.rtti.Rights"},
 	RInline: {_hx_name: "RInline", _hx_index: 5, __enum__: "haxe.rtti.Rights"}
@@ -47,11 +49,11 @@ Register.global("$hxEnums")["haxe.rtti.TypeTree"] =
 {
 	__ename__: "haxe.rtti.TypeTree",
 	
-	TPackage: Object.assign((name, full, subs) => ({_hx_index: 0, __enum__: "haxe.rtti.TypeTree", name, full, subs}), {_hx_name: "TPackage", __params__: ["name", "full", "subs"]}),
-	TClassdecl: Object.assign((c) => ({_hx_index: 1, __enum__: "haxe.rtti.TypeTree", c}), {_hx_name: "TClassdecl", __params__: ["c"]}),
-	TEnumdecl: Object.assign((e) => ({_hx_index: 2, __enum__: "haxe.rtti.TypeTree", e}), {_hx_name: "TEnumdecl", __params__: ["e"]}),
-	TTypedecl: Object.assign((t) => ({_hx_index: 3, __enum__: "haxe.rtti.TypeTree", t}), {_hx_name: "TTypedecl", __params__: ["t"]}),
-	TAbstractdecl: Object.assign((a) => ({_hx_index: 4, __enum__: "haxe.rtti.TypeTree", a}), {_hx_name: "TAbstractdecl", __params__: ["a"]})
+	TPackage: Object.assign((name, full, subs) => ({_hx_index: 0, __enum__: "haxe.rtti.TypeTree", "name": name, "full": full, "subs": subs}), {_hx_name: "TPackage", __params__: ["name", "full", "subs"]}),
+	TClassdecl: Object.assign((c) => ({_hx_index: 1, __enum__: "haxe.rtti.TypeTree", "c": c}), {_hx_name: "TClassdecl", __params__: ["c"]}),
+	TEnumdecl: Object.assign((e) => ({_hx_index: 2, __enum__: "haxe.rtti.TypeTree", "e": e}), {_hx_name: "TEnumdecl", __params__: ["e"]}),
+	TTypedecl: Object.assign((t) => ({_hx_index: 3, __enum__: "haxe.rtti.TypeTree", "t": t}), {_hx_name: "TTypedecl", __params__: ["t"]}),
+	TAbstractdecl: Object.assign((a) => ({_hx_index: 4, __enum__: "haxe.rtti.TypeTree", "a": a}), {_hx_name: "TAbstractdecl", __params__: ["a"]})
 }
 TypeTree.__constructs__ = [TypeTree.TPackage, TypeTree.TClassdecl, TypeTree.TEnumdecl, TypeTree.TTypedecl, TypeTree.TAbstractdecl]
 TypeTree.__empty_constructs__ = []
@@ -62,28 +64,28 @@ Contains type and equality checks functionalities for RTTI.
 export const TypeApi = Register.global("$hxClasses")["haxe.rtti.TypeApi"] = 
 class TypeApi {
 	static typeInfos(t) {
-		let inf;
+		var inf;
 		switch (t._hx_index) {
 			case 0:
-				let _g = t.name;
-				let _g1 = t.full;
-				let _g2 = t.subs;
+				var _g = t.name;
+				var _g = t.full;
+				var _g = t.subs;
 				throw Exception.thrown("Unexpected Package");
 				break
 			case 1:
-				let c = t.c;
+				var c = t.c;
 				inf = c;
 				break
 			case 2:
-				let e = t.e;
+				var e = t.e;
 				inf = e;
 				break
 			case 3:
-				let t1 = t.t;
+				var t1 = t.t;
 				inf = t1;
 				break
 			case 4:
-				let a = t.a;
+				var a = t.a;
 				inf = a;
 				break
 			
@@ -97,24 +99,24 @@ class TypeApi {
 	*/
 	static isVar(t) {
 		if (t._hx_index == 4) {
-			let _g = t.args;
-			let _g1 = t.ret;
+			var _g = t.args;
+			var _g = t.ret;
 			return false;
 		} else {
 			return true;
 		};
 	}
 	static leq(f, l1, l2) {
-		let it_current = 0;
-		let it_array = l2;
-		let _g = 0;
+		var it_current = 0;
+		var it_array = l2;
+		var _g = 0;
 		while (_g < l1.length) {
-			let e1 = l1[_g];
+			var e1 = l1[_g];
 			++_g;
 			if (it_current >= it_array.length) {
 				return false;
 			};
-			let e2 = it_array[it_current++];
+			var e2 = it_array[it_current++];
 			if (!f(e1, e2)) {
 				return false;
 			};
@@ -136,9 +138,9 @@ class TypeApi {
 			return true;
 		};
 		if (r1._hx_index == 2) {
-			let m1 = r1.m;
+			var m1 = r1.m;
 			if (r2._hx_index == 2) {
-				let m2 = r2.m;
+				var m2 = r2.m;
 				return m1 == m2;
 			};
 		};
@@ -157,11 +159,11 @@ class TypeApi {
 				return t2 == CType.CUnknown;
 				break
 			case 1:
-				let name = t1.name;
-				let params = t1.params;
+				var name = t1.name;
+				var params = t1.params;
 				if (t2._hx_index == 1) {
-					let name2 = t2.name;
-					let params2 = t2.params;
+					var name2 = t2.name;
+					var params2 = t2.params;
 					if (name == name2) {
 						return TypeApi.leq(TypeApi.typeEq, params, params2);
 					} else {
@@ -170,37 +172,37 @@ class TypeApi {
 				};
 				break
 			case 2:
-				let name1 = t1.name;
-				let params1 = t1.params;
+				var name = t1.name;
+				var params = t1.params;
 				if (t2._hx_index == 2) {
-					let name2 = t2.name;
-					let params2 = t2.params;
-					if (name1 == name2) {
-						return TypeApi.leq(TypeApi.typeEq, params1, params2);
+					var name2 = t2.name;
+					var params2 = t2.params;
+					if (name == name2) {
+						return TypeApi.leq(TypeApi.typeEq, params, params2);
 					} else {
 						return false;
 					};
 				};
 				break
 			case 3:
-				let name2 = t1.name;
-				let params2 = t1.params;
+				var name = t1.name;
+				var params = t1.params;
 				if (t2._hx_index == 3) {
-					let name21 = t2.name;
-					let params21 = t2.params;
-					if (name2 == name21) {
-						return TypeApi.leq(TypeApi.typeEq, params2, params21);
+					var name2 = t2.name;
+					var params2 = t2.params;
+					if (name == name2) {
+						return TypeApi.leq(TypeApi.typeEq, params, params2);
 					} else {
 						return false;
 					};
 				};
 				break
 			case 4:
-				let args = t1.args;
-				let ret = t1.ret;
+				var args = t1.args;
+				var ret = t1.ret;
 				if (t2._hx_index == 4) {
-					let args2 = t2.args;
-					let ret2 = t2.ret;
+					var args2 = t2.args;
+					var ret2 = t2.ret;
 					if (TypeApi.leq(function (a, b) {
 						if (a.name == b.name && a.opt == b.opt) {
 							return TypeApi.typeEq(a.t, b.t);
@@ -215,18 +217,18 @@ class TypeApi {
 				};
 				break
 			case 5:
-				let fields = t1.fields;
+				var fields = t1.fields;
 				if (t2._hx_index == 5) {
-					let fields2 = t2.fields;
+					var fields2 = t2.fields;
 					return TypeApi.leq(function (a, b) {
 						return TypeApi.fieldEq(a, b);
 					}, fields, fields2);
 				};
 				break
 			case 6:
-				let t = t1.t;
+				var t = t1.t;
 				if (t2._hx_index == 6) {
-					let t21 = t2.t;
+					var t21 = t2.t;
 					if (t == null != (t21 == null)) {
 						return false;
 					};
@@ -238,13 +240,13 @@ class TypeApi {
 				};
 				break
 			case 7:
-				let name3 = t1.name;
-				let params3 = t1.params;
+				var name = t1.name;
+				var params = t1.params;
 				if (t2._hx_index == 7) {
-					let name2 = t2.name;
-					let params2 = t2.params;
-					if (name3 == name2) {
-						return TypeApi.leq(TypeApi.typeEq, params3, params2);
+					var name2 = t2.name;
+					var params2 = t2.params;
+					if (name == name2) {
+						return TypeApi.leq(TypeApi.typeEq, params, params2);
 					} else {
 						return false;
 					};
@@ -341,51 +343,51 @@ class CTypeTools {
 				return "unknown";
 				break
 			case 1:
-				let name = t.name;
-				let params = t.params;
+				var name = t.name;
+				var params = t.params;
 				return CTypeTools.nameWithParams(name, params);
 				break
 			case 2:
-				let name1 = t.name;
-				let params1 = t.params;
-				return CTypeTools.nameWithParams(name1, params1);
+				var name = t.name;
+				var params = t.params;
+				return CTypeTools.nameWithParams(name, params);
 				break
 			case 3:
-				let name2 = t.name;
-				let params2 = t.params;
-				return CTypeTools.nameWithParams(name2, params2);
+				var name = t.name;
+				var params = t.params;
+				return CTypeTools.nameWithParams(name, params);
 				break
 			case 4:
-				let args = t.args;
-				let ret = t.ret;
+				var args = t.args;
+				var ret = t.ret;
 				if (args.length == 0) {
 					return "Void -> " + CTypeTools.toString(ret);
 				} else {
-					let f = CTypeTools.functionArgumentName;
-					let result = new Array(args.length);
-					let _g = 0;
-					let _g1 = args.length;
+					var f = CTypeTools.functionArgumentName;
+					var result = new Array(args.length);
+					var _g = 0;
+					var _g1 = args.length;
 					while (_g < _g1) {
-						let i = _g++;
+						var i = _g++;
 						result[i] = f(args[i]);
 					};
 					return result.join(" -> ") + " -> " + CTypeTools.toString(ret);
 				};
 				break
 			case 5:
-				let fields = t.fields;
-				let f = CTypeTools.classField;
-				let result = new Array(fields.length);
-				let _g = 0;
-				let _g1 = fields.length;
+				var fields = t.fields;
+				var f = CTypeTools.classField;
+				var result = new Array(fields.length);
+				var _g = 0;
+				var _g1 = fields.length;
 				while (_g < _g1) {
-					let i = _g++;
+					var i = _g++;
 					result[i] = f(fields[i]);
 				};
 				return "{ " + result.join(", ") + "}";
 				break
 			case 6:
-				let d = t.t;
+				var d = t.t;
 				if (d == null) {
 					return "Dynamic";
 				} else {
@@ -393,9 +395,9 @@ class CTypeTools {
 				};
 				break
 			case 7:
-				let name3 = t.name;
-				let params3 = t.params;
-				return CTypeTools.nameWithParams(name3, params3);
+				var name = t.name;
+				var params = t.params;
+				return CTypeTools.nameWithParams(name, params);
 				break
 			
 		};
@@ -404,13 +406,13 @@ class CTypeTools {
 		if (params.length == 0) {
 			return name;
 		};
-		let tmp = name + "<";
-		let f = CTypeTools.toString;
-		let result = new Array(params.length);
-		let _g = 0;
-		let _g1 = params.length;
+		var tmp = name + "<";
+		var f = CTypeTools.toString;
+		var result = new Array(params.length);
+		var _g = 0;
+		var _g1 = params.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			result[i] = f(params[i]);
 		};
 		return tmp + result.join(", ") + ">";

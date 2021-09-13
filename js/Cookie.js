@@ -2,6 +2,8 @@ import {StringMap} from "../haxe/ds/StringMap.js"
 import {Register} from "../genes/Register.js"
 import {StringTools} from "../StringTools.js"
 
+const $global = Register.$global
+
 export const Cookie = Register.global("$hxClasses")["js.Cookie"] = 
 class Cookie {
 	
@@ -9,10 +11,10 @@ class Cookie {
 	Create or update a cookie.
 	@param  expireDelay  In seconds. If null, the cookie expires at end of session.
 	*/
-	static set(name, value, expireDelay = null, path = null, domain = null) {
-		let s = name + "=" + encodeURIComponent(value);
+	static set(name, value, expireDelay, path, domain) {
+		var s = name + "=" + encodeURIComponent(value);
 		if (expireDelay != null) {
-			let d = new Date(new Date().getTime() + expireDelay * 1000);
+			var d = new Date(new Date().getTime() + expireDelay * 1000);
 			s += ";expires=" + d.toGMTString();
 		};
 		if (path != null) {
@@ -28,18 +30,18 @@ class Cookie {
 	Returns all cookies.
 	*/
 	static all() {
-		let h = new StringMap();
-		let a = window.document.cookie.split(";");
-		let _g = 0;
+		var h = new StringMap();
+		var a = window.document.cookie.split(";");
+		var _g = 0;
 		while (_g < a.length) {
-			let e = a[_g];
+			var e = a[_g];
 			++_g;
 			e = StringTools.ltrim(e);
-			let t = e.split("=");
+			var t = e.split("=");
 			if (t.length < 2) {
 				continue;
 			};
-			let value = decodeURIComponent(t[1].split("+").join(" "));
+			var value = decodeURIComponent(t[1].split("+").join(" "));
 			h.inst.set(t[0], value);
 		};
 		return h;
@@ -62,7 +64,7 @@ class Cookie {
 	/**
 	Remove a cookie.
 	*/
-	static remove(name, path = null, domain = null) {
+	static remove(name, path, domain) {
 		Cookie.set(name, "", -10, path, domain);
 	}
 	static get __name__() {

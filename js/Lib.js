@@ -1,6 +1,8 @@
 import {Boot} from "./Boot.js"
 import {Register} from "../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 Platform-specific JavaScript Library. Provides some platform-specific functions
 for the JavaScript target.

@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 The possible IO errors that can occur
 */
@@ -23,7 +25,7 @@ Register.global("$hxEnums")["haxe.io.Error"] =
 	/**
 	Other errors
 	*/
-	Custom: Object.assign((e) => ({_hx_index: 3, __enum__: "haxe.io.Error", e}), {_hx_name: "Custom", __params__: ["e"]})
+	Custom: Object.assign((e) => ({_hx_index: 3, __enum__: "haxe.io.Error", "e": e}), {_hx_name: "Custom", __params__: ["e"]})
 }
 Error.__constructs__ = [Error.Blocked, Error.Overflow, Error.OutsideBounds, Error.Custom]
 Error.__empty_constructs__ = [Error.Blocked, Error.Overflow, Error.OutsideBounds]

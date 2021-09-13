@@ -1,5 +1,5 @@
 
-export declare class BufferSource_Impl_ {
+export declare class BufferSource {
 	static fromBufferView(view: ArrayBufferView): ArrayBuffer
 }
 

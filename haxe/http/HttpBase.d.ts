@@ -22,6 +22,12 @@ export declare class HttpBase {
 	url: string
 	readonly responseData: null | string
 	responseBytes: null | Bytes
+	protected responseAsString: null | string
+	protected postData: null | string
+	protected postBytes: null | Bytes
+	protected headers: StringKeyValue[]
+	protected params: StringKeyValue[]
+	protected emptyOnData: (arg0: string) => void
 	
 	/**
 	Sets the header identified as `name` to value `value`.
@@ -121,6 +127,13 @@ export declare class HttpBase {
 	`httpInstance.onStatus = function(status) { // handle status }`
 	*/
 	onStatus(status: number): void
+	
+	/**
+	Override this if extending `haxe.Http` with overriding `onData`
+	*/
+	protected hasOnData(): boolean
+	protected success(data: Bytes): void
+	protected get_responseData(): null | string
 }
 
 //# sourceMappingURL=HttpBase.d.ts.map

@@ -1,6 +1,8 @@
 import {Bytes} from "../io/Bytes.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 Creates a MD5 of a String.
 */
@@ -9,31 +11,31 @@ class Md5 extends Register.inherits() {
 	new() {
 	}
 	bitOR(a, b) {
-		let lsb = a & 1 | b & 1;
-		let msb31 = a >>> 1 | b >>> 1;
+		var lsb = a & 1 | b & 1;
+		var msb31 = a >>> 1 | b >>> 1;
 		return msb31 << 1 | lsb;
 	}
 	bitXOR(a, b) {
-		let lsb = a & 1 ^ b & 1;
-		let msb31 = a >>> 1 ^ b >>> 1;
+		var lsb = a & 1 ^ b & 1;
+		var msb31 = a >>> 1 ^ b >>> 1;
 		return msb31 << 1 | lsb;
 	}
 	bitAND(a, b) {
-		let lsb = a & 1 & (b & 1);
-		let msb31 = a >>> 1 & b >>> 1;
+		var lsb = a & 1 & (b & 1);
+		var msb31 = a >>> 1 & b >>> 1;
 		return msb31 << 1 | lsb;
 	}
 	addme(x, y) {
-		let lsw = (x & 65535) + (y & 65535);
-		let msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+		var lsw = (x & 65535) + (y & 65535);
+		var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
 		return msw << 16 | lsw & 65535;
 	}
 	hex(a) {
-		let str = "";
-		let hex_chr = "0123456789abcdef";
-		let _g = 0;
+		var str = "";
+		var hex_chr = "0123456789abcdef";
+		var _g = 0;
 		while (_g < a.length) {
-			let num = a[_g];
+			var num = a[_g];
 			++_g;
 			str += hex_chr.charAt(num >> 4 & 15) + hex_chr.charAt(num & 15);
 			str += hex_chr.charAt(num >> 12 & 15) + hex_chr.charAt(num >> 8 & 15);
@@ -61,17 +63,17 @@ class Md5 extends Register.inherits() {
 		return this.cmn(this.bitXOR(c, this.bitOR(b, ~d)), a, b, x, s, t);
 	}
 	doEncode(x) {
-		let a = 1732584193;
-		let b = -271733879;
-		let c = -1732584194;
-		let d = 271733878;
-		let step;
-		let i = 0;
+		var a = 1732584193;
+		var b = -271733879;
+		var c = -1732584194;
+		var d = 271733878;
+		var step;
+		var i = 0;
 		while (i < x.length) {
-			let olda = a;
-			let oldb = b;
-			let oldc = c;
-			let oldd = d;
+			var olda = a;
+			var oldb = b;
+			var oldc = c;
+			var oldd = d;
 			step = 0;
 			a = this.ff(a, b, c, d, x[i], 7, -680876936);
 			d = this.ff(d, a, b, c, x[i + 1], 12, -389564586);
@@ -146,14 +148,14 @@ class Md5 extends Register.inherits() {
 		return [a, b, c, d];
 	}
 	static encode(s) {
-		let m = new Md5();
-		let h = m.doEncode(Md5.str2blks(s));
+		var m = new Md5();
+		var h = m.doEncode(Md5.str2blks(s));
 		return m.hex(h);
 	}
 	static make(b) {
-		let h = new Md5().doEncode(Md5.bytes2blks(b));
-		let out = new Bytes(new ArrayBuffer(16));
-		let p = 0;
+		var h = new Md5().doEncode(Md5.bytes2blks(b));
+		var out = new Bytes(new ArrayBuffer(16));
+		var p = 0;
 		out.b[p++] = h[0] & 255;
 		out.b[p++] = h[0] >> 8 & 255;
 		out.b[p++] = h[0] >> 16 & 255;
@@ -173,23 +175,23 @@ class Md5 extends Register.inherits() {
 		return out;
 	}
 	static bytes2blks(b) {
-		let nblk = (b.length + 8 >> 6) + 1;
-		let blks = new Array();
-		let blksSize = nblk * 16;
-		let _g = 0;
-		let _g1 = blksSize;
+		var nblk = (b.length + 8 >> 6) + 1;
+		var blks = new Array();
+		var blksSize = nblk * 16;
+		var _g = 0;
+		var _g1 = blksSize;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			blks[i] = 0;
 		};
-		let i = 0;
+		var i = 0;
 		while (i < b.length) {
 			blks[i >> 2] |= b.b[i] << (((b.length << 3) + i & 3) << 3);
 			++i;
 		};
 		blks[i >> 2] |= 128 << (b.length * 8 + i) % 4 * 8;
-		let l = b.length * 8;
-		let k = nblk * 16 - 2;
+		var l = b.length * 8;
+		var k = nblk * 16 - 2;
 		blks[k] = l & 255;
 		blks[k] |= (l >>> 8 & 255) << 8;
 		blks[k] |= (l >>> 16 & 255) << 16;
@@ -197,25 +199,25 @@ class Md5 extends Register.inherits() {
 		return blks;
 	}
 	static str2blks(str) {
-		let str1 = Bytes.ofString(str);
-		let nblk = (str1.length + 8 >> 6) + 1;
-		let blks = new Array();
-		let blksSize = nblk * 16;
-		let _g = 0;
-		let _g1 = blksSize;
+		var str1 = Bytes.ofString(str);
+		var nblk = (str1.length + 8 >> 6) + 1;
+		var blks = new Array();
+		var blksSize = nblk * 16;
+		var _g = 0;
+		var _g1 = blksSize;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			blks[i] = 0;
 		};
-		let i = 0;
-		let max = str1.length;
-		let l = max * 8;
+		var i = 0;
+		var max = str1.length;
+		var l = max * 8;
 		while (i < max) {
 			blks[i >> 2] |= str1.b[i] << (l + i) % 4 * 8;
 			++i;
 		};
 		blks[i >> 2] |= 128 << (l + i) % 4 * 8;
-		let k = nblk * 16 - 2;
+		var k = nblk * 16 - 2;
 		blks[k] = l & 255;
 		blks[k] |= (l >>> 8 & 255) << 8;
 		blks[k] |= (l >>> 16 & 255) << 16;

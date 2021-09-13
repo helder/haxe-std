@@ -2,11 +2,12 @@ import {Bytes} from "./Bytes"
 
 export type UInt32ArrayData = Uint32Array
 
-export declare class UInt32Array_Impl_ {
+export declare class UInt32Array {
 	static BYTES_PER_ELEMENT: number
 	static readonly length: number
 	static readonly view: ArrayBufferView
 	static _new(elements: number): Uint32Array
+	protected static get_length($this: Uint32Array): number
 	static get_view($this: Uint32Array): ArrayBufferView
 	static get($this: Uint32Array, index: number): number
 	static set($this: Uint32Array, index: number, value: number): number

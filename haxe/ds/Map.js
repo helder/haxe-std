@@ -4,8 +4,10 @@ import {IntMap} from "./IntMap.js"
 import {EnumValueMap} from "./EnumValueMap.js"
 import {Register} from "../../genes/Register.js"
 
-export const Map_Impl_ = Register.global("$hxClasses")["haxe.ds._Map.Map_Impl_"] = 
-class Map_Impl_ {
+const $global = Register.$global
+
+export const Map = Register.global("$hxClasses")["haxe.ds._Map.Map"] = 
+class Map {
 	
 	/**
 	Maps `key` to `value`.
@@ -136,7 +138,7 @@ class Map_Impl_ {
 		return "haxe.ds._Map.Map_Impl_"
 	}
 	get __class__() {
-		return Map_Impl_
+		return Map
 	}
 }
 

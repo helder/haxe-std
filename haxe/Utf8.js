@@ -2,13 +2,15 @@ import {NotImplementedException} from "./exceptions/NotImplementedException.js"
 import {Register} from "../genes/Register.js"
 import {HxOverrides} from "../HxOverrides.js"
 
+const $global = Register.$global
+
 /**
 Since not all platforms guarantee that `String` always uses UTF-8 encoding, you
 can use this cross-platform API to perform operations on such strings.
 */
 export const Utf8 = Register.global("$hxClasses")["haxe.Utf8"] = 
 class Utf8 extends Register.inherits() {
-	new(size = null) {
+	new(size) {
 		this.__b = "";
 	}
 	
@@ -30,10 +32,10 @@ class Utf8 extends Register.inherits() {
 	Call the `chars` function for each UTF8 char of the string.
 	*/
 	static iter(s, chars) {
-		let _g = 0;
-		let _g1 = s.length;
+		var _g = 0;
+		var _g1 = s.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			chars(HxOverrides.cca(s, i));
 		};
 	}

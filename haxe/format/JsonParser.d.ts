@@ -8,6 +8,16 @@ is not available.
 @see https://haxe.org/manual/std-Json-parsing.html
 */
 export declare class JsonParser {
+	protected constructor(str: string)
+	protected str: string
+	protected pos: number
+	protected doParse(): any
+	protected parseRec(): any
+	protected parseString(): string
+	protected parseNumber(c: number): any
+	protected nextChar(): number
+	protected invalidChar(): void
+	protected invalidNumber(start: number): void
 	
 	/**
 	Parses given JSON-encoded `str` and returns the resulting object.

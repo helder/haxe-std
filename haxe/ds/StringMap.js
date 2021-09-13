@@ -3,13 +3,15 @@ import {IMap} from "../Constraints.js"
 import {EsMap} from "../../genes/util/EsMap.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const StringMap = Register.global("$hxClasses")["haxe.ds.StringMap"] = 
 class StringMap extends Register.inherits(EsMap) {
 	new() {
 		super.new();
 	}
 	copy() {
-		let copied = new EsMap();
+		var copied = new StringMap();
 		copied.inst = new Map(this.inst);
 		return copied;
 	}

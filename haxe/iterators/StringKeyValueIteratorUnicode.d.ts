@@ -11,6 +11,9 @@ same reason, the last key value returned might be less than `s.length - 1`.
 */
 export declare class StringKeyValueIteratorUnicode {
 	constructor(s: string)
+	protected byteOffset: number
+	protected charOffset: number
+	protected s: string
 	
 	/**
 	See `Iterator.hasNext`

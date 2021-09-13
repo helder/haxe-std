@@ -1,7 +1,9 @@
 import {ValueException} from "./ValueException.js"
 import {NativeStackTrace} from "./NativeStackTrace.js"
-import {CallStack_Impl_} from "./CallStack.js"
+import {CallStack} from "./CallStack.js"
 import {Register} from "../genes/Register.js"
+
+const $global = Register.$global
 
 /**
 Base class for exceptions.
@@ -46,18 +48,18 @@ throw e; // rethrows native exception instead of haxe.Exception
 */
 export const Exception = Register.global("$hxClasses")["haxe.Exception"] = 
 class Exception extends Register.inherits(() => Error, true) {
-	new(message, previous = null, $native = null) {
+	new(message, previous, $native) {
 		Error.call(this, message);
 		this.message = message;
 		this.__previousException = previous;
 		this.__nativeException = ($native != null) ? $native : this;
 		this.__skipStack = 0;
-		let old = Error.prepareStackTrace;
+		var old = Error.prepareStackTrace;
 		Error.prepareStackTrace = function(e) { return e.stack; };
 		if ((($native) instanceof Error)) {
 			this.stack = $native.stack;
 		} else {
-			let e = null;
+			var e = null;
 			if (Error.captureStackTrace) {
 				Error.captureStackTrace(this, Exception);
 				e = this;
@@ -71,24 +73,6 @@ class Exception extends Register.inherits(() => Error, true) {
 			this.stack = e.stack;
 		};
 		Error.prepareStackTrace = old;
-	}
-	get message() {
-		return this.get_message()
-	}
-	get stack() {
-		return this.get_stack()
-	}
-	get previous() {
-		return this.get_previous()
-	}
-	get native() {
-		return this.get_native()
-	}
-	get __exceptionStack() {
-		return this.get___exceptionStack()
-	}
-	set __exceptionStack(v) {
-		this.set___exceptionStack(v)
 	}
 	unwrap() {
 		return this.__nativeException;
@@ -108,21 +92,21 @@ class Exception extends Register.inherits(() => Error, true) {
 	*/
 	details() {
 		if (this.get_previous() == null) {
-			let tmp = "Exception: " + this.toString();
-			let tmp1 = this.get_stack();
-			return tmp + ((tmp1 == null) ? "null" : CallStack_Impl_.toString(tmp1));
+			var tmp = "Exception: " + this.toString();
+			var tmp1 = this.get_stack();
+			return tmp + ((tmp1 == null) ? "null" : CallStack.toString(tmp1));
 		} else {
-			let result = "";
-			let e = this;
-			let prev = null;
+			var result = "";
+			var e = this;
+			var prev = null;
 			while (e != null) {
 				if (prev == null) {
-					let result1 = "Exception: " + e.get_message();
-					let tmp = e.get_stack();
-					result = result1 + ((tmp == null) ? "null" : CallStack_Impl_.toString(tmp)) + result;
+					var result1 = "Exception: " + e.get_message();
+					var tmp = e.get_stack();
+					result = result1 + ((tmp == null) ? "null" : CallStack.toString(tmp)) + result;
 				} else {
-					let prevStack = CallStack_Impl_.subtract(e.get_stack(), prev.get_stack());
-					result = "Exception: " + e.get_message() + ((prevStack == null) ? "null" : CallStack_Impl_.toString(prevStack)) + "\n\nNext " + result;
+					var prevStack = CallStack.subtract(e.get_stack(), prev.get_stack());
+					result = "Exception: " + e.get_message() + ((prevStack == null) ? "null" : CallStack.toString(prevStack)) + "\n\nNext " + result;
 				};
 				prev = e;
 				e = e.get_previous();
@@ -143,13 +127,13 @@ class Exception extends Register.inherits(() => Error, true) {
 		return this.__nativeException;
 	}
 	get_stack() {
-		let _g = this.__exceptionStack;
+		var _g = this.__exceptionStack;
 		if (_g == null) {
-			let value = NativeStackTrace.toHaxe(NativeStackTrace.normalize(this.stack), this.__skipStack);
+			var value = NativeStackTrace.toHaxe(NativeStackTrace.normalize(this.stack), this.__skipStack);
 			this.setProperty("__exceptionStack", value);
 			return value;
 		} else {
-			let s = _g;
+			var s = _g;
 			return s;
 		};
 	}
@@ -203,7 +187,7 @@ class Exception extends Register.inherits(() => Error, true) {
 		} else if (((value) instanceof Error)) {
 			return value;
 		} else {
-			let e = new ValueException(value);
+			var e = new ValueException(value);
 			e.__skipStack++;
 			return e;
 		};

@@ -4,11 +4,13 @@ import {Bytes} from "./Bytes"
 
 export declare class BytesOutput extends Output {
 	constructor()
+	protected b: BytesBuffer
 	
 	/**
 	The length of the stream in bytes.
 	*/
 	readonly length: number
+	protected get_length(): number
 	writeByte(c: number): void
 	writeBytes(buf: Bytes, pos: number, len: number): number
 	

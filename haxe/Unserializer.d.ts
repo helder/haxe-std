@@ -24,6 +24,12 @@ The specification of the serialization format can be found here:
 */
 export declare class Unserializer {
 	constructor(buf: string)
+	protected buf: string
+	protected pos: number
+	protected length: number
+	protected cache: any[]
+	protected scache: string[]
+	protected resolver: TypeResolver
 	
 	/**
 	Sets the type resolver of `this` Unserializer instance to `r`.
@@ -41,6 +47,11 @@ export declare class Unserializer {
 	See `DEFAULT_RESOLVER` for more information on type resolvers.
 	*/
 	getResolver(): TypeResolver
+	protected get(p: number): number
+	protected readDigits(): number
+	protected readFloat(): number
+	protected unserializeObject(o: {}): void
+	protected unserializeEnum<T>(edecl: any, tag: string): T
 	
 	/**
 	Unserializes the next part of `this` Unserializer instance and returns
@@ -81,6 +92,9 @@ export declare class Unserializer {
 	Changing it afterwards has no effect on previously created instances.
 	*/
 	static DEFAULT_RESOLVER: TypeResolver
+	protected static BASE64: string
+	protected static CODES: number[]
+	protected static initCodes(): number[]
 	
 	/**
 	Unserializes `v` and returns the according value.
@@ -90,12 +104,18 @@ export declare class Unserializer {
 	once.
 	*/
 	static run(v: string): any
+	protected static fastLength(s: string): number
+	protected static fastCharCodeAt(s: string, pos: number): number
+	protected static fastCharAt(s: string, pos: number): string
+	protected static fastSubstr(s: string, pos: number, length: number): string
 }
 
 export declare class NullResolver {
+	protected constructor()
 	resolveClass(name: string): any
 	resolveEnum(name: string): any
 	static instance: NullResolver
+	protected static get_instance(): NullResolver
 }
 
 //# sourceMappingURL=Unserializer.d.ts.map

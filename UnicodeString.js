@@ -4,8 +4,10 @@ import {Exception} from "./haxe/Exception.js"
 import {Register} from "./genes/Register.js"
 import {HxOverrides} from "./HxOverrides.js"
 
-export const UnicodeString_Impl_ = Register.global("$hxClasses")["_UnicodeString.UnicodeString_Impl_"] = 
-class UnicodeString_Impl_ {
+const $global = Register.$global
+
+export const UnicodeString = Register.global("$hxClasses")["_UnicodeString.UnicodeString"] = 
+class UnicodeString {
 	
 	/**
 	Tells if `b` is a correctly encoded UTF8 byte sequence.
@@ -13,11 +15,11 @@ class UnicodeString_Impl_ {
 	static validate(b, encoding) {
 		switch (encoding._hx_index) {
 			case 0:
-				let data = b.b.bufferValue;
-				let pos = 0;
-				let max = b.length;
+				var data = b.b.bufferValue;
+				var pos = 0;
+				var max = b.length;
 				while (pos < max) {
-					let c = data.bytes[pos++];
+					var c = data.bytes[pos++];
 					if (c >= 128) {
 						if (c < 194) {
 							return false;
@@ -25,7 +27,7 @@ class UnicodeString_Impl_ {
 							if (pos + 1 > max) {
 								return false;
 							};
-							let c2 = data.bytes[pos++];
+							var c2 = data.bytes[pos++];
 							if (c2 < 128 || c2 > 191) {
 								return false;
 							};
@@ -33,19 +35,19 @@ class UnicodeString_Impl_ {
 							if (pos + 2 > max) {
 								return false;
 							};
-							let c2 = data.bytes[pos++];
+							var c21 = data.bytes[pos++];
 							if (c == 224) {
-								if (c2 < 160 || c2 > 191) {
+								if (c21 < 160 || c21 > 191) {
 									return false;
 								};
-							} else if (c2 < 128 || c2 > 191) {
+							} else if (c21 < 128 || c21 > 191) {
 								return false;
 							};
-							let c3 = data.bytes[pos++];
+							var c3 = data.bytes[pos++];
 							if (c3 < 128 || c3 > 191) {
 								return false;
 							};
-							c = c << 16 | c2 << 8 | c3;
+							c = c << 16 | c21 << 8 | c3;
 							if (15573120 <= c && c <= 15581119) {
 								return false;
 							};
@@ -55,23 +57,23 @@ class UnicodeString_Impl_ {
 							if (pos + 3 > max) {
 								return false;
 							};
-							let c2 = data.bytes[pos++];
+							var c22 = data.bytes[pos++];
 							if (c == 240) {
-								if (c2 < 144 || c2 > 191) {
+								if (c22 < 144 || c22 > 191) {
 									return false;
 								};
 							} else if (c == 244) {
-								if (c2 < 128 || c2 > 143) {
+								if (c22 < 128 || c22 > 143) {
 									return false;
 								};
-							} else if (c2 < 128 || c2 > 191) {
+							} else if (c22 < 128 || c22 > 191) {
 								return false;
 							};
-							let c3 = data.bytes[pos++];
-							if (c3 < 128 || c3 > 191) {
+							var c31 = data.bytes[pos++];
+							if (c31 < 128 || c31 > 191) {
 								return false;
 							};
-							let c4 = data.bytes[pos++];
+							var c4 = data.bytes[pos++];
 							if (c4 < 128 || c4 > 191) {
 								return false;
 							};
@@ -91,7 +93,7 @@ class UnicodeString_Impl_ {
 	Creates an instance of UnicodeString.
 	*/
 	static _new(string) {
-		let this1 = string;
+		var this1 = string;
 		return this1;
 	}
 	
@@ -122,15 +124,15 @@ class UnicodeString_Impl_ {
 		if (index < 0) {
 			return "";
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
 		while (nativeOffset < this1.length) {
-			let index1 = nativeOffset++;
-			let c = this1.charCodeAt(index1);
+			var index1 = nativeOffset++;
+			var c = this1.charCodeAt(index1);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(index1 + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (unicodeOffset == index) {
 				return String.fromCodePoint(c1);
 			};
@@ -151,15 +153,15 @@ class UnicodeString_Impl_ {
 		if (index < 0) {
 			return null;
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
 		while (nativeOffset < this1.length) {
-			let index1 = nativeOffset++;
-			let c = this1.charCodeAt(index1);
+			var index1 = nativeOffset++;
+			var c = this1.charCodeAt(index1);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(index1 + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (unicodeOffset == index) {
 				return c1;
 			};
@@ -186,34 +188,34 @@ class UnicodeString_Impl_ {
 	
 	If `str` cannot be found, -1 is returned.
 	*/
-	static indexOf(this1, str, startIndex = null) {
+	static indexOf(this1, str, startIndex) {
 		if (startIndex == null) {
 			startIndex = 0;
 		} else if (startIndex < 0) {
-			startIndex = UnicodeString_Impl_.get_length(this1) + startIndex;
+			startIndex = UnicodeString.get_length(this1) + startIndex;
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
-		let matchingOffset = 0;
-		let result = -1;
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
+		var matchingOffset = 0;
+		var result = -1;
 		while (nativeOffset <= this1.length) {
-			let c = this1.charCodeAt(nativeOffset);
+			var c = this1.charCodeAt(nativeOffset);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(nativeOffset + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (unicodeOffset >= startIndex) {
-				let c = str.charCodeAt(matchingOffset);
-				if (c >= 55296 && c <= 56319) {
-					c = c - 55232 << 10 | str.charCodeAt(matchingOffset + 1) & 1023;
+				var c2 = str.charCodeAt(matchingOffset);
+				if (c2 >= 55296 && c2 <= 56319) {
+					c2 = c2 - 55232 << 10 | str.charCodeAt(matchingOffset + 1) & 1023;
 				};
-				let c2 = c;
-				if (c1 == c2) {
+				var c21 = c2;
+				if (c1 == c21) {
 					if (matchingOffset == 0) {
 						result = unicodeOffset;
 					};
 					++matchingOffset;
-					if (c2 >= 65536) {
+					if (c21 >= 65536) {
 						++matchingOffset;
 					};
 					if (matchingOffset == str.length) {
@@ -245,29 +247,29 @@ class UnicodeString_Impl_ {
 	
 	If `str` cannot be found, -1 is returned.
 	*/
-	static lastIndexOf(this1, str, startIndex = null) {
+	static lastIndexOf(this1, str, startIndex) {
 		if (startIndex == null) {
 			startIndex = this1.length;
 		} else if (startIndex < 0) {
 			startIndex = 0;
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
-		let result = -1;
-		let lastIndex = -1;
-		let matchingOffset = 0;
-		let strUnicodeLength = UnicodeString_Impl_.get_length(str);
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
+		var result = -1;
+		var lastIndex = -1;
+		var matchingOffset = 0;
+		var strUnicodeLength = UnicodeString.get_length(str);
 		while (nativeOffset < this1.length && unicodeOffset < startIndex + strUnicodeLength) {
-			let c = this1.charCodeAt(nativeOffset);
+			var c = this1.charCodeAt(nativeOffset);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(nativeOffset + 1) & 1023;
 			};
-			let c1 = c;
-			let c2 = str.charCodeAt(matchingOffset);
+			var c1 = c;
+			var c2 = str.charCodeAt(matchingOffset);
 			if (c2 >= 55296 && c2 <= 56319) {
 				c2 = c2 - 55232 << 10 | str.charCodeAt(matchingOffset + 1) & 1023;
 			};
-			let c21 = c2;
+			var c21 = c2;
 			if (c1 == c21) {
 				if (matchingOffset == 0) {
 					lastIndex = unicodeOffset;
@@ -309,31 +311,31 @@ class UnicodeString_Impl_ {
 	
 	If `len` is negative, the result is unspecified.
 	*/
-	static substr(this1, pos, len = null) {
+	static substr(this1, pos, len) {
 		if (pos < 0) {
-			pos = UnicodeString_Impl_.get_length(this1) + pos;
+			pos = UnicodeString.get_length(this1) + pos;
 			if (pos < 0) {
 				pos = 0;
 			};
 		};
 		if (len != null) {
 			if (len < 0) {
-				len = UnicodeString_Impl_.get_length(this1) + len;
+				len = UnicodeString.get_length(this1) + len;
 			};
 			if (len <= 0) {
 				return "";
 			};
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
-		let fromOffset = -1;
-		let subLength = 0;
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
+		var fromOffset = -1;
+		var subLength = 0;
 		while (nativeOffset < this1.length) {
-			let c = this1.charCodeAt(nativeOffset);
+			var c = this1.charCodeAt(nativeOffset);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(nativeOffset + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (unicodeOffset >= pos) {
 				if (fromOffset < 0) {
 					if (len == null) {
@@ -343,7 +345,7 @@ class UnicodeString_Impl_ {
 				};
 				++subLength;
 				if (subLength >= len) {
-					let lastOffset = (c1 < 65536) ? nativeOffset : nativeOffset + 1;
+					var lastOffset = (c1 < 65536) ? nativeOffset : nativeOffset + 1;
 					return HxOverrides.substr(this1, fromOffset, lastOffset - fromOffset + 1);
 				};
 			};
@@ -370,7 +372,7 @@ class UnicodeString_Impl_ {
 	If the (possibly swapped) `startIndex` exceeds `this.length`, the empty
 	String `""` is returned.
 	*/
-	static substring(this1, startIndex, endIndex = null) {
+	static substring(this1, startIndex, endIndex) {
 		if (startIndex < 0) {
 			startIndex = 0;
 		};
@@ -382,21 +384,21 @@ class UnicodeString_Impl_ {
 				return "";
 			};
 			if (startIndex > endIndex) {
-				let tmp = startIndex;
+				var tmp = startIndex;
 				startIndex = endIndex;
 				endIndex = tmp;
 			};
 		};
-		let unicodeOffset = 0;
-		let nativeOffset = 0;
-		let fromOffset = -1;
-		let subLength = 0;
+		var unicodeOffset = 0;
+		var nativeOffset = 0;
+		var fromOffset = -1;
+		var subLength = 0;
 		while (nativeOffset < this1.length) {
-			let c = this1.charCodeAt(nativeOffset);
+			var c = this1.charCodeAt(nativeOffset);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | this1.charCodeAt(nativeOffset + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (startIndex <= unicodeOffset) {
 				if (fromOffset < 0) {
 					if (endIndex == null) {
@@ -406,7 +408,7 @@ class UnicodeString_Impl_ {
 				};
 				++subLength;
 				if (subLength >= endIndex - startIndex) {
-					let lastOffset = (c1 < 65536) ? nativeOffset : nativeOffset + 1;
+					var lastOffset = (c1 < 65536) ? nativeOffset : nativeOffset + 1;
 					return HxOverrides.substr(this1, fromOffset, lastOffset - fromOffset + 1);
 				};
 			};
@@ -420,21 +422,21 @@ class UnicodeString_Impl_ {
 		};
 	}
 	static get_length(this1) {
-		let l = 0;
-		let _g_offset = 0;
-		let _g_s = this1;
+		var l = 0;
+		var _g_offset = 0;
+		var _g_s = this1;
 		while (_g_offset < _g_s.length) {
-			let s = _g_s;
-			let index = _g_offset++;
-			let c = s.charCodeAt(index);
+			var s = _g_s;
+			var index = _g_offset++;
+			var c = s.charCodeAt(index);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (c1 >= 65536) {
 				++_g_offset;
 			};
-			let c2 = c1;
+			var c2 = c1;
 			++l;
 		};
 		return l;
@@ -443,7 +445,7 @@ class UnicodeString_Impl_ {
 		return "_UnicodeString.UnicodeString_Impl_"
 	}
 	get __class__() {
-		return UnicodeString_Impl_
+		return UnicodeString
 	}
 }
 

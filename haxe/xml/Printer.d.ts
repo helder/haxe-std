@@ -6,6 +6,13 @@ This class provides utility methods to convert Xml instances to
 String representation.
 */
 export declare class Printer {
+	protected constructor(pretty: boolean)
+	protected output: StringBuf
+	protected pretty: boolean
+	protected writeNode(value: Xml, tabs: string): void
+	protected write(input: string): void
+	protected newline(): void
+	protected hasChildren(value: Xml): boolean
 	
 	/**
 	Convert `Xml` to string representation.

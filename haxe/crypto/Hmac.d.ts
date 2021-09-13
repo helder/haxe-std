@@ -22,6 +22,11 @@ Calculates a Hmac of the given Bytes using a HashMethod.
 */
 export declare class Hmac {
 	constructor(hashMethod: HashMethod)
+	protected method: HashMethod
+	protected blockSize: number
+	protected length: number
+	protected doHash(b: Bytes): Bytes
+	protected nullPad(s: Bytes, chunkLen: number): Bytes
 	make(key: Bytes, msg: Bytes): Bytes
 }
 

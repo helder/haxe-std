@@ -2,7 +2,7 @@ import {Output} from "./haxe/io/Output"
 import {Input} from "./haxe/io/Input"
 import {Encoding} from "./haxe/io/Encoding"
 import {Bytes} from "./haxe/io/Bytes"
-import {Map} from "./Map"
+import {Map as Map__1} from "./Map"
 
 /**
 This class provides access to various base functions of system platforms.
@@ -48,7 +48,7 @@ export declare class Sys {
 	/**
 	Returns all environment variables.
 	*/
-	static environment(): Map<string, string>
+	static environment(): Map__1<string, string>
 	
 	/**
 	Changes the current time locale, which will affect `DateTools.format` date formating.
@@ -156,6 +156,7 @@ export declare class Sys {
 
 export declare class FileOutput extends Output {
 	constructor(fd: number)
+	protected fd: number
 	writeByte(c: number): void
 	writeBytes(s: Bytes, pos: number, len: number): number
 	writeString(s: string, encoding?: null | Encoding): void
@@ -165,6 +166,7 @@ export declare class FileOutput extends Output {
 
 export declare class FileInput extends Input {
 	constructor(fd: number)
+	protected fd: number
 	readByte(): number
 	readBytes(s: Bytes, pos: number, len: number): number
 	close(): void

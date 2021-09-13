@@ -1,5 +1,7 @@
 import {Register} from "./genes/Register.js"
 
+const $global = Register.$global
+
 /**
 IntIterator is used for implementing interval iterations.
 

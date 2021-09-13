@@ -1,6 +1,8 @@
 import {Register} from "../genes/Register.js"
 import {Std} from "../Std.js"
 
+const $global = Register.$global
+
 /**
 Log primarily provides the `trace()` method, which is invoked upon a call to
 `trace()` in Haxe code.
@@ -12,16 +14,16 @@ class Log {
 	Format the output of `trace` before printing it.
 	*/
 	static formatOutput(v, infos) {
-		let str = Std.string(v);
+		var str = Std.string(v);
 		if (infos == null) {
 			return str;
 		};
-		let pstr = infos.fileName + ":" + infos.lineNumber;
+		var pstr = infos.fileName + ":" + infos.lineNumber;
 		if (infos.customParams != null) {
-			let _g = 0;
-			let _g1 = infos.customParams;
+			var _g = 0;
+			var _g1 = infos.customParams;
 			while (_g < _g1.length) {
-				let v = _g1[_g];
+				var v = _g1[_g];
 				++_g;
 				str += ", " + Std.string(v);
 			};
@@ -47,8 +49,8 @@ class Log {
 	If it is bound to null, subsequent calls to `trace()` will cause an
 	exception.
 	*/
-	static trace(v, infos = null) {
-		let str = Log.formatOutput(v, infos);
+	static trace(v, infos) {
+		var str = Log.formatOutput(v, infos);
 		if (typeof(console) != "undefined" && console.log != null) {
 			console.log(str);
 		};

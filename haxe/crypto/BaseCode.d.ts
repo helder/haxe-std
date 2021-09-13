@@ -5,7 +5,11 @@ Allows one to encode/decode String and bytes using a power of two base dictionar
 */
 export declare class BaseCode {
 	constructor(base: Bytes)
+	protected base: Bytes
+	protected nbits: number
+	protected tbl: number[]
 	encodeBytes(b: Bytes): Bytes
+	protected initTable(): void
 	decodeBytes(b: Bytes): Bytes
 	encodeString(s: string): string
 	decodeString(s: string): string

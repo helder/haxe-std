@@ -7,6 +7,12 @@ In the context of Haxe dates, a timestamp is defined as the number of
 milliseconds elapsed since 1st January 1970.
 */
 export declare class DateTools {
+	protected static DAY_SHORT_NAMES: string[]
+	protected static DAY_NAMES: string[]
+	protected static MONTH_SHORT_NAMES: string[]
+	protected static MONTH_NAMES: string[]
+	protected static __format_get(d: Date, e: string): string
+	protected static __format(d: Date, f: string): string
 	
 	/**
 	Format the date `d` according to the format `f`. The format is
@@ -38,6 +44,7 @@ export declare class DateTools {
 	`Date.fromTime(d.getTime() + t)`.
 	*/
 	static delta(d: Date, t: number): Date
+	protected static DAYS_OF_MONTH: number[]
 	
 	/**
 	Returns the number of days in the month of Date `d`.

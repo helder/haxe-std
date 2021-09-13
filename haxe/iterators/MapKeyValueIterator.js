@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 This Key/Value iterator can be used to iterate across maps.
 */
@@ -21,7 +23,7 @@ class MapKeyValueIterator extends Register.inherits() {
 	See `Iterator.next`
 	*/
 	next() {
-		let key = this.keys.next();
+		var key = this.keys.next();
 		return {"value": this.map.get(key), "key": key};
 	}
 	static get __name__() {

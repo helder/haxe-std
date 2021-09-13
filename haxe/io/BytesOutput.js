@@ -2,6 +2,8 @@ import {Output} from "./Output.js"
 import {BytesBuffer} from "./BytesBuffer.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const BytesOutput = Register.global("$hxClasses")["haxe.io.BytesOutput"] = 
 class BytesOutput extends Register.inherits(Output) {
 	new() {

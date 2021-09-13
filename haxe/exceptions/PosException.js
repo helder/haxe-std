@@ -1,12 +1,14 @@
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 An exception that carry position information of a place where it was created.
 */
 export const PosException = Register.global("$hxClasses")["haxe.exceptions.PosException"] = 
 class PosException extends Register.inherits(Exception) {
-	new(message, previous = null, pos = null) {
+	new(message, previous, pos) {
 		super.new(message, previous);
 		if (pos == null) {
 			this.posInfos = {"fileName": "(unknown)", "lineNumber": 0, "className": "(unknown)", "methodName": "(unknown)"};

@@ -1,6 +1,8 @@
 import {HaxeIterator} from "./HaxeIterator.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 key => value iterator for js.lib.Set, tracking the entry index for the key to match the behavior of haxe.ds.List
 */
@@ -15,9 +17,9 @@ class SetKeyValueIterator extends Register.inherits() {
 		return !this.values.lastStep.done;
 	}
 	next() {
-		let tmp = this.index++;
-		let _this = this.values;
-		let v = _this.lastStep.value;
+		var tmp = this.index++;
+		var _this = this.values;
+		var v = _this.lastStep.value;
 		_this.lastStep = _this.jsIterator.next();
 		return {"key": tmp, "value": v};
 	}

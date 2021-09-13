@@ -1,6 +1,8 @@
 import {Register} from "../Register.js"
 import {Std} from "../../Std.js"
 
+const $global = Register.$global
+
 export const EsMap = Register.global("$hxClasses")["genes.util.EsMap"] = 
 class EsMap extends Register.inherits() {
 	new() {
@@ -25,10 +27,10 @@ class EsMap extends Register.inherits() {
 		return EsMap.adaptIterator(this.inst.values());
 	}
 	toString() {
-		let _g = [];
-		let key = EsMap.adaptIterator(this.inst.keys());
+		var _g = [];
+		var key = EsMap.adaptIterator(this.inst.keys());
 		while (key.hasNext()) {
-			let key1 = key.next();
+			var key1 = key.next();
 			_g.push("" + Std.string(key1) + " => " + Std.string(this.inst.get(key1)));
 		};
 		return "{" + _g.join(", ") + "}";
@@ -37,10 +39,10 @@ class EsMap extends Register.inherits() {
 		this.inst.clear();
 	}
 	static adaptIterator(from) {
-		let value;
-		let done;
-		let queue = function () {
-			let data = from.next();
+		var value;
+		var done;
+		var queue = function () {
+			var data = from.next();
 			value = data.value;
 			done = data.done;
 		};
@@ -53,7 +55,7 @@ class EsMap extends Register.inherits() {
 			if (done == null) {
 				queue();
 			};
-			let pending = value;
+			var pending = value;
 			queue();
 			return pending;
 		}};

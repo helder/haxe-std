@@ -7,6 +7,8 @@ import {Std} from "./Std.js"
 import {HxOverrides} from "./HxOverrides.js"
 import {EReg} from "./EReg.js"
 
+const $global = Register.$global
+
 /**
 This class provides advanced methods on Strings. It is ideally used with
 `using StringTools` and then acts as an [extension](https://haxe.org/manual/lf-static-extension.html)
@@ -46,22 +48,22 @@ class StringTools {
 	- `"` becomes `&quot`;
 	- `'` becomes `&#039`;
 	*/
-	static htmlEscape(s, quotes = null) {
-		let buf_b = "";
-		let _g_offset = 0;
-		let _g_s = s;
+	static htmlEscape(s, quotes) {
+		var buf_b = "";
+		var _g_offset = 0;
+		var _g_s = s;
 		while (_g_offset < _g_s.length) {
-			let s = _g_s;
-			let index = _g_offset++;
-			let c = s.charCodeAt(index);
+			var s = _g_s;
+			var index = _g_offset++;
+			var c = s.charCodeAt(index);
 			if (c >= 55296 && c <= 56319) {
 				c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
 			};
-			let c1 = c;
+			var c1 = c;
 			if (c1 >= 65536) {
 				++_g_offset;
 			};
-			let code = c1;
+			var code = c1;
 			switch (code) {
 				case 34:
 					if (quotes) {
@@ -118,7 +120,7 @@ class StringTools {
 	When `value` is `null`, the result is unspecified.
 	*/
 	static contains(s, value) {
-		return s.includes(value);
+		return s.indexOf(value) != -1;
 	}
 	
 	/**
@@ -129,7 +131,11 @@ class StringTools {
 	If `start` is the empty String `""`, the result is true.
 	*/
 	static startsWith(s, start) {
-		return s.startsWith(start);
+		if (s.length >= start.length) {
+			return s.lastIndexOf(start, 0) == 0;
+		} else {
+			return false;
+		};
 	}
 	
 	/**
@@ -140,7 +146,13 @@ class StringTools {
 	If `end` is the empty String `""`, the result is true.
 	*/
 	static endsWith(s, end) {
-		return s.endsWith(end);
+		var elen = end.length;
+		var slen = s.length;
+		if (slen >= elen) {
+			return s.indexOf(end, slen - elen) == slen - elen;
+		} else {
+			return false;
+		};
 	}
 	
 	/**
@@ -153,7 +165,7 @@ class StringTools {
 	`s`, the result is false.
 	*/
 	static isSpace(s, pos) {
-		let c = HxOverrides.cca(s, pos);
+		var c = HxOverrides.cca(s, pos);
 		if (!(c > 8 && c < 14)) {
 			return c == 32;
 		} else {
@@ -171,8 +183,8 @@ class StringTools {
 	result is the empty String `""`.
 	*/
 	static ltrim(s) {
-		let l = s.length;
-		let r = 0;
+		var l = s.length;
+		var r = 0;
 		while (r < l && StringTools.isSpace(s, r)) ++r;
 		if (r > 0) {
 			return HxOverrides.substr(s, r, l - r);
@@ -191,8 +203,8 @@ class StringTools {
 	result is the empty String `""`.
 	*/
 	static rtrim(s) {
-		let l = s.length;
-		let r = 0;
+		var l = s.length;
+		var r = 0;
 		while (r < l && StringTools.isSpace(s, l - r - 1)) ++r;
 		if (r > 0) {
 			return HxOverrides.substr(s, 0, l - r);
@@ -226,7 +238,7 @@ class StringTools {
 		if (c.length <= 0) {
 			return s;
 		};
-		let buf_b = "";
+		var buf_b = "";
 		l -= s.length;
 		while (buf_b.length < l) buf_b += (c == null) ? "null" : "" + c;
 		buf_b += (s == null) ? "null" : "" + s;
@@ -249,7 +261,7 @@ class StringTools {
 		if (c.length <= 0) {
 			return s;
 		};
-		let buf_b = "";
+		var buf_b = "";
 		buf_b += (s == null) ? "null" : "" + s;
 		while (buf_b.length < l) buf_b += (c == null) ? "null" : "" + c;
 		return buf_b;
@@ -275,9 +287,9 @@ class StringTools {
 	If `digits` is specified, the resulting String is padded with "0" until
 	its `length` equals `digits`.
 	*/
-	static hex(n, digits = null) {
-		let s = "";
-		let hexChars = "0123456789ABCDEF";
+	static hex(n, digits) {
+		var s = "";
+		var hexChars = "0123456789ABCDEF";
 		while (true) {
 			s = hexChars.charAt(n & 15) + s;
 			n >>>= 4;
@@ -382,30 +394,30 @@ class StringTools {
 	```
 	*/
 	static quoteWinArg(argument, escapeMetaCharacters) {
-		let argument1 = argument;
+		var argument1 = argument;
 		if (!new EReg("^[^ \t\\\\\"]+$", "").match(argument1)) {
-			let result_b = "";
-			let needquote = argument1.indexOf(" ") != -1 || argument1.indexOf("\t") != -1 || argument1 == "";
+			var result_b = "";
+			var needquote = argument1.indexOf(" ") != -1 || argument1.indexOf("\t") != -1 || argument1 == "";
 			if (needquote) {
 				result_b += "\"";
 			};
-			let bs_buf = new StringBuf();
-			let _g = 0;
-			let _g1 = argument1.length;
+			var bs_buf = new StringBuf();
+			var _g = 0;
+			var _g1 = argument1.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let _g1 = HxOverrides.cca(argument1, i);
-				if (_g1 == null) {
-					let c = _g1;
+				var i = _g++;
+				var _g2 = HxOverrides.cca(argument1, i);
+				if (_g2 == null) {
+					var c = _g2;
 					if (bs_buf.b.length > 0) {
 						result_b += Std.string(bs_buf.b);
 						bs_buf = new StringBuf();
 					};
 					result_b += String.fromCodePoint(c);
 				} else {
-					switch (_g1) {
+					switch (_g2) {
 						case 34:
-							let bs = bs_buf.b;
+							var bs = bs_buf.b;
 							result_b += Std.string(bs);
 							result_b += Std.string(bs);
 							bs_buf = new StringBuf();
@@ -415,12 +427,12 @@ class StringTools {
 							bs_buf.b += "\\";
 							break
 						default:
-						let c = _g1;
+						var c1 = _g2;
 						if (bs_buf.b.length > 0) {
 							result_b += Std.string(bs_buf.b);
 							bs_buf = new StringBuf();
 						};
-						result_b += String.fromCodePoint(c);
+						result_b += String.fromCodePoint(c1);
 						
 					};
 				};
@@ -433,12 +445,12 @@ class StringTools {
 			argument1 = result_b;
 		};
 		if (escapeMetaCharacters) {
-			let result_b = "";
-			let _g = 0;
-			let _g1 = argument1.length;
+			var result_b = "";
+			var _g = 0;
+			var _g1 = argument1.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let c = HxOverrides.cca(argument1, i);
+				var i = _g++;
+				var c = HxOverrides.cca(argument1, i);
 				if (SysTools.winMetaCharacters.indexOf(c) >= 0) {
 					result_b += String.fromCodePoint(94);
 				};
@@ -450,7 +462,7 @@ class StringTools {
 		};
 	}
 	static utf16CodePointAt(s, index) {
-		let c = s.charCodeAt(index);
+		var c = s.charCodeAt(index);
 		if (c >= 55296 && c <= 56319) {
 			c = c - 55232 << 10 | s.charCodeAt(index + 1) & 1023;
 		};

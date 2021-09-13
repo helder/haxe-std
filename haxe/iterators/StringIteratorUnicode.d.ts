@@ -9,6 +9,8 @@ String's length due to the fact that it deals with surrogate pairs.
 */
 export declare class StringIteratorUnicode {
 	constructor(s: string)
+	protected offset: number
+	protected s: string
 	
 	/**
 	See `Iterator.hasNext`

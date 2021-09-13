@@ -3,6 +3,8 @@ import {Register} from "../genes/Register.js"
 import {StringTools} from "../StringTools.js"
 import {Std} from "../Std.js"
 
+const $global = Register.$global
+
 /**
 Do not use manually.
 */
@@ -12,8 +14,8 @@ class NativeStackTrace {
 		NativeStackTrace.lastError = e;
 	}
 	static callStack() {
-		let e = new Error("");
-		let stack = NativeStackTrace.tryHaxeStack(e);
+		var e = new Error("");
+		var stack = NativeStackTrace.tryHaxeStack(e);
 		if (typeof(stack) == "undefined") {
 			try {
 				throw e;
@@ -26,34 +28,37 @@ class NativeStackTrace {
 	static exceptionStack() {
 		return NativeStackTrace.normalize(NativeStackTrace.tryHaxeStack(NativeStackTrace.lastError));
 	}
-	static toHaxe(s, skip = 0) {
+	static toHaxe(s, skip) {
+		if (skip == null) {
+			skip = 0;
+		};
 		if (s == null) {
 			return [];
 		} else if (typeof(s) == "string") {
-			let stack = s.split("\n");
+			var stack = s.split("\n");
 			if (stack[0] == "Error") {
 				stack.shift();
 			};
-			let m = [];
-			let _g = 0;
-			let _g1 = stack.length;
+			var m = [];
+			var _g = 0;
+			var _g1 = stack.length;
 			while (_g < _g1) {
-				let i = _g++;
+				var i = _g++;
 				if (skip > i) {
 					continue;
 				};
-				let line = stack[i];
-				let matched = line.match(/^    at ([A-Za-z0-9_. ]+) \(([^)]+):([0-9]+):([0-9]+)\)$/);
+				var line = stack[i];
+				var matched = line.match(/^    at ([A-Za-z0-9_. ]+) \(([^)]+):([0-9]+):([0-9]+)\)$/);
 				if (matched != null) {
-					let path = matched[1].split(".");
+					var path = matched[1].split(".");
 					if (path[0] == "$hxClasses") {
 						path.shift();
 					};
-					let meth = path.pop();
-					let file = matched[2];
-					let line = Std.parseInt(matched[3]);
-					let column = Std.parseInt(matched[4]);
-					m.push(StackItem.FilePos((meth == "Anonymous function") ? StackItem.LocalFunction() : (meth == "Global code") ? null : StackItem.Method(path.join("."), meth), file, line, column));
+					var meth = path.pop();
+					var file = matched[2];
+					var line1 = Std.parseInt(matched[3]);
+					var column = Std.parseInt(matched[4]);
+					m.push(StackItem.FilePos((meth == "Anonymous function") ? StackItem.LocalFunction() : (meth == "Global code") ? null : StackItem.Method(path.join("."), meth), file, line1, column));
 				} else {
 					m.push(StackItem.Module(StringTools.trim(line)));
 				};
@@ -69,35 +74,35 @@ class NativeStackTrace {
 		if (e == null) {
 			return [];
 		};
-		let oldValue = Error.prepareStackTrace;
+		var oldValue = Error.prepareStackTrace;
 		Error.prepareStackTrace = NativeStackTrace.prepareHxStackTrace;
-		let stack = e.stack;
+		var stack = e.stack;
 		Error.prepareStackTrace = oldValue;
 		return stack;
 	}
 	static prepareHxStackTrace(e, callsites) {
-		let stack = [];
-		let _g = 0;
+		var stack = [];
+		var _g = 0;
 		while (_g < callsites.length) {
-			let site = callsites[_g];
+			var site = callsites[_g];
 			++_g;
 			if (NativeStackTrace.wrapCallSite != null) {
 				site = NativeStackTrace.wrapCallSite(site);
 			};
-			let method = null;
-			let fullName = site.getFunctionName();
+			var method = null;
+			var fullName = site.getFunctionName();
 			if (fullName != null) {
-				let idx = fullName.lastIndexOf(".");
+				var idx = fullName.lastIndexOf(".");
 				if (idx >= 0) {
-					let className = fullName.substring(0, idx);
-					let methodName = fullName.substring(idx + 1);
+					var className = fullName.substring(0, idx);
+					var methodName = fullName.substring(idx + 1);
 					method = StackItem.Method(className, methodName);
 				} else {
 					method = StackItem.Method(null, fullName);
 				};
 			};
-			let fileName = site.getFileName();
-			let fileAddr = (fileName == null) ? -1 : fileName.indexOf("file:");
+			var fileName = site.getFileName();
+			var fileAddr = (fileName == null) ? -1 : fileName.indexOf("file:");
 			if (NativeStackTrace.wrapCallSite != null && fileAddr > 0) {
 				fileName = fileName.substring(fileAddr + 6);
 			};
@@ -105,7 +110,10 @@ class NativeStackTrace {
 		};
 		return stack;
 	}
-	static normalize(stack, skipItems = 0) {
+	static normalize(stack, skipItems) {
+		if (skipItems == null) {
+			skipItems = 0;
+		};
 		if (Array.isArray(stack) && skipItems > 0) {
 			return stack.slice(skipItems);
 		} else if (typeof(stack) == "string") {
@@ -121,7 +129,10 @@ class NativeStackTrace {
 			return stack;
 		};
 	}
-	static skipLines(stack, skip, pos = 0) {
+	static skipLines(stack, skip, pos) {
+		if (pos == null) {
+			pos = 0;
+		};
 		if (skip > 0) {
 			pos = stack.indexOf("\n", pos);
 			if (pos < 0) {

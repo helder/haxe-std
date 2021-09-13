@@ -3,6 +3,8 @@ import {Register} from "../genes/Register.js"
 import {StringBuf} from "../StringBuf.js"
 import {Std} from "../Std.js"
 
+const $global = Register.$global
+
 /**
 Elements return by `CallStack` methods.
 */
@@ -12,16 +14,16 @@ Register.global("$hxEnums")["haxe.StackItem"] =
 	__ename__: "haxe.StackItem",
 	
 	CFunction: {_hx_name: "CFunction", _hx_index: 0, __enum__: "haxe.StackItem"},
-	Module: Object.assign((m) => ({_hx_index: 1, __enum__: "haxe.StackItem", m}), {_hx_name: "Module", __params__: ["m"]}),
-	FilePos: Object.assign((s, file, line, column) => ({_hx_index: 2, __enum__: "haxe.StackItem", s, file, line, column}), {_hx_name: "FilePos", __params__: ["s", "file", "line", "column"]}),
-	Method: Object.assign((classname, method) => ({_hx_index: 3, __enum__: "haxe.StackItem", classname, method}), {_hx_name: "Method", __params__: ["classname", "method"]}),
-	LocalFunction: Object.assign((v) => ({_hx_index: 4, __enum__: "haxe.StackItem", v}), {_hx_name: "LocalFunction", __params__: ["v"]})
+	Module: Object.assign((m) => ({_hx_index: 1, __enum__: "haxe.StackItem", "m": m}), {_hx_name: "Module", __params__: ["m"]}),
+	FilePos: Object.assign((s, file, line, column) => ({_hx_index: 2, __enum__: "haxe.StackItem", "s": s, "file": file, "line": line, "column": column}), {_hx_name: "FilePos", __params__: ["s", "file", "line", "column"]}),
+	Method: Object.assign((classname, method) => ({_hx_index: 3, __enum__: "haxe.StackItem", "classname": classname, "method": method}), {_hx_name: "Method", __params__: ["classname", "method"]}),
+	LocalFunction: Object.assign((v) => ({_hx_index: 4, __enum__: "haxe.StackItem", "v": v}), {_hx_name: "LocalFunction", __params__: ["v"]})
 }
 StackItem.__constructs__ = [StackItem.CFunction, StackItem.Module, StackItem.FilePos, StackItem.Method, StackItem.LocalFunction]
 StackItem.__empty_constructs__ = [StackItem.CFunction]
 
-export const CallStack_Impl_ = Register.global("$hxClasses")["haxe._CallStack.CallStack_Impl_"] = 
-class CallStack_Impl_ {
+export const CallStack = Register.global("$hxClasses")["haxe._CallStack.CallStack"] = 
+class CallStack {
 	static get length() {
 		return this.get_length()
 	}
@@ -44,23 +46,26 @@ class CallStack_Impl_ {
 	
 	May not work if catch type was a derivative from `haxe.Exception`.
 	*/
-	static exceptionStack(fullStack = false) {
-		let eStack = NativeStackTrace.toHaxe(NativeStackTrace.exceptionStack());
-		return (fullStack) ? eStack : CallStack_Impl_.subtract(eStack, CallStack_Impl_.callStack());
+	static exceptionStack(fullStack) {
+		if (fullStack == null) {
+			fullStack = false;
+		};
+		var eStack = NativeStackTrace.toHaxe(NativeStackTrace.exceptionStack());
+		return (fullStack) ? eStack : CallStack.subtract(eStack, CallStack.callStack());
 	}
 	
 	/**
 	Returns a representation of the stack as a printable string.
 	*/
 	static toString(stack) {
-		let b = new StringBuf();
-		let _g = 0;
-		let _g1 = stack;
+		var b = new StringBuf();
+		var _g = 0;
+		var _g1 = stack;
 		while (_g < _g1.length) {
-			let s = _g1[_g];
+			var s = _g1[_g];
 			++_g;
 			b.b += "\nCalled from ";
-			CallStack_Impl_.itemToString(b, s);
+			CallStack.itemToString(b, s);
 		};
 		return b.b;
 	}
@@ -70,14 +75,14 @@ class CallStack_Impl_ {
 	common part of this and `stack`.
 	*/
 	static subtract(this1, stack) {
-		let startIndex = -1;
-		let i = -1;
+		var startIndex = -1;
+		var i = -1;
 		while (++i < this1.length) {
-			let _g = 0;
-			let _g1 = stack.length;
+			var _g = 0;
+			var _g1 = stack.length;
 			while (_g < _g1) {
-				let j = _g++;
-				if (CallStack_Impl_.equalItems(this1[i], stack[j])) {
+				var j = _g++;
+				if (CallStack.equalItems(this1[i], stack[j])) {
 					if (startIndex < 0) {
 						startIndex = i;
 					};
@@ -134,8 +139,8 @@ class CallStack_Impl_ {
 					if (item2 == null) {
 						return false;
 					} else if (item2._hx_index == 1) {
-						let m2 = item2.m;
-						let m1 = item1.m;
+						var m2 = item2.m;
+						var m1 = item1.m;
 						return m1 == m2;
 					} else {
 						return false;
@@ -145,16 +150,16 @@ class CallStack_Impl_ {
 					if (item2 == null) {
 						return false;
 					} else if (item2._hx_index == 2) {
-						let item21 = item2.s;
-						let file2 = item2.file;
-						let line2 = item2.line;
-						let col2 = item2.column;
-						let col1 = item1.column;
-						let line1 = item1.line;
-						let file1 = item1.file;
-						let item11 = item1.s;
+						var item21 = item2.s;
+						var file2 = item2.file;
+						var line2 = item2.line;
+						var col2 = item2.column;
+						var col1 = item1.column;
+						var line1 = item1.line;
+						var file1 = item1.file;
+						var item11 = item1.s;
 						if (file1 == file2 && line1 == line2 && col1 == col2) {
-							return CallStack_Impl_.equalItems(item11, item21);
+							return CallStack.equalItems(item11, item21);
 						} else {
 							return false;
 						};
@@ -166,10 +171,10 @@ class CallStack_Impl_ {
 					if (item2 == null) {
 						return false;
 					} else if (item2._hx_index == 3) {
-						let class2 = item2.classname;
-						let method2 = item2.method;
-						let method1 = item1.method;
-						let class1 = item1.classname;
+						var class2 = item2.classname;
+						var method2 = item2.method;
+						var method1 = item1.method;
+						var class1 = item1.classname;
 						if (class1 == class2) {
 							return method1 == method2;
 						} else {
@@ -183,8 +188,8 @@ class CallStack_Impl_ {
 					if (item2 == null) {
 						return false;
 					} else if (item2._hx_index == 4) {
-						let v2 = item2.v;
-						let v1 = item1.v;
+						var v2 = item2.v;
+						var v1 = item1.v;
 						return v1 == v2;
 					} else {
 						return false;
@@ -196,21 +201,21 @@ class CallStack_Impl_ {
 	}
 	static exceptionToString(e) {
 		if (e.get_previous() == null) {
-			let tmp = "Exception: " + e.toString();
-			let tmp1 = e.get_stack();
-			return tmp + ((tmp1 == null) ? "null" : CallStack_Impl_.toString(tmp1));
+			var tmp = "Exception: " + e.toString();
+			var tmp1 = e.get_stack();
+			return tmp + ((tmp1 == null) ? "null" : CallStack.toString(tmp1));
 		};
-		let result = "";
-		let e1 = e;
-		let prev = null;
+		var result = "";
+		var e1 = e;
+		var prev = null;
 		while (e1 != null) {
 			if (prev == null) {
-				let result1 = "Exception: " + e1.get_message();
-				let tmp = e1.get_stack();
-				result = result1 + ((tmp == null) ? "null" : CallStack_Impl_.toString(tmp)) + result;
+				var result1 = "Exception: " + e1.get_message();
+				var tmp = e1.get_stack();
+				result = result1 + ((tmp == null) ? "null" : CallStack.toString(tmp)) + result;
 			} else {
-				let prevStack = CallStack_Impl_.subtract(e1.get_stack(), prev.get_stack());
-				result = "Exception: " + e1.get_message() + ((prevStack == null) ? "null" : CallStack_Impl_.toString(prevStack)) + "\n\nNext " + result;
+				var prevStack = CallStack.subtract(e1.get_stack(), prev.get_stack());
+				result = "Exception: " + e1.get_message() + ((prevStack == null) ? "null" : CallStack.toString(prevStack)) + "\n\nNext " + result;
 			};
 			prev = e1;
 			e1 = e1.get_previous();
@@ -223,17 +228,17 @@ class CallStack_Impl_ {
 				b.b += "a C function";
 				break
 			case 1:
-				let m = s.m;
+				var m = s.m;
 				b.b += "module ";
 				b.b += (m == null) ? "null" : "" + m;
 				break
 			case 2:
-				let s1 = s.s;
-				let file = s.file;
-				let line = s.line;
-				let col = s.column;
+				var s1 = s.s;
+				var file = s.file;
+				var line = s.line;
+				var col = s.column;
 				if (s1 != null) {
-					CallStack_Impl_.itemToString(b, s1);
+					CallStack.itemToString(b, s1);
 					b.b += " (";
 				};
 				b.b += (file == null) ? "null" : "" + file;
@@ -248,14 +253,14 @@ class CallStack_Impl_ {
 				};
 				break
 			case 3:
-				let cname = s.classname;
-				let meth = s.method;
+				var cname = s.classname;
+				var meth = s.method;
 				b.b += Std.string((cname == null) ? "<unknown>" : cname);
 				b.b += ".";
 				b.b += (meth == null) ? "null" : "" + meth;
 				break
 			case 4:
-				let n = s.v;
+				var n = s.v;
 				b.b += "local function #";
 				b.b += (n == null) ? "null" : "" + n;
 				break
@@ -266,7 +271,7 @@ class CallStack_Impl_ {
 		return "haxe._CallStack.CallStack_Impl_"
 	}
 	get __class__() {
-		return CallStack_Impl_
+		return CallStack
 	}
 }
 

@@ -1,7 +1,9 @@
 import {Register} from "../../genes/Register.js"
 
-export const KeyValue_Impl_ = Register.global("$hxClasses")["js.node._KeyValue.KeyValue_Impl_"] = 
-class KeyValue_Impl_ {
+const $global = Register.$global
+
+export const KeyValue = Register.global("$hxClasses")["js.node._KeyValue.KeyValue"] = 
+class KeyValue {
 	static get key() {
 		return this.get_key()
 	}
@@ -18,7 +20,7 @@ class KeyValue_Impl_ {
 		return "js.node._KeyValue.KeyValue_Impl_"
 	}
 	get __class__() {
-		return KeyValue_Impl_
+		return KeyValue
 	}
 }
 

@@ -4,6 +4,8 @@ import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
 import {Buffer} from "buffer"
 
+const $global = Register.$global
+
 export const Compress = Register.global("$hxClasses")["haxe.zip.Compress"] = 
 class Compress extends Register.inherits() {
 	new(level) {
@@ -17,8 +19,8 @@ class Compress extends Register.inherits() {
 	close() {
 	}
 	static run(s, level) {
-		let data = s.b;
-		let buffer = Zlib.deflateSync(Buffer.from(data.buffer, data.byteOffset, s.length), {"level": level});
+		var data = s.b;
+		var buffer = Zlib.deflateSync(Buffer.from(data.buffer, data.byteOffset, s.length), {"level": level});
 		return Helper.bytesOfBuffer(buffer);
 	}
 	static get __name__() {

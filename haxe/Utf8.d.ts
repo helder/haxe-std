@@ -5,6 +5,7 @@ can use this cross-platform API to perform operations on such strings.
 */
 export declare class Utf8 {
 	constructor(size?: null | number)
+	protected __b: string
 	
 	/**
 	Add the given UTF8 character code to the buffer.

@@ -1,7 +1,9 @@
 import {Register} from "./genes/Register.js"
 
-export const EnumValue_Impl_ = Register.global("$hxClasses")["_EnumValue.EnumValue_Impl_"] = 
-class EnumValue_Impl_ {
+const $global = Register.$global
+
+export const EnumValue = Register.global("$hxClasses")["_EnumValue.EnumValue"] = 
+class EnumValue {
 	
 	/**
 	Matches enum instance `e` against pattern `pattern`, returning `true` if
@@ -38,7 +40,7 @@ class EnumValue_Impl_ {
 		return "_EnumValue.EnumValue_Impl_"
 	}
 	get __class__() {
-		return EnumValue_Impl_
+		return EnumValue
 	}
 }
 

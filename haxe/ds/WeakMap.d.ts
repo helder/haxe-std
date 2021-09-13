@@ -10,7 +10,7 @@ See `Map` for documentation details.
 
 @see https://haxe.org/manual/std-Map.html
 */
-export declare class WeakMap<K, V> implements IMap<K, V> {
+export declare class WeakMap<K extends {}, V> implements IMap<K, V> {
 	constructor()
 	
 	/**

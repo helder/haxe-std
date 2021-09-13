@@ -6,7 +6,9 @@ import {HttpBase} from "./HttpBase.js"
 import {Register} from "../../genes/Register.js"
 import {Buffer} from "buffer"
 import {Std} from "../../Std.js"
-import {Reflect} from "../../Reflect.js"
+import {Reflect as Reflect__1} from "../../Reflect.js"
+
+const $global = Register.$global
 
 export const HttpNodeJs = Register.global("$hxClasses")["haxe.http.HttpNodeJs"] = 
 class HttpNodeJs extends Register.inherits(HttpBase) {
@@ -25,21 +27,22 @@ class HttpNodeJs extends Register.inherits(HttpBase) {
 		this.req.abort();
 		this.req = null;
 	}
-	request(post = null) {
+	request(post) {
+		var _gthis = this;
 		this.responseAsString = null;
 		this.responseBytes = null;
-		let parsedUrl = new URL(this.url);
-		let secure = parsedUrl.protocol == "https:";
-		let host = parsedUrl.hostname;
-		let path = parsedUrl.pathname;
-		let port = (parsedUrl.port != null) ? Std.parseInt(parsedUrl.port) : (secure) ? 443 : 80;
-		let h = {};
-		let _g = 0;
-		let _g1 = this.headers;
+		var parsedUrl = new URL(this.url);
+		var secure = parsedUrl.protocol == "https:";
+		var host = parsedUrl.hostname;
+		var path = parsedUrl.pathname;
+		var port = (parsedUrl.port != null) ? Std.parseInt(parsedUrl.port) : (secure) ? 443 : 80;
+		var h = {};
+		var _g = 0;
+		var _g1 = this.headers;
 		while (_g < _g1.length) {
-			let i = _g1[_g];
+			var i = _g1[_g];
 			++_g;
-			let arr = Reflect.field(h, i.name);
+			var arr = Reflect__1.field(h, i.name);
 			if (arr == null) {
 				arr = new Array();
 				h[i.name] = arr;
@@ -49,41 +52,40 @@ class HttpNodeJs extends Register.inherits(HttpBase) {
 		if (this.postData != null || this.postBytes != null) {
 			post = true;
 		};
-		let uri = null;
-		let _g2 = 0;
-		let _g3 = this.params;
-		while (_g2 < _g3.length) {
-			let p = _g3[_g2];
-			++_g2;
+		var uri = null;
+		var _g = 0;
+		var _g1 = this.params;
+		while (_g < _g1.length) {
+			var p = _g1[_g];
+			++_g;
 			if (uri == null) {
 				uri = "";
 			} else {
 				uri += "&";
 			};
-			let s = p.name;
-			let uri1 = encodeURIComponent(s) + "=";
-			let s1 = p.value;
+			var s = p.name;
+			var uri1 = encodeURIComponent(s) + "=";
+			var s1 = p.value;
 			uri += uri1 + encodeURIComponent(s1);
 		};
-		let question = path.split("?").length <= 1;
+		var question = path.split("?").length <= 1;
 		if (uri != null) {
 			path += ((question) ? "?" : "&") + uri;
 		};
-		let opts = {"protocol": parsedUrl.protocol, "hostname": host, "port": port, "method": (post) ? "POST" : "GET", "path": path, "headers": h};
-		let _gthis = this;
-		let httpResponse = function (res) {
+		var opts = {"protocol": parsedUrl.protocol, "hostname": host, "port": port, "method": (post) ? "POST" : "GET", "path": path, "headers": h};
+		var httpResponse = function (res) {
 			res.setEncoding("binary");
-			let s = res.statusCode;
+			var s = res.statusCode;
 			if (s != null) {
 				_gthis.onStatus(s);
 			};
-			let data = [];
+			var data = [];
 			res.on("data", function (chunk) {
 				data.push(Buffer.from(chunk, "binary"));
 			});
 			res.on("end", function (_) {
-				let buf = (data.length == 1) ? data[0] : Buffer.concat(data);
-				let httpResponse = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
+				var buf = (data.length == 1) ? data[0] : Buffer.concat(data);
+				var httpResponse = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
 				_gthis.responseBytes = Bytes.ofData(httpResponse);
 				_gthis.req = null;
 				if (s != null && s >= 200 && s < 400) {

@@ -1,6 +1,8 @@
 import {Log} from "./Log.js"
 import {Register} from "../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 The `Timer` class allows you to create asynchronous timers on platforms that
 support events.
@@ -18,7 +20,7 @@ the child class.
 export const Timer = Register.global("$hxClasses")["haxe.Timer"] = 
 class Timer extends Register.inherits() {
 	new(time_ms) {
-		let me = this;
+		var me = this;
 		this.id = setInterval(function () {
 			me.run();
 		}, time_ms);
@@ -67,7 +69,7 @@ class Timer extends Register.inherits() {
 	If `f` is `null`, the result is unspecified.
 	*/
 	static delay(f, time_ms) {
-		let t = new Timer(time_ms);
+		var t = new Timer(time_ms);
 		t.run = function () {
 			t.stop();
 			f();
@@ -86,13 +88,13 @@ class Timer extends Register.inherits() {
 	
 	If `f` is `null`, the result is unspecified.
 	*/
-	static measure(f, pos = null) {
-		let hrtime = process.hrtime();
-		let t0 = hrtime[0] + hrtime[1] / 1e9;
-		let r = f();
-		let tmp = Log.trace;
-		let hrtime1 = process.hrtime();
-		tmp(hrtime1[0] + hrtime1[1] / 1e9 - t0 + "s", pos);
+	static measure(f, pos) {
+		var hrtime = process.hrtime();
+		var t0 = hrtime[0] + hrtime[1] / 1e9;
+		var r = f();
+		var tmp = Log.trace;
+		var hrtime = process.hrtime();
+		tmp(hrtime[0] + hrtime[1] / 1e9 - t0 + "s", pos);
 		return r;
 	}
 	
@@ -103,7 +105,7 @@ class Timer extends Register.inherits() {
 	between two values make sense.
 	*/
 	static stamp() {
-		let hrtime = process.hrtime();
+		var hrtime = process.hrtime();
 		return hrtime[0] + hrtime[1] / 1e9;
 	}
 	static get __name__() {

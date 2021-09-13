@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 This iterator can be used to iterate over char indexes and char codes in a string.
 

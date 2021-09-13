@@ -242,7 +242,7 @@ export declare class Type {
 	
 	If `a` or `b` are null, the result is unspecified.
 	*/
-	static enumEq<T>(a: T, b: T): boolean
+	static enumEq<T extends any>(a: T, b: T): boolean
 	
 	/**
 	Returns the constructor name of enum instance `e`.

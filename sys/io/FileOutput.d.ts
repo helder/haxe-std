@@ -6,6 +6,9 @@ import {Bytes} from "../../haxe/io/Bytes"
 Use `sys.io.File.write` to create a `FileOutput`.
 */
 export declare class FileOutput extends Output {
+	protected constructor(fd: number)
+	protected fd: number
+	protected pos: number
 	writeByte(b: number): void
 	writeBytes(s: Bytes, pos: number, len: number): number
 	close(): void

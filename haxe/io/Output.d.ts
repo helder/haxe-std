@@ -42,6 +42,7 @@ export declare class Output {
 	Behaviour while writing after calling this method is unspecified.
 	*/
 	close(): void
+	protected set_bigEndian(b: boolean): boolean
 	
 	/**
 	Write all bytes stored in `s`.

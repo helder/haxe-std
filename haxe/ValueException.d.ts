@@ -21,6 +21,15 @@ export declare class ValueException extends Exception {
 	Thrown value.
 	*/
 	value: any
+	
+	/**
+	Extract an originally thrown value.
+	
+	This method must return the same value on subsequent calls.
+	Used internally for catching non-native exceptions.
+	Do _not_ override unless you know what you are doing.
+	*/
+	protected unwrap(): any
 }
 
 //# sourceMappingURL=ValueException.d.ts.map

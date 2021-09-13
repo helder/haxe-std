@@ -37,6 +37,7 @@ export declare class Input {
 	Behaviour while reading after calling this method is unspecified.
 	*/
 	close(): void
+	protected set_bigEndian(b: boolean): boolean
 	
 	/**
 	Read and return all available data.
@@ -130,6 +131,7 @@ export declare class Input {
 	Read and `len` bytes as a string.
 	*/
 	readString(len: number, encoding?: null | Encoding): string
+	protected getDoubleSig(bytes: number[]): number
 }
 
 //# sourceMappingURL=Input.d.ts.map

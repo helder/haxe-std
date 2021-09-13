@@ -7,6 +7,8 @@ internal encoding of strings in different of runtimes.
 */
 export declare class StringIterator {
 	constructor(s: string)
+	protected offset: number
+	protected s: string
 	
 	/**
 	See `Iterator.hasNext`

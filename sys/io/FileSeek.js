@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const FileSeek = 
 Register.global("$hxEnums")["sys.io.FileSeek"] = 
 {

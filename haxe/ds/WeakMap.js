@@ -2,6 +2,8 @@ import {NotImplementedException} from "../exceptions/NotImplementedException.js"
 import {IMap} from "../Constraints.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 WeakMap allows mapping of object keys to arbitrary values.
 

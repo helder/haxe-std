@@ -16,6 +16,10 @@ export declare type Huffman =
 
 export declare class HuffTools {
 	constructor()
+	protected treeDepth(t: Huffman): number
+	protected treeCompress(t: Huffman): Huffman
+	protected treeWalk(table: Huffman[], p: number, cd: number, d: number, t: Huffman): void
+	protected treeMake(bits: IntMap<number>, maxbits: number, v: number, len: number): Huffman
 	make(lengths: number[], pos: number, nlengths: number, maxbits: number): Huffman
 }
 

@@ -1,6 +1,8 @@
 import {Exception} from "./Exception.js"
 import {Register} from "../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 An exception containing arbitrary value.
 
@@ -17,7 +19,7 @@ throw new ValueException("Terrible error");
 */
 export const ValueException = Register.global("$hxClasses")["haxe.ValueException"] = 
 class ValueException extends Register.inherits(() => Exception, true) {
-	new(value, previous = null, $native = null) {
+	new(value, previous, $native) {
 		super.new(String(value), previous, $native);
 		this.value = value;
 		this.__skipStack++;

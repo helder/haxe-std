@@ -7,8 +7,10 @@ import {EsMap} from "./genes/util/EsMap.js"
 import {Register} from "./genes/Register.js"
 import {HxOverrides} from "./HxOverrides.js"
 
-export const XmlType_Impl_ = Register.global("$hxClasses")["_Xml.XmlType_Impl_"] = 
-class XmlType_Impl_ {
+const $global = Register.$global
+
+export const XmlType = Register.global("$hxClasses")["_Xml.XmlType"] = 
+class XmlType {
 	static toString(this1) {
 		switch (this1) {
 			case 0:
@@ -39,18 +41,18 @@ class XmlType_Impl_ {
 		return "_Xml.XmlType_Impl_"
 	}
 	get __class__() {
-		return XmlType_Impl_
+		return XmlType
 	}
 }
 
 
-XmlType_Impl_.Element = 0
-XmlType_Impl_.PCData = 1
-XmlType_Impl_.CData = 2
-XmlType_Impl_.Comment = 3
-XmlType_Impl_.DocType = 4
-XmlType_Impl_.ProcessingInstruction = 5
-XmlType_Impl_.Document = 6
+XmlType.Element = 0
+XmlType.PCData = 1
+XmlType.CData = 2
+XmlType.Comment = 3
+XmlType.DocType = 4
+XmlType.ProcessingInstruction = 5
+XmlType.Document = 6
 /**
 Cross-platform Xml API.
 
@@ -65,25 +67,25 @@ class Xml extends Register.inherits() {
 	}
 	get_nodeName() {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.nodeName;
 	}
 	set_nodeName(v) {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.nodeName = v;
 	}
 	get_nodeValue() {
 		if (this.nodeType == Xml.Document || this.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.nodeValue;
 	}
 	set_nodeValue(v) {
 		if (this.nodeType == Xml.Document || this.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.nodeValue = v;
 	}
@@ -94,7 +96,7 @@ class Xml extends Register.inherits() {
 	*/
 	get(att) {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.attributeMap.inst.get(att);
 	}
@@ -105,7 +107,7 @@ class Xml extends Register.inherits() {
 	*/
 	set(att, value) {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		this.attributeMap.inst.set(att, value);
 	}
@@ -116,7 +118,7 @@ class Xml extends Register.inherits() {
 	*/
 	remove(att) {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		this.attributeMap.inst["delete"](att);
 	}
@@ -127,7 +129,7 @@ class Xml extends Register.inherits() {
 	*/
 	exists(att) {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.attributeMap.inst.has(att);
 	}
@@ -137,7 +139,7 @@ class Xml extends Register.inherits() {
 	*/
 	attributes() {
 		if (this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return EsMap.adaptIterator(this.attributeMap.inst.keys());
 	}
@@ -148,7 +150,7 @@ class Xml extends Register.inherits() {
 	*/
 	iterator() {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return new ArrayIterator(this.children);
 	}
@@ -159,19 +161,19 @@ class Xml extends Register.inherits() {
 	*/
 	elements() {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
-		let _g = [];
-		let _g1 = 0;
-		let _g2 = this.children;
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = this.children;
 		while (_g1 < _g2.length) {
-			let child = _g2[_g1];
+			var child = _g2[_g1];
 			++_g1;
 			if (child.nodeType == Xml.Element) {
 				_g.push(child);
 			};
 		};
-		let ret = _g;
+		var ret = _g;
 		return new ArrayIterator(ret);
 	}
 	
@@ -181,18 +183,18 @@ class Xml extends Register.inherits() {
 	*/
 	elementsNamed(name) {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
-		let _g = [];
-		let _g1 = 0;
-		let _g2 = this.children;
+		var _g = [];
+		var _g1 = 0;
+		var _g2 = this.children;
 		while (_g1 < _g2.length) {
-			let child = _g2[_g1];
+			var child = _g2[_g1];
 			++_g1;
-			let tmp;
+			var tmp;
 			if (child.nodeType == Xml.Element) {
 				if (child.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((child.nodeType == null) ? "null" : XmlType_Impl_.toString(child.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((child.nodeType == null) ? "null" : XmlType.toString(child.nodeType)));
 				};
 				tmp = child.nodeName == name;
 			} else {
@@ -202,7 +204,7 @@ class Xml extends Register.inherits() {
 				_g.push(child);
 			};
 		};
-		let ret = _g;
+		var ret = _g;
 		return new ArrayIterator(ret);
 	}
 	
@@ -211,7 +213,7 @@ class Xml extends Register.inherits() {
 	*/
 	firstChild() {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		return this.children[0];
 	}
@@ -221,12 +223,12 @@ class Xml extends Register.inherits() {
 	*/
 	firstElement() {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
-		let _g = 0;
-		let _g1 = this.children;
+		var _g = 0;
+		var _g1 = this.children;
 		while (_g < _g1.length) {
-			let child = _g1[_g];
+			var child = _g1[_g];
 			++_g;
 			if (child.nodeType == Xml.Element) {
 				return child;
@@ -243,7 +245,7 @@ class Xml extends Register.inherits() {
 	*/
 	addChild(x) {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		if (x.parent != null) {
 			x.parent.removeChild(x);
@@ -258,7 +260,7 @@ class Xml extends Register.inherits() {
 	*/
 	removeChild(x) {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		if (HxOverrides.remove(this.children, x)) {
 			x.parent = null;
@@ -275,7 +277,7 @@ class Xml extends Register.inherits() {
 	*/
 	insertChild(x, pos) {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 		if (x.parent != null) {
 			HxOverrides.remove(x.parent.children, x);
@@ -292,7 +294,7 @@ class Xml extends Register.inherits() {
 	}
 	ensureElementType() {
 		if (this.nodeType != Xml.Document && this.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType_Impl_.toString(this.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element or Document but found " + ((this.nodeType == null) ? "null" : XmlType.toString(this.nodeType)));
 		};
 	}
 	
@@ -307,9 +309,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createElement(name) {
-		let xml = new Xml(Xml.Element);
+		var xml = new Xml(Xml.Element);
 		if (xml.nodeType != Xml.Element) {
-			throw Exception.thrown("Bad node type, expected Element but found " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, expected Element but found " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeName = name;
 		return xml;
@@ -319,9 +321,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createPCData(data) {
-		let xml = new Xml(Xml.PCData);
+		var xml = new Xml(Xml.PCData);
 		if (xml.nodeType == Xml.Document || xml.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeValue = data;
 		return xml;
@@ -331,9 +333,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createCData(data) {
-		let xml = new Xml(Xml.CData);
+		var xml = new Xml(Xml.CData);
 		if (xml.nodeType == Xml.Document || xml.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeValue = data;
 		return xml;
@@ -343,9 +345,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createComment(data) {
-		let xml = new Xml(Xml.Comment);
+		var xml = new Xml(Xml.Comment);
 		if (xml.nodeType == Xml.Document || xml.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeValue = data;
 		return xml;
@@ -355,9 +357,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createDocType(data) {
-		let xml = new Xml(Xml.DocType);
+		var xml = new Xml(Xml.DocType);
 		if (xml.nodeType == Xml.Document || xml.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeValue = data;
 		return xml;
@@ -367,9 +369,9 @@ class Xml extends Register.inherits() {
 	Creates a node of the given type.
 	*/
 	static createProcessingInstruction(data) {
-		let xml = new Xml(Xml.ProcessingInstruction);
+		var xml = new Xml(Xml.ProcessingInstruction);
 		if (xml.nodeType == Xml.Document || xml.nodeType == Xml.Element) {
-			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType_Impl_.toString(xml.nodeType)));
+			throw Exception.thrown("Bad node type, unexpected " + ((xml.nodeType == null) ? "null" : XmlType.toString(xml.nodeType)));
 		};
 		xml.nodeValue = data;
 		return xml;

@@ -17,6 +17,7 @@ A detailed explanation of the supported operations is available at
 */
 export declare class EReg {
 	constructor(r: string, opt: string)
+	protected r: RegExp
 	
 	/**
 	Tells if `this` regular expression matches String `s`.
@@ -150,6 +151,7 @@ export declare class EReg {
 	If `s` is null, the result is unspecified.
 	*/
 	static escape(s: string): string
+	protected static escapeRe: RegExp
 }
 
 //# sourceMappingURL=EReg.d.ts.map

@@ -10,6 +10,7 @@ Depending on their type they can be obtained as `String` through
 A list of all available resource names can be obtained from `listNames()`.
 */
 export declare class Resource {
+	protected static content: {data: string, name: string, str: string}[]
 	
 	/**
 	Lists all available resource names. The resource name is the name part

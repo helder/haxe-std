@@ -7,6 +7,7 @@ export declare class Window {
 	constructor(hasCrc: boolean)
 	buffer: Bytes
 	pos: number
+	protected crc: Adler32
 	slide(): void
 	addBytes(b: Bytes, p: number, len: number): void
 	addByte(c: number): void
@@ -51,7 +52,40 @@ A pure Haxe implementation of the ZLIB Inflate algorithm which allows reading co
 */
 export declare class InflateImpl {
 	constructor(i: Input, header?: null | boolean, crc?: null | boolean)
+	protected nbits: number
+	protected bits: number
+	protected state: State
+	protected isFinal: boolean
+	protected huffman: Huffman
+	protected huffdist: null | Huffman
+	protected htools: HuffTools
+	protected len: number
+	protected dist: number
+	protected needed: number
+	protected output: Bytes
+	protected outpos: number
+	protected input: Input
+	protected lengths: number[]
+	protected window: Window
+	protected buildFixedHuffman(): Huffman
 	readBytes(b: Bytes, pos: number, len: number): number
+	protected getBits(n: number): number
+	protected getBit(): boolean
+	protected getRevBits(n: number): number
+	protected resetBits(): void
+	protected addBytes(b: Bytes, p: number, len: number): void
+	protected addByte(b: number): void
+	protected addDistOne(n: number): void
+	protected addDist(d: number, len: number): void
+	protected applyHuffman(h: Huffman): number
+	protected inflateLengths(a: number[], max: number): void
+	protected inflateLoop(): boolean
+	protected static LEN_EXTRA_BITS_TBL: number[]
+	protected static LEN_BASE_VAL_TBL: number[]
+	protected static DIST_EXTRA_BITS_TBL: number[]
+	protected static DIST_BASE_VAL_TBL: number[]
+	protected static CODE_LENGTHS_POS: number[]
+	protected static FIXED_HUFFMAN: Huffman
 	static run(i: Input, bufsize?: null | number): Bytes
 }
 

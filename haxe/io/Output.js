@@ -1,11 +1,13 @@
 import {FPHelper} from "./FPHelper.js"
-import {Error} from "./Error.js"
+import {Error as Error__1} from "./Error.js"
 import {Eof} from "./Eof.js"
 import {Bytes} from "./Bytes.js"
 import {NotImplementedException} from "../exceptions/NotImplementedException.js"
 import {NativeStackTrace} from "../NativeStackTrace.js"
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
+
+const $global = Register.$global
 
 /**
 An Output is an abstract write. A specific output implementation will only
@@ -32,10 +34,10 @@ class Output {
 	*/
 	writeBytes(s, pos, len) {
 		if (pos < 0 || len < 0 || pos + len > s.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw Exception.thrown(Error__1.OutsideBounds);
 		};
-		let b = s.b;
-		let k = len;
+		var b = s.b;
+		var k = len;
 		while (k > 0) {
 			this.writeByte(b[pos]);
 			++pos;
@@ -66,12 +68,12 @@ class Output {
 	Write all bytes stored in `s`.
 	*/
 	write(s) {
-		let l = s.length;
-		let p = 0;
+		var l = s.length;
+		var p = 0;
 		while (l > 0) {
-			let k = this.writeBytes(s, p, l);
+			var k = this.writeBytes(s, p, l);
 			if (k == 0) {
-				throw Exception.thrown(Error.Blocked);
+				throw Exception.thrown(Error__1.Blocked);
 			};
 			p += k;
 			l -= k;
@@ -85,7 +87,7 @@ class Output {
 	*/
 	writeFullBytes(s, pos, len) {
 		while (len > 0) {
-			let k = this.writeBytes(s, pos, len);
+			var k = this.writeBytes(s, pos, len);
 			pos += k;
 			len -= k;
 		};
@@ -106,7 +108,7 @@ class Output {
 	Endianness is specified by the `bigEndian` property.
 	*/
 	writeDouble(x) {
-		let i64 = FPHelper.doubleToI64(x);
+		var i64 = FPHelper.doubleToI64(x);
 		if (this.bigEndian) {
 			this.writeInt32(i64.high);
 			this.writeInt32(i64.low);
@@ -121,7 +123,7 @@ class Output {
 	*/
 	writeInt8(x) {
 		if (x < -128 || x >= 128) {
-			throw Exception.thrown(Error.Overflow);
+			throw Exception.thrown(Error__1.Overflow);
 		};
 		this.writeByte(x & 255);
 	}
@@ -133,7 +135,7 @@ class Output {
 	*/
 	writeInt16(x) {
 		if (x < -32768 || x >= 32768) {
-			throw Exception.thrown(Error.Overflow);
+			throw Exception.thrown(Error__1.Overflow);
 		};
 		this.writeUInt16(x & 65535);
 	}
@@ -145,7 +147,7 @@ class Output {
 	*/
 	writeUInt16(x) {
 		if (x < 0 || x >= 65536) {
-			throw Exception.thrown(Error.Overflow);
+			throw Exception.thrown(Error__1.Overflow);
 		};
 		if (this.bigEndian) {
 			this.writeByte(x >> 8);
@@ -163,7 +165,7 @@ class Output {
 	*/
 	writeInt24(x) {
 		if (x < -8388608 || x >= 8388608) {
-			throw Exception.thrown(Error.Overflow);
+			throw Exception.thrown(Error__1.Overflow);
 		};
 		this.writeUInt24(x & 16777215);
 	}
@@ -175,7 +177,7 @@ class Output {
 	*/
 	writeUInt24(x) {
 		if (x < 0 || x >= 16777216) {
-			throw Exception.thrown(Error.Overflow);
+			throw Exception.thrown(Error__1.Overflow);
 		};
 		if (this.bigEndian) {
 			this.writeByte(x >> 16);
@@ -223,22 +225,22 @@ class Output {
 	The `bufsize` optional argument specifies the size of chunks by
 	which data is read and written. Its default value is 4096.
 	*/
-	writeInput(i, bufsize = null) {
+	writeInput(i, bufsize) {
 		if (bufsize == null) {
 			bufsize = 4096;
 		};
-		let buf = new Bytes(new ArrayBuffer(bufsize));
+		var buf = new Bytes(new ArrayBuffer(bufsize));
 		try {
 			while (true) {
-				let len = i.readBytes(buf, 0, bufsize);
+				var len = i.readBytes(buf, 0, bufsize);
 				if (len == 0) {
-					throw Exception.thrown(Error.Blocked);
+					throw Exception.thrown(Error__1.Blocked);
 				};
-				let p = 0;
+				var p = 0;
 				while (len > 0) {
-					let k = this.writeBytes(buf, p, len);
+					var k = this.writeBytes(buf, p, len);
 					if (k == 0) {
-						throw Exception.thrown(Error.Blocked);
+						throw Exception.thrown(Error__1.Blocked);
 					};
 					p += k;
 					len -= k;
@@ -255,8 +257,8 @@ class Output {
 	/**
 	Write `s` string.
 	*/
-	writeString(s, encoding = null) {
-		let b = Bytes.ofString(s, encoding);
+	writeString(s, encoding) {
+		var b = Bytes.ofString(s, encoding);
 		this.writeFullBytes(b, 0, b.length);
 	}
 	static get __name__() {

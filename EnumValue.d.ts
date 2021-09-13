@@ -1,5 +1,5 @@
 
-export declare class EnumValue_Impl_ {
+export declare class EnumValue {
 	
 	/**
 	Matches enum instance `e` against pattern `pattern`, returning `true` if

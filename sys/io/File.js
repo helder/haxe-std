@@ -5,15 +5,26 @@ import {Register} from "../../genes/Register.js"
 import * as Fs from "fs"
 import {Buffer} from "buffer"
 
+const $global = Register.$global
+
 export const File = Register.global("$hxClasses")["sys.io.File"] = 
 class File {
-	static append(path, binary = true) {
+	static append(path, binary) {
+		if (binary == null) {
+			binary = true;
+		};
 		return new FileOutput(Fs.openSync(path, "a"));
 	}
-	static write(path, binary = true) {
+	static write(path, binary) {
+		if (binary == null) {
+			binary = true;
+		};
 		return new FileOutput(Fs.openSync(path, "w"));
 	}
-	static read(path, binary = true) {
+	static read(path, binary) {
+		if (binary == null) {
+			binary = true;
+		};
 		return new FileInput(Fs.openSync(path, "r"));
 	}
 	static getContent(path) {
@@ -26,15 +37,15 @@ class File {
 		return Helper.bytesOfBuffer(Fs.readFileSync(path));
 	}
 	static saveBytes(path, bytes) {
-		let data = bytes.b;
+		var data = bytes.b;
 		Fs.writeFileSync(path, Buffer.from(data.buffer, data.byteOffset, bytes.length));
 	}
 	static copy(srcPath, dstPath) {
-		let src = Fs.openSync(srcPath, "r");
-		let stat = Fs.fstatSync(src);
-		let dst = Fs.openSync(dstPath, "w", stat.mode);
-		let bytesRead;
-		let pos = 0;
+		var src = Fs.openSync(srcPath, "r");
+		var stat = Fs.fstatSync(src);
+		var dst = Fs.openSync(dstPath, "w", stat.mode);
+		var bytesRead;
+		var pos = 0;
 		while (true) {
 			bytesRead = Fs.readSync(src, File.copyBuf, 0, 65536, pos);
 			if (!(bytesRead > 0)) {

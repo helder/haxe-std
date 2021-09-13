@@ -9,11 +9,13 @@ values.
 */
 export declare class StringBuf {
 	constructor()
+	protected b: string
 	
 	/**
 	The length of `this` StringBuf in characters.
 	*/
 	readonly length: number
+	protected get_length(): number
 	
 	/**
 	Appends the representation of `x` to `this` StringBuf.

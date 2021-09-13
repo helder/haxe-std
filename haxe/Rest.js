@@ -2,8 +2,10 @@ import {RestKeyValueIterator} from "./iterators/RestKeyValueIterator.js"
 import {RestIterator} from "./iterators/RestIterator.js"
 import {Register} from "../genes/Register.js"
 
-export const Rest_Impl_ = Register.global("$hxClasses")["haxe._Rest.Rest_Impl_"] = 
-class Rest_Impl_ {
+const $global = Register.$global
+
+export const Rest = Register.global("$hxClasses")["haxe._Rest.Rest"] = 
+class Rest {
 	static get length() {
 		return this.get_length()
 	}
@@ -20,11 +22,11 @@ class Rest_Impl_ {
 	Use `Rest.of(array.copy())` to avoid that.
 	*/
 	static of(array) {
-		let this1 = array;
+		var this1 = array;
 		return this1;
 	}
 	static _new(array) {
-		let this1 = array;
+		var this1 = array;
 		return this1;
 	}
 	static get(this1, index) {
@@ -48,20 +50,20 @@ class Rest_Impl_ {
 	Create a new rest arguments collection by appending `item` to this one.
 	*/
 	static append(this1, item) {
-		let result = this1.slice();
+		var result = this1.slice();
 		result.push(item);
-		let this2 = result;
-		return this2;
+		var this1 = result;
+		return this1;
 	}
 	
 	/**
 	Create a new rest arguments collection by prepending this one with `item`.
 	*/
 	static prepend(this1, item) {
-		let result = this1.slice();
+		var result = this1.slice();
 		result.unshift(item);
-		let this2 = result;
-		return this2;
+		var this1 = result;
+		return this1;
 	}
 	static toString(this1) {
 		return "[" + this1.toString() + "]";
@@ -70,7 +72,7 @@ class Rest_Impl_ {
 		return "haxe._Rest.Rest_Impl_"
 	}
 	get __class__() {
-		return Rest_Impl_
+		return Rest
 	}
 }
 

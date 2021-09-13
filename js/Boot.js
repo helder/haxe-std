@@ -3,6 +3,8 @@ import {Exception} from "../haxe/Exception.js"
 import {Register} from "../genes/Register.js"
 import {Std} from "../Std.js"
 
+const $global = Register.$global
+
 export const Boot = Register.global("$hxClasses")["js.Boot"] = 
 class Boot {
 	static isClass(o) {
@@ -20,11 +22,11 @@ class Boot {
 		} else if (((o) instanceof Array)) {
 			return Array;
 		} else {
-			let cl = o.__class__;
+			var cl = o.__class__;
 			if (cl != null) {
 				return cl;
 			};
-			let name = Boot.__nativeClassName(o);
+			var name = Boot.__nativeClassName(o);
 			if (name != null) {
 				return Boot.__resolveNativeClass(name);
 			};
@@ -38,7 +40,7 @@ class Boot {
 		if (s.length >= 5) {
 			return "<...>";
 		};
-		let t = typeof(o);
+		var t = typeof(o);
 		if (t == "function" && (o.__name__ || o.__ename__)) {
 			t = "object";
 		};
@@ -48,21 +50,21 @@ class Boot {
 				break
 			case "object":
 				if (o.__enum__) {
-					let e = Register.global("$hxEnums")[o.__enum__];
-					let con = e.__constructs__[o._hx_index];
-					let n = con._hx_name;
+					var e = Register.global("$hxEnums")[o.__enum__];
+					var con = e.__constructs__[o._hx_index];
+					var n = con._hx_name;
 					if (con.__params__) {
 						s = s + "\t";
 						return n + "(" + ((function($this) {var $r0
-							let _g = [];
+							var _g = [];
 							{
-								let _g1 = 0;
-								let _g2 = con.__params__;
+								var _g1 = 0;
+								var _g2 = con.__params__;
 								while (true) {
 									if (!(_g1 < _g2.length)) {
 										break;
 									};
-									let p = _g2[_g1];
+									var p = _g2[_g1];
 									_g1 = _g1 + 1;
 									_g.push(Boot.__string_rec(o[p], s));
 								};
@@ -75,18 +77,18 @@ class Boot {
 					};
 				};
 				if (((o) instanceof Array)) {
-					let str = "[";
+					var str = "[";
 					s += "\t";
-					let _g = 0;
-					let _g1 = o.length;
+					var _g = 0;
+					var _g1 = o.length;
 					while (_g < _g1) {
-						let i = _g++;
+						var i = _g++;
 						str += ((i > 0) ? "," : "") + Boot.__string_rec(o[i], s);
 					};
 					str += "]";
 					return str;
 				};
-				let tostr;
+				var tostr;
 				try {
 					tostr = o.toString;
 				}catch (_g) {
@@ -94,15 +96,15 @@ class Boot {
 					return "???";
 				};
 				if (tostr != null && tostr != Object.toString && typeof(tostr) == "function") {
-					let s2 = o.toString();
+					var s2 = o.toString();
 					if (s2 != "[object Object]") {
 						return s2;
 					};
 				};
-				let str = "{\n";
+				var str = "{\n";
 				s += "\t";
-				let hasp = o.hasOwnProperty != null;
-				let k = null;
+				var hasp = o.hasOwnProperty != null;
+				var k = null;
 				for( k in o ) {;
 				if (hasp && !o.hasOwnProperty(k)) {
 					continue;
@@ -134,13 +136,13 @@ class Boot {
 		if (cc == cl) {
 			return true;
 		};
-		let intf = cc.__interfaces__;
-		if (intf != null && (cc.__super__ == null || cc.__super__.__interfaces__ != intf)) {
-			let _g = 0;
-			let _g1 = intf.length;
+		var intf = cc.__interfaces__;
+		if (intf != null) {
+			var _g = 0;
+			var _g1 = intf.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let i1 = intf[i];
+				var i = _g++;
+				var i1 = intf[i];
 				if (i1 == cl || Boot.__interfLoop(i1, cl)) {
 					return true;
 				};
@@ -221,7 +223,7 @@ class Boot {
 		};
 	}
 	static __nativeClassName(o) {
-		let name = Boot.__toStr.call(o).slice(8, -1);
+		var name = Boot.__toStr.call(o).slice(8, -1);
 		if (name == "Object" || name == "Function" || name == "Math" || name == "JSON") {
 			return null;
 		};

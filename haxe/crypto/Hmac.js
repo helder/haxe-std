@@ -4,6 +4,8 @@ import {Sha1} from "./Sha1.js"
 import {Md5} from "./Md5.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 Hash methods for Hmac calculation.
 */
@@ -27,7 +29,7 @@ class Hmac extends Register.inherits() {
 	new(hashMethod) {
 		this.method = hashMethod;
 		this.blockSize = 64;
-		let tmp;
+		var tmp;
 		switch (hashMethod._hx_index) {
 			case 0:
 				tmp = 16;
@@ -57,16 +59,16 @@ class Hmac extends Register.inherits() {
 		};
 	}
 	nullPad(s, chunkLen) {
-		let r = chunkLen - s.length % chunkLen;
+		var r = chunkLen - s.length % chunkLen;
 		if (r == chunkLen && s.length != 0) {
 			return s;
 		};
-		let sb = new BytesBuffer();
+		var sb = new BytesBuffer();
 		sb.add(s);
-		let _g = 0;
-		let _g1 = r;
+		var _g = 0;
+		var _g1 = r;
 		while (_g < _g1) {
-			let x = _g++;
+			var x = _g++;
 			sb.addByte(0);
 		};
 		return sb.getBytes();
@@ -87,18 +89,18 @@ class Hmac extends Register.inherits() {
 			};
 		};
 		key = this.nullPad(key, this.blockSize);
-		let Ki = new BytesBuffer();
-		let Ko = new BytesBuffer();
-		let _g = 0;
-		let _g1 = key.length;
+		var Ki = new BytesBuffer();
+		var Ko = new BytesBuffer();
+		var _g = 0;
+		var _g1 = key.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			Ko.addByte(key.b[i] ^ 92);
 			Ki.addByte(key.b[i] ^ 54);
 		};
 		Ki.add(msg);
-		let b = Ki.getBytes();
-		let tmp;
+		var b = Ki.getBytes();
+		var tmp;
 		switch (this.method._hx_index) {
 			case 0:
 				tmp = Md5.make(b);
@@ -112,16 +114,16 @@ class Hmac extends Register.inherits() {
 			
 		};
 		Ko.add(tmp);
-		let b1 = Ko.getBytes();
+		var b = Ko.getBytes();
 		switch (this.method._hx_index) {
 			case 0:
-				return Md5.make(b1);
+				return Md5.make(b);
 				break
 			case 1:
-				return Sha1.make(b1);
+				return Sha1.make(b);
 				break
 			case 2:
-				return Sha256.make(b1);
+				return Sha256.make(b);
 				break
 			
 		};

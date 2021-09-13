@@ -10,8 +10,10 @@ import {Register} from "../genes/Register.js"
 import {Type} from "../Type.js"
 import {StringBuf} from "../StringBuf.js"
 import {Std} from "../Std.js"
-import {Reflect} from "../Reflect.js"
+import {Reflect as Reflect__1} from "../Reflect.js"
 import {HxOverrides} from "../HxOverrides.js"
+
+const $global = Register.$global
 
 /**
 The Serializer class can be used to encode values and objects into a `String`,
@@ -52,7 +54,7 @@ class Serializer extends Register.inherits() {
 		return this.buf.b;
 	}
 	serializeString(s) {
-		let x = this.shash.inst.get(s);
+		var x = this.shash.inst.get(s);
 		if (x != null) {
 			this.buf.b += "R";
 			this.buf.b += (x == null) ? "null" : "" + x;
@@ -66,12 +68,12 @@ class Serializer extends Register.inherits() {
 		this.buf.b += (s == null) ? "null" : "" + s;
 	}
 	serializeRef(v) {
-		let vt = typeof(v);
-		let _g = 0;
-		let _g1 = this.cache.length;
+		var vt = typeof(v);
+		var _g = 0;
+		var _g1 = this.cache.length;
 		while (_g < _g1) {
-			let i = _g++;
-			let ci = this.cache[i];
+			var i = _g++;
+			var ci = this.cache[i];
 			if (typeof(ci) == vt && ci == v) {
 				this.buf.b += "r";
 				this.buf.b += (i == null) ? "null" : "" + i;
@@ -82,13 +84,13 @@ class Serializer extends Register.inherits() {
 		return false;
 	}
 	serializeFields(v) {
-		let _g = 0;
-		let _g1 = Reflect.fields(v);
+		var _g = 0;
+		var _g1 = Reflect__1.fields(v);
 		while (_g < _g1.length) {
-			let f = _g1[_g];
+			var f = _g1[_g];
 			++_g;
 			this.serializeString(f);
-			this.serialize(Reflect.field(v, f));
+			this.serialize(Reflect__1.field(v, f));
 		};
 		this.buf.b += "g";
 	}
@@ -104,13 +106,13 @@ class Serializer extends Register.inherits() {
 	serialization output.
 	*/
 	serialize(v) {
-		let _g = Type["typeof"](v);
+		var _g = Type["typeof"](v);
 		switch (_g._hx_index) {
 			case 0:
 				this.buf.b += "n";
 				break
 			case 1:
-				let v1 = v;
+				var v1 = v;
 				if (v1 == 0) {
 					this.buf.b += "z";
 					return;
@@ -119,14 +121,14 @@ class Serializer extends Register.inherits() {
 				this.buf.b += (v1 == null) ? "null" : "" + v1;
 				break
 			case 2:
-				let v2 = v;
-				if ((isNaN)(v2)) {
+				var v1 = v;
+				if ((isNaN)(v1)) {
 					this.buf.b += "k";
-				} else if (!(isFinite)(v2)) {
-					this.buf.b += (v2 < 0) ? "m" : "p";
+				} else if (!(isFinite)(v1)) {
+					this.buf.b += (v1 < 0) ? "m" : "p";
 				} else {
 					this.buf.b += "d";
-					this.buf.b += (v2 == null) ? "null" : "" + v2;
+					this.buf.b += (v1 == null) ? "null" : "" + v1;
 				};
 				break
 			case 3:
@@ -134,7 +136,7 @@ class Serializer extends Register.inherits() {
 				break
 			case 4:
 				if (Boot.__instanceof(v, "$hxCoreType__Class")) {
-					let className = v.__name__;
+					var className = v.__name__;
 					this.buf.b += "A";
 					this.serializeString(className);
 				} else if (Boot.__instanceof(v, "$hxCoreType__Enum")) {
@@ -152,7 +154,7 @@ class Serializer extends Register.inherits() {
 				throw Exception.thrown("Cannot serialize function");
 				break
 			case 6:
-				let c = _g.c;
+				var c = _g.c;
 				if (c == String) {
 					this.serializeString(v);
 					return;
@@ -162,13 +164,13 @@ class Serializer extends Register.inherits() {
 				};
 				switch (c) {
 					case Array:
-						let ucount = 0;
+						var ucount = 0;
 						this.buf.b += "a";
-						let l = v["length"];
-						let _g1 = 0;
-						let _g2 = l;
+						var l = v["length"];
+						var _g1 = 0;
+						var _g2 = l;
 						while (_g1 < _g2) {
-							let i = _g1++;
+							var i = _g1++;
 							if (v[i] == null) {
 								++ucount;
 							} else {
@@ -195,95 +197,95 @@ class Serializer extends Register.inherits() {
 						this.buf.b += "h";
 						break
 					case Date:
-						let d = v;
+						var d = v;
 						this.buf.b += "v";
 						this.buf.b += Std.string(d.getTime());
 						break
 					case IntMap:
 						this.buf.b += "q";
-						let v3 = v;
-						let k = EsMap.adaptIterator(v3.inst.keys());
+						var v1 = v;
+						var k = EsMap.adaptIterator(v1.inst.keys());
 						while (k.hasNext()) {
-							let k1 = k.next();
+							var k1 = k.next();
 							this.buf.b += ":";
 							this.buf.b += (k1 == null) ? "null" : "" + k1;
-							this.serialize(v3.inst.get(k1));
+							this.serialize(v1.inst.get(k1));
 						};
 						this.buf.b += "h";
 						break
 					case List:
 						this.buf.b += "l";
-						let v4 = v;
-						let _g_head = v4.h;
+						var v1 = v;
+						var _g_head = v1.h;
 						while (_g_head != null) {
-							let val = _g_head.item;
+							var val = _g_head.item;
 							_g_head = _g_head.next;
-							let i = val;
+							var i = val;
 							this.serialize(i);
 						};
 						this.buf.b += "h";
 						break
 					case ObjectMap:
 						this.buf.b += "M";
-						let v5 = v;
-						let k1 = EsMap.adaptIterator(v5.inst.keys());
-						while (k1.hasNext()) {
-							let k = k1.next();
-							let id = Reflect.field(k, "__id__");
-							Reflect.deleteField(k, "__id__");
-							this.serialize(k);
-							k["__id__"] = id;
-							this.serialize(v5.inst.get(k));
+						var v1 = v;
+						var k = EsMap.adaptIterator(v1.inst.keys());
+						while (k.hasNext()) {
+							var k1 = k.next();
+							var id = Reflect__1.field(k1, "__id__");
+							Reflect__1.deleteField(k1, "__id__");
+							this.serialize(k1);
+							k1["__id__"] = id;
+							this.serialize(v1.inst.get(k1));
 						};
 						this.buf.b += "h";
 						break
 					case StringMap:
 						this.buf.b += "b";
-						let v6 = v;
-						let k2 = EsMap.adaptIterator(v6.inst.keys());
-						while (k2.hasNext()) {
-							let k = k2.next();
-							this.serializeString(k);
-							this.serialize(v6.inst.get(k));
+						var v1 = v;
+						var k = EsMap.adaptIterator(v1.inst.keys());
+						while (k.hasNext()) {
+							var k1 = k.next();
+							this.serializeString(k1);
+							this.serialize(v1.inst.get(k1));
 						};
 						this.buf.b += "h";
 						break
 					case Bytes:
-						let v7 = v;
+						var v1 = v;
 						this.buf.b += "s";
-						this.buf.b += Std.string(Math.ceil(v7.length * 8 / 6));
+						this.buf.b += Std.string(Math.ceil(v1.length * 8 / 6));
 						this.buf.b += ":";
-						let i = 0;
-						let max = v7.length - 2;
-						let b64 = Serializer.BASE64_CODES;
+						var i = 0;
+						var max = v1.length - 2;
+						var b64 = Serializer.BASE64_CODES;
 						if (b64 == null) {
-							let this1 = new Array(Serializer.BASE64.length);
+							var this1 = new Array(Serializer.BASE64.length);
 							b64 = this1;
-							let _g = 0;
-							let _g1 = Serializer.BASE64.length;
-							while (_g < _g1) {
-								let i = _g++;
-								b64[i] = HxOverrides.cca(Serializer.BASE64, i);
+							var _g1 = 0;
+							var _g2 = Serializer.BASE64.length;
+							while (_g1 < _g2) {
+								var i1 = _g1++;
+								b64[i1] = HxOverrides.cca(Serializer.BASE64, i1);
 							};
 							Serializer.BASE64_CODES = b64;
 						};
 						while (i < max) {
-							let b1 = v7.b[i++];
-							let b2 = v7.b[i++];
-							let b3 = v7.b[i++];
+							var b1 = v1.b[i++];
+							var b2 = v1.b[i++];
+							var b3 = v1.b[i++];
 							this.buf.b += String.fromCodePoint(b64[b1 >> 2]);
 							this.buf.b += String.fromCodePoint(b64[(b1 << 4 | b2 >> 4) & 63]);
 							this.buf.b += String.fromCodePoint(b64[(b2 << 2 | b3 >> 6) & 63]);
 							this.buf.b += String.fromCodePoint(b64[b3 & 63]);
 						};
 						if (i == max) {
-							let b1 = v7.b[i++];
-							let b2 = v7.b[i++];
+							var b1 = v1.b[i++];
+							var b2 = v1.b[i++];
 							this.buf.b += String.fromCodePoint(b64[b1 >> 2]);
 							this.buf.b += String.fromCodePoint(b64[(b1 << 4 | b2 >> 4) & 63]);
 							this.buf.b += String.fromCodePoint(b64[b2 << 2 & 63]);
 						} else if (i == max + 1) {
-							let b1 = v7.b[i++];
+							var b1 = v1.b[i++];
 							this.buf.b += String.fromCodePoint(b64[b1 >> 2]);
 							this.buf.b += String.fromCodePoint(b64[b1 << 4 & 63]);
 						};
@@ -312,7 +314,7 @@ class Serializer extends Register.inherits() {
 				};
 				break
 			case 7:
-				let e = _g.e;
+				var e = _g.e;
 				if (this.useCache) {
 					if (this.serializeRef(v)) {
 						return;
@@ -325,16 +327,16 @@ class Serializer extends Register.inherits() {
 					this.buf.b += ":";
 					this.buf.b += Std.string(v._hx_index);
 				} else {
-					let e = v;
+					var e = v;
 					this.serializeString(Register.global("$hxEnums")[e.__enum__].__constructs__[e._hx_index]._hx_name);
 				};
 				this.buf.b += ":";
-				let params = Type.enumParameters(v);
+				var params = Type.enumParameters(v);
 				this.buf.b += Std.string(params.length);
-				let _g3 = 0;
-				while (_g3 < params.length) {
-					let p = params[_g3];
-					++_g3;
+				var _g = 0;
+				while (_g < params.length) {
+					var p = params[_g];
+					++_g;
 					this.serialize(p);
 				};
 				if (this.useCache) {
@@ -359,7 +361,7 @@ class Serializer extends Register.inherits() {
 	to `toString()`.
 	*/
 	static run(v) {
-		let s = new Serializer();
+		var s = new Serializer();
 		s.serialize(v);
 		return s.toString();
 	}

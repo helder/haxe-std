@@ -14,6 +14,8 @@ effect.
 */
 export declare class IntIterator {
 	constructor(min: number, max: number)
+	protected min: number
+	protected max: number
 	
 	/**
 	Returns true if the iterator has other items, false otherwise.

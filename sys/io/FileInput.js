@@ -1,11 +1,13 @@
 import {Input} from "../../haxe/io/Input.js"
-import {Error} from "../../haxe/io/Error.js"
+import {Error as Error__1} from "../../haxe/io/Error.js"
 import {Eof} from "../../haxe/io/Eof.js"
 import {NativeStackTrace} from "../../haxe/NativeStackTrace.js"
 import {Exception} from "../../haxe/Exception.js"
 import {Register} from "../../genes/Register.js"
 import * as Fs from "fs"
 import {Buffer} from "buffer"
+
+const $global = Register.$global
 
 /**
 Use `sys.io.File.read` to create a `FileInput`.
@@ -17,17 +19,17 @@ class FileInput extends Register.inherits(Input) {
 		this.pos = 0;
 	}
 	readByte() {
-		let buf = Buffer.alloc(1);
-		let bytesRead;
+		var buf = Buffer.alloc(1);
+		var bytesRead;
 		try {
 			bytesRead = Fs.readSync(this.fd, buf, 0, 1, this.pos);
 		}catch (_g) {
 			NativeStackTrace.lastError = _g;
-			let e = Exception.caught(_g).unwrap();
+			var e = Exception.caught(_g).unwrap();
 			if (e.code == "EOF") {
 				throw Exception.thrown(new Eof());
 			} else {
-				throw Exception.thrown(Error.Custom(e));
+				throw Exception.thrown(Error__1.Custom(e));
 			};
 		};
 		if (bytesRead == 0) {
@@ -37,18 +39,18 @@ class FileInput extends Register.inherits(Input) {
 		return buf[0];
 	}
 	readBytes(s, pos, len) {
-		let data = s.b;
-		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
-		let bytesRead;
+		var data = s.b;
+		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		var bytesRead;
 		try {
 			bytesRead = Fs.readSync(this.fd, buf, pos, len, this.pos);
 		}catch (_g) {
 			NativeStackTrace.lastError = _g;
-			let e = Exception.caught(_g).unwrap();
+			var e = Exception.caught(_g).unwrap();
 			if (e.code == "EOF") {
 				throw Exception.thrown(new Eof());
 			} else {
-				throw Exception.thrown(Error.Custom(e));
+				throw Exception.thrown(Error__1.Custom(e));
 			};
 		};
 		if (bytesRead == 0) {

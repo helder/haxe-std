@@ -1,7 +1,9 @@
 import {Register} from "../../../genes/Register.js"
 
-export const URLSearchParamsEntry_Impl_ = Register.global("$hxClasses")["js.node.url._URLSearchParams.URLSearchParamsEntry_Impl_"] = 
-class URLSearchParamsEntry_Impl_ {
+const $global = Register.$global
+
+export const URLSearchParamsEntry = Register.global("$hxClasses")["js.node.url._URLSearchParams.URLSearchParamsEntry"] = 
+class URLSearchParamsEntry {
 	static get name() {
 		return this.get_name()
 	}
@@ -9,7 +11,7 @@ class URLSearchParamsEntry_Impl_ {
 		return this.get_value()
 	}
 	static _new(name, value) {
-		let this1 = [name, value];
+		var this1 = [name, value];
 		return this1;
 	}
 	static get_name(this1) {
@@ -22,7 +24,7 @@ class URLSearchParamsEntry_Impl_ {
 		return "js.node.url._URLSearchParams.URLSearchParamsEntry_Impl_"
 	}
 	get __class__() {
-		return URLSearchParamsEntry_Impl_
+		return URLSearchParamsEntry
 	}
 }
 

@@ -11,6 +11,8 @@ export declare class File {
 	static saveContent(path: string, content: string): void
 	static getBytes(path: string): Bytes
 	static saveBytes(path: string, bytes: Bytes): void
+	protected static copyBufLen: number
+	protected static copyBuf: Buffer
 	static copy(srcPath: string, dstPath: string): void
 }
 

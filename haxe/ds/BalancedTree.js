@@ -5,7 +5,9 @@ import {Exception} from "../Exception.js"
 import {IMap} from "../Constraints.js"
 import {Register} from "../../genes/Register.js"
 import {Std} from "../../Std.js"
-import {Reflect} from "../../Reflect.js"
+import {Reflect as Reflect__1} from "../../Reflect.js"
+
+const $global = Register.$global
 
 /**
 BalancedTree allows key-value mapping with arbitrary keys, as long as they
@@ -41,9 +43,9 @@ class BalancedTree extends Register.inherits() {
 	If `key` is null, the result is unspecified.
 	*/
 	get(key) {
-		let node = this.root;
+		var node = this.root;
 		while (node != null) {
-			let c = this.compare(key, node.key);
+			var c = this.compare(key, node.key);
 			if (c == 0) {
 				return node.value;
 			};
@@ -88,9 +90,9 @@ class BalancedTree extends Register.inherits() {
 	If `key` is null, the result is unspecified.
 	*/
 	exists(key) {
-		let node = this.root;
+		var node = this.root;
 		while (node != null) {
-			let c = this.compare(key, node.key);
+			var c = this.compare(key, node.key);
 			if (c == 0) {
 				return true;
 			} else if (c < 0) {
@@ -108,7 +110,7 @@ class BalancedTree extends Register.inherits() {
 	This operation is performed in-order.
 	*/
 	iterator() {
-		let ret = [];
+		var ret = [];
 		BalancedTree.iteratorLoop(this.root, ret);
 		return new ArrayIterator(ret);
 	}
@@ -126,12 +128,12 @@ class BalancedTree extends Register.inherits() {
 	This operation is performed in-order.
 	*/
 	keys() {
-		let ret = [];
+		var ret = [];
 		this.keysLoop(this.root, ret);
 		return new ArrayIterator(ret);
 	}
 	copy() {
-		let copied = new BalancedTree();
+		var copied = new BalancedTree();
 		copied.root = this.root;
 		return copied;
 	}
@@ -139,14 +141,14 @@ class BalancedTree extends Register.inherits() {
 		if (node == null) {
 			return new TreeNode(null, k, v, null);
 		};
-		let c = this.compare(k, node.key);
+		var c = this.compare(k, node.key);
 		if (c == 0) {
 			return new TreeNode(node.left, k, v, node.right, (node == null) ? 0 : node._height);
 		} else if (c < 0) {
-			let nl = this.setLoop(k, v, node.left);
+			var nl = this.setLoop(k, v, node.left);
 			return this.balance(nl, node.key, node.value, node.right);
 		} else {
-			let nr = this.setLoop(k, v, node.right);
+			var nr = this.setLoop(k, v, node.right);
 			return this.balance(node.left, node.key, node.value, nr);
 		};
 	}
@@ -154,7 +156,7 @@ class BalancedTree extends Register.inherits() {
 		if (node == null) {
 			throw Exception.thrown("Not_found");
 		};
-		let c = this.compare(k, node.key);
+		var c = this.compare(k, node.key);
 		if (c == 0) {
 			return this.merge(node.left, node.right);
 		} else if (c < 0) {
@@ -177,7 +179,7 @@ class BalancedTree extends Register.inherits() {
 		if (t2 == null) {
 			return t1;
 		};
-		let t = this.minBinding(t2);
+		var t = this.minBinding(t2);
 		return this.balance(t1, t.key, t.value, this.removeMinBinding(t2));
 	}
 	minBinding(t) {
@@ -197,19 +199,19 @@ class BalancedTree extends Register.inherits() {
 		};
 	}
 	balance(l, k, v, r) {
-		let hl = (l == null) ? 0 : l._height;
-		let hr = (r == null) ? 0 : r._height;
+		var hl = (l == null) ? 0 : l._height;
+		var hr = (r == null) ? 0 : r._height;
 		if (hl > hr + 2) {
-			let _this = l.left;
-			let _this1 = l.right;
+			var _this = l.left;
+			var _this1 = l.right;
 			if (((_this == null) ? 0 : _this._height) >= ((_this1 == null) ? 0 : _this1._height)) {
 				return new TreeNode(l.left, l.key, l.value, new TreeNode(l.right, k, v, r));
 			} else {
 				return new TreeNode(new TreeNode(l.left, l.key, l.value, l.right.left), l.right.key, l.right.value, new TreeNode(l.right.right, k, v, r));
 			};
 		} else if (hr > hl + 2) {
-			let _this = r.right;
-			let _this1 = r.left;
+			var _this = r.right;
+			var _this1 = r.left;
 			if (((_this == null) ? 0 : _this._height) > ((_this1 == null) ? 0 : _this1._height)) {
 				return new TreeNode(new TreeNode(l, k, v, r.left), r.key, r.value, r.right);
 			} else {
@@ -220,7 +222,7 @@ class BalancedTree extends Register.inherits() {
 		};
 	}
 	compare(k1, k2) {
-		return Reflect.compare(k1, k2);
+		return Reflect__1.compare(k1, k2);
 	}
 	toString() {
 		if (this.root == null) {
@@ -260,20 +262,23 @@ A tree node of `haxe.ds.BalancedTree`.
 */
 export const TreeNode = Register.global("$hxClasses")["haxe.ds.TreeNode"] = 
 class TreeNode extends Register.inherits() {
-	new(l, k, v, r, h = -1) {
+	new(l, k, v, r, h) {
+		if (h == null) {
+			h = -1;
+		};
 		this.left = l;
 		this.key = k;
 		this.value = v;
 		this.right = r;
 		if (h == -1) {
-			let tmp;
-			let _this = this.left;
-			let _this1 = this.right;
+			var tmp;
+			var _this = this.left;
+			var _this1 = this.right;
 			if (((_this == null) ? 0 : _this._height) > ((_this1 == null) ? 0 : _this1._height)) {
-				let _this = this.left;
+				var _this = this.left;
 				tmp = (_this == null) ? 0 : _this._height;
 			} else {
-				let _this = this.right;
+				var _this = this.right;
 				tmp = (_this == null) ? 0 : _this._height;
 			};
 			this._height = tmp + 1;

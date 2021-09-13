@@ -1,8 +1,10 @@
 import {Bytes} from "./Bytes.js"
 import {Register} from "../../genes/Register.js"
 
-export const ArrayBufferView_Impl_ = Register.global("$hxClasses")["haxe.io._ArrayBufferView.ArrayBufferView_Impl_"] = 
-class ArrayBufferView_Impl_ {
+const $global = Register.$global
+
+export const ArrayBufferView = Register.global("$hxClasses")["haxe.io._ArrayBufferView.ArrayBufferView"] = 
+class ArrayBufferView {
 	static get buffer() {
 		return this.get_buffer()
 	}
@@ -13,7 +15,7 @@ class ArrayBufferView_Impl_ {
 		return this.get_byteLength()
 	}
 	static _new(size) {
-		let this1 = new Uint8Array(size);
+		var this1 = new Uint8Array(size);
 		return this1;
 	}
 	static get_byteOffset(this1) {
@@ -25,7 +27,7 @@ class ArrayBufferView_Impl_ {
 	static get_buffer(this1) {
 		return Bytes.ofData(this1.buffer);
 	}
-	static sub(this1, begin, length = null) {
+	static sub(this1, begin, length) {
 		return new Uint8Array(this1.buffer, begin, (length == null) ? this1.buffer.byteLength - begin : length);
 	}
 	static getData(this1) {
@@ -38,7 +40,7 @@ class ArrayBufferView_Impl_ {
 		return "haxe.io._ArrayBufferView.ArrayBufferView_Impl_"
 	}
 	get __class__() {
-		return ArrayBufferView_Impl_
+		return ArrayBufferView
 	}
 }
 

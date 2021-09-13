@@ -1,6 +1,8 @@
 import {EsMap} from "../../genes/util/EsMap.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const HashMapKeyValueIterator = Register.global("$hxClasses")["haxe.iterators.HashMapKeyValueIterator"] = 
 class HashMapKeyValueIterator extends Register.inherits() {
 	new(map) {
@@ -19,9 +21,9 @@ class HashMapKeyValueIterator extends Register.inherits() {
 	See `Iterator.next`
 	*/
 	next() {
-		let key = this.keys.next();
-		let _this = this.map.values;
-		let key1 = key.hashCode();
+		var key = this.keys.next();
+		var _this = this.map.values;
+		var key1 = key.hashCode();
 		return {"value": _this.inst.get(key1), "key": key};
 	}
 	static get __name__() {

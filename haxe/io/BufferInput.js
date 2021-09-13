@@ -1,9 +1,17 @@
 import {Input} from "./Input.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const BufferInput = Register.global("$hxClasses")["haxe.io.BufferInput"] = 
 class BufferInput extends Register.inherits(Input) {
-	new(i, buf, pos = 0, available = 0) {
+	new(i, buf, pos, available) {
+		if (pos == null) {
+			pos = 0;
+		};
+		if (available == null) {
+			available = 0;
+		};
 		this.i = i;
 		this.buf = buf;
 		this.pos = pos;
@@ -20,7 +28,7 @@ class BufferInput extends Register.inherits(Input) {
 		if (this.available == 0) {
 			this.refill();
 		};
-		let c = this.buf.b[this.pos];
+		var c = this.buf.b[this.pos];
 		this.pos++;
 		this.available--;
 		return c;
@@ -29,7 +37,7 @@ class BufferInput extends Register.inherits(Input) {
 		if (this.available == 0) {
 			this.refill();
 		};
-		let size = (len > this.available) ? this.available : len;
+		var size = (len > this.available) ? this.available : len;
 		buf.blit(pos, this.buf, this.pos, size);
 		this.pos += size;
 		this.available -= size;

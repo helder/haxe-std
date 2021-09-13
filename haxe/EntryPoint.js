@@ -1,6 +1,8 @@
 import {MainLoop} from "./MainLoop.js"
 import {Register} from "../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 If `haxe.MainLoop` is kept from DCE, then we will insert an `haxe.EntryPoint.run()` call just at then end of `main()`.
 This class can be redefined by custom frameworks so they can handle their own main loop logic.
@@ -25,13 +27,13 @@ class EntryPoint {
 	}
 	static processEvents() {
 		while (true) {
-			let f = EntryPoint.pending.shift();
+			var f = EntryPoint.pending.shift();
 			if (f == null) {
 				break;
 			};
 			f();
 		};
-		let time = MainLoop.tick();
+		var time = MainLoop.tick();
 		if (!MainLoop.hasEvents() && EntryPoint.threadCount == 0) {
 			return -1;
 		};
@@ -42,7 +44,7 @@ class EntryPoint {
 	Start the main loop. Depending on the platform, this can return immediately or will only return when the application exits.
 	*/
 	static run() {
-		let nextTick = EntryPoint.processEvents();
+		var nextTick = EntryPoint.processEvents();
 		if (nextTick >= 0) {
 			setTimeout(EntryPoint.run, nextTick * 1000);
 		};

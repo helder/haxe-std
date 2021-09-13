@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
-import {Reflect} from "../../Reflect.js"
+import {Reflect as Reflect__1} from "../../Reflect.js"
+
+const $global = Register.$global
 
 /**
 This Key/Value iterator can be used to iterate over `haxe.DynamicAccess`.
@@ -8,7 +10,7 @@ export const DynamicAccessKeyValueIterator = Register.global("$hxClasses")["haxe
 class DynamicAccessKeyValueIterator extends Register.inherits() {
 	new(access) {
 		this.access = access;
-		this.keys = Reflect.fields(access);
+		this.keys = Reflect__1.fields(access);
 		this.index = 0;
 	}
 	
@@ -23,7 +25,7 @@ class DynamicAccessKeyValueIterator extends Register.inherits() {
 	See `Iterator.next`
 	*/
 	next() {
-		let key = this.keys[this.index++];
+		var key = this.keys[this.index++];
 		return {"value": this.access[key], "key": key};
 	}
 	static get __name__() {

@@ -1,4 +1,4 @@
-import {Map} from "../../Map"
+import {Map as Map__1} from "../../Map"
 
 export type Path = string
 
@@ -80,7 +80,7 @@ export type EnumField = {args: null | {name: string, opt: boolean, t: CType}[], 
 
 export type Enumdef = {constructors: EnumField[], doc: null | string, file: null | string, isExtern: boolean, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[]}
 
-export type Typedef = {doc: null | string, file: null | string, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[], type: CType, types: Map<string, CType>}
+export type Typedef = {doc: null | string, file: null | string, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[], type: CType, types: Map__1<string, CType>}
 
 export type Abstractdef = {athis: CType, doc: null | string, file: null | string, from: {field: null | string, t: CType}[], impl: Classdef, isPrivate: boolean, meta: {name: string, params: string[]}[], module: string, params: string[], path: string, platforms: string[], to: {field: null | string, t: CType}[]}
 
@@ -120,6 +120,7 @@ export declare class TypeApi {
 	function.
 	*/
 	static isVar(t: CType): boolean
+	protected static leq<T>(f: ((arg0: T, arg1: T) => boolean), l1: T[], l2: T[]): boolean
 	
 	/**
 	Unlike `r1 == r2`, this function performs a deep equality check on
@@ -164,6 +165,9 @@ export declare class CTypeTools {
 	Get the string representation of `CType`.
 	*/
 	static toString(t: CType): string
+	protected static nameWithParams(name: string, params: CType[]): string
+	protected static functionArgumentName(arg: FunctionArgument): string
+	protected static classField(cf: ClassField): string
 }
 
 //# sourceMappingURL=CType.d.ts.map

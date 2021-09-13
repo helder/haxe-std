@@ -15,12 +15,12 @@ export declare class ListSort {
 	
 	If `list` or `cmp` are null, the result is unspecified.
 	*/
-	static sort<T>(list: T, cmp: ((arg0: T, arg1: T) => number)): T
+	static sort<T extends {next: T, prev: T}>(list: T, cmp: ((arg0: T, arg1: T) => number)): T
 	
 	/**
 	Same as `sort` but on single linked list.
 	*/
-	static sortSingleLinked<T>(list: T, cmp: ((arg0: T, arg1: T) => number)): T
+	static sortSingleLinked<T extends {next: T}>(list: T, cmp: ((arg0: T, arg1: T) => number)): T
 }
 
 //# sourceMappingURL=ListSort.d.ts.map

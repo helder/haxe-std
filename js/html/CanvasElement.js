@@ -1,17 +1,19 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const CanvasUtil = Register.global("$hxClasses")["js.html._CanvasElement.CanvasUtil"] = 
 class CanvasUtil {
 	static getContextWebGL(canvas, attribs) {
-		let name = "webgl";
-		let ctx = canvas.getContext(name, attribs);
+		var name = "webgl";
+		var ctx = canvas.getContext(name, attribs);
 		if (ctx != null) {
 			return ctx;
 		};
-		let name1 = "experimental-webgl";
-		let ctx1 = canvas.getContext(name1, attribs);
-		if (ctx1 != null) {
-			return ctx1;
+		var name = "experimental-webgl";
+		var ctx = canvas.getContext(name, attribs);
+		if (ctx != null) {
+			return ctx;
 		};
 		return null;
 	}

@@ -8,7 +8,7 @@ export class Register {
 		};
 	}
 	static createStatic(obj, name, get) {
-		let value = null;
+		var value = null;
 		Object.defineProperty(obj, name, {"enumerable": true, "get": function () {
 			if (get != null) {
 				value = get();
@@ -43,7 +43,10 @@ export class Register {
       return res
     ;
 	}
-	static inherits(resolve, defer = false) {
+	static inherits(resolve, defer) {
+		if (defer == null) {
+			defer = false;
+		};
 		
       function res() {
         if (defer && resolve && res.__init__) res.__init__()
@@ -78,7 +81,7 @@ export class Register {
 		if (m.__id__ == null) {
 			m.__id__ = Register.fid++;
 		};
-		let f = null;
+		var f = null;
 		if (o.hx__closures__ == null) {
 			o.hx__closures__ = {};
 		} else {
@@ -99,7 +102,7 @@ export class Register {
 }
 
 
-Register.$global = typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this
+Register.$global = typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : undefined
 Register.globals = {}
 Register.fid = 0
 //# sourceMappingURL=Register.js.map

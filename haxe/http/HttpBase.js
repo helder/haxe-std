@@ -1,7 +1,9 @@
 import {Encoding} from "../io/Encoding.js"
 import {NotImplementedException} from "../exceptions/NotImplementedException.js"
 import {Register} from "../../genes/Register.js"
-import {Reflect} from "../../Reflect.js"
+import {Reflect as Reflect__1} from "../../Reflect.js"
+
+const $global = Register.$global
 
 /**
 This class can be used to handle Http requests consistently across
@@ -32,10 +34,10 @@ class HttpBase extends Register.inherits() {
 	This method provides a fluent interface.
 	*/
 	setHeader(name, value) {
-		let _g = 0;
-		let _g1 = this.headers.length;
+		var _g = 0;
+		var _g1 = this.headers.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (this.headers[i].name == name) {
 				this.headers[i] = {"name": name, "value": value};
 				return;
@@ -55,10 +57,10 @@ class HttpBase extends Register.inherits() {
 	This method provides a fluent interface.
 	*/
 	setParameter(name, value) {
-		let _g = 0;
-		let _g1 = this.params.length;
+		var _g = 0;
+		var _g1 = this.params.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (this.params[i].name == name) {
 				this.params[i] = {"name": name, "value": value};
 				return;
@@ -117,7 +119,7 @@ class HttpBase extends Register.inherits() {
 	[js] If `this.async` is false, the callback functions are called before
 	this method returns.
 	*/
-	request(post = null) {
+	request(post) {
 		throw new NotImplementedException(null, null, {"fileName": "haxe/http/HttpBase.hx", "lineNumber": 186, "className": "haxe.http.HttpBase", "methodName": "request"});
 	}
 	
@@ -165,7 +167,7 @@ class HttpBase extends Register.inherits() {
 	Override this if extending `haxe.Http` with overriding `onData`
 	*/
 	hasOnData() {
-		return !Reflect.compareMethods(Register.bind(this, this.onData), this.emptyOnData);
+		return !Reflect__1.compareMethods(Register.bind(this, this.onData), this.emptyOnData);
 	}
 	success(data) {
 		this.responseBytes = data;

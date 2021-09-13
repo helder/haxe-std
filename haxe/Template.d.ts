@@ -42,6 +42,11 @@ A complete documentation of the supported syntax is available at:
 */
 export declare class Template {
 	constructor(str: string)
+	protected expr: TemplateExpr
+	protected context: any
+	protected macros: any
+	protected stack: List<any>
+	protected buf: StringBuf
 	
 	/**
 	Executes `this` `Template`, taking into account `context` for
@@ -60,12 +65,29 @@ export declare class Template {
 	no macros are used.
 	*/
 	execute(context: any, macros?: null | any): string
+	protected resolve(v: string): any
+	protected parseTokens(data: string): List<Token>
+	protected parseBlock(tokens: List<Token>): TemplateExpr
+	protected parse(tokens: List<Token>): TemplateExpr
+	protected parseExpr(data: string): (() => any)
+	protected makeConst(v: string): (() => any)
+	protected makePath(e: (() => any), l: List<ExprToken>): (() => any)
+	protected makeExpr(l: List<ExprToken>): (() => any)
+	protected skipSpaces(l: List<ExprToken>): void
+	protected makeExpr2(l: List<ExprToken>): (() => any)
+	protected run(e: TemplateExpr): void
+	protected static splitter: EReg
+	protected static expr_splitter: EReg
+	protected static expr_trim: EReg
+	protected static expr_int: EReg
+	protected static expr_float: EReg
 	
 	/**
 	Global replacements which are used across all `Template` instances. This
 	has lower priority than the context argument of `execute()`.
 	*/
 	static globals: any
+	protected static hxKeepArrayIterator: ArrayIterator<any>
 }
 
 //# sourceMappingURL=Template.d.ts.map

@@ -3,6 +3,7 @@ import {HttpBase} from "./HttpBase"
 
 export declare class HttpNodeJs extends HttpBase {
 	constructor(url: string)
+	protected req: ClientRequest
 	
 	/**
 	Cancels `this` Http request if `request` has been called and a response

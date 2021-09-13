@@ -16,6 +16,7 @@ the child class.
 */
 export declare class Timer {
 	constructor(time_ms: number)
+	protected id: null | number
 	
 	/**
 	Stops `this` Timer.

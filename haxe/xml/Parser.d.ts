@@ -32,6 +32,7 @@ export declare class XmlParserException {
 }
 
 export declare class Parser {
+	protected static escapes: StringMap<string>
 	
 	/**
 	Parses the String into an XML Document. Set strict parsing to true in order to enable a strict check of XML attributes and entities.
@@ -39,6 +40,8 @@ export declare class Parser {
 	@throws haxe.xml.XmlParserException
 	*/
 	static parse(str: string, strict?: boolean): Xml
+	protected static doParse(str: string, strict: boolean, p?: number, parent?: null | Xml): number
+	protected static isValidChar(c: number): boolean
 }
 
 //# sourceMappingURL=Parser.d.ts.map

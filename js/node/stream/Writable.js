@@ -1,7 +1,9 @@
 import {Register} from "../../../genes/Register.js"
 
-export const WritableNewOptionsAdapter_Impl_ = Register.global("$hxClasses")["js.node.stream._Writable.WritableNewOptionsAdapter_Impl_"] = 
-class WritableNewOptionsAdapter_Impl_ {
+const $global = Register.$global
+
+export const WritableNewOptionsAdapter = Register.global("$hxClasses")["js.node.stream._Writable.WritableNewOptionsAdapter"] = 
+class WritableNewOptionsAdapter {
 	static from(options) {
 		if (!Object.prototype.hasOwnProperty.call(options, "final")) {
 			Object.defineProperty(options, "final", {"get": function () {
@@ -14,7 +16,7 @@ class WritableNewOptionsAdapter_Impl_ {
 		return "js.node.stream._Writable.WritableNewOptionsAdapter_Impl_"
 	}
 	get __class__() {
-		return WritableNewOptionsAdapter_Impl_
+		return WritableNewOptionsAdapter
 	}
 }
 

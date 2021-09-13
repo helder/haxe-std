@@ -36,8 +36,8 @@ export declare class Std {
 	If `value` is null, the result is null. If `c` is null, the result is
 	unspecified.
 	*/
-	static downcast<T, S>(value: T, c: any): S
-	static instance<T, S>(value: T, c: any): S
+	static downcast<T extends {}, S extends T>(value: T, c: any): S
+	static instance<T extends {}, S extends T>(value: T, c: any): S
 	
 	/**
 	Converts any value to a String.

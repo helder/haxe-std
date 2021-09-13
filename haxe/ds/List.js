@@ -1,6 +1,8 @@
 import {Register} from "../../genes/Register.js"
 import {Std} from "../../Std.js"
 
+const $global = Register.$global
+
 /**
 A linked-list of elements. The list is composed of element container objects
 that are chained together. It is optimized so that adding or removing an
@@ -20,7 +22,7 @@ class List extends Register.inherits() {
 	`this.length` increases by 1.
 	*/
 	add(item) {
-		let x = new ListNode(item, null);
+		var x = new ListNode(item, null);
 		if (this.h == null) {
 			this.h = x;
 		} else {
@@ -36,7 +38,7 @@ class List extends Register.inherits() {
 	`this.length` increases by 1.
 	*/
 	push(item) {
-		let x = new ListNode(item, this.h);
+		var x = new ListNode(item, this.h);
 		this.h = x;
 		if (this.q == null) {
 			this.q = x;
@@ -79,7 +81,7 @@ class List extends Register.inherits() {
 		if (this.h == null) {
 			return null;
 		};
-		let x = this.h.item;
+		var x = this.h.item;
 		this.h = this.h.next;
 		if (this.h == null) {
 			this.q = null;
@@ -116,8 +118,8 @@ class List extends Register.inherits() {
 	Otherwise, false is returned.
 	*/
 	remove(v) {
-		let prev = null;
-		let l = this.h;
+		var prev = null;
+		var l = this.h;
 		while (l != null) {
 			if (l.item == v) {
 				if (prev == null) {
@@ -158,9 +160,9 @@ class List extends Register.inherits() {
 	separated by a comma.
 	*/
 	toString() {
-		let s_b = "";
-		let first = true;
-		let l = this.h;
+		var s_b = "";
+		var first = true;
+		var l = this.h;
 		s_b += "{";
 		while (l != null) {
 			if (first) {
@@ -180,9 +182,9 @@ class List extends Register.inherits() {
 	each element.
 	*/
 	join(sep) {
-		let s_b = "";
-		let first = true;
-		let l = this.h;
+		var s_b = "";
+		var first = true;
+		var l = this.h;
 		while (l != null) {
 			if (first) {
 				first = false;
@@ -200,10 +202,10 @@ class List extends Register.inherits() {
 	elements for which `f(x) == true`.
 	*/
 	filter(f) {
-		let l2 = new List();
-		let l = this.h;
+		var l2 = new List();
+		var l = this.h;
 		while (l != null) {
-			let v = l.item;
+			var v = l.item;
 			l = l.next;
 			if (f(v)) {
 				l2.add(v);
@@ -217,10 +219,10 @@ class List extends Register.inherits() {
 	function `f`.
 	*/
 	map(f) {
-		let b = new List();
-		let l = this.h;
+		var b = new List();
+		var l = this.h;
 		while (l != null) {
-			let v = l.item;
+			var v = l.item;
 			l = l.next;
 			b.add(f(v));
 		};
@@ -259,7 +261,7 @@ class ListIterator extends Register.inherits() {
 		return this.head != null;
 	}
 	next() {
-		let val = this.head.item;
+		var val = this.head.item;
 		this.head = this.head.next;
 		return val;
 	}
@@ -282,7 +284,7 @@ class ListKeyValueIterator extends Register.inherits() {
 		return this.head != null;
 	}
 	next() {
-		let val = this.head.item;
+		var val = this.head.item;
 		this.head = this.head.next;
 		return {"value": val, "key": this.idx++};
 	}

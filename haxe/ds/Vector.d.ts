@@ -1,7 +1,7 @@
 
 export type VectorData<T> = T[]
 
-export declare class Vector_Impl_ {
+export declare class Vector {
 	
 	/**
 	Creates a new Vector of length `length`.
@@ -36,6 +36,7 @@ export declare class Vector_Impl_ {
 	Returns the length of `this` Vector.
 	*/
 	static readonly length: number
+	protected static get_length<T>($this: T[]): number
 	
 	/**
 	Copies `length` of elements from `src` Vector, beginning at `srcPos` to

@@ -86,6 +86,16 @@ export declare type CheckResult =
 	| CheckResult.CDataExpected
 
 export declare class Check {
+	protected static blanks: EReg
+	protected static isBlank(x: Xml): boolean
+	protected static filterMatch(s: string, f: Filter): boolean
+	protected static isNullable(r: Rule): boolean
+	protected static check(x: Xml, r: Rule): CheckResult
+	protected static checkList(it: Iterator<Xml>, r: Rule): CheckResult
+	protected static makeWhere(path: Xml[]): string
+	protected static makeString(x: Xml): string
+	protected static makeRule(r: Rule): string
+	protected static makeError(m: CheckResult, path?: null | Xml[]): string
 	static checkNode(x: Xml, r: Rule): void
 	static checkDocument(x: Xml, r: Rule): void
 }

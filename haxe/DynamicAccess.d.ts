@@ -1,7 +1,7 @@
 import {DynamicAccessKeyValueIterator} from "./iterators/DynamicAccessKeyValueIterator"
 import {DynamicAccessIterator} from "./iterators/DynamicAccessIterator"
 
-export declare class DynamicAccess_Impl_ {
+export declare class DynamicAccess {
 	
 	/**
 	Creates a new structure.

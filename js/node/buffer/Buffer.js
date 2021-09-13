@@ -1,10 +1,12 @@
 import {Bytes} from "../../../haxe/io/Bytes.js"
 import {Register} from "../../../genes/Register.js"
 
+const $global = Register.$global
+
 export const Helper = Register.global("$hxClasses")["js.node.buffer._Buffer.Helper"] = 
 class Helper {
 	static bytesOfBuffer(b) {
-		let o = Object.create(Bytes.prototype);
+		var o = Object.create(Bytes.prototype);
 		o.length = b.byteLength;
 		o.b = b;
 		b.bufferValue = b;

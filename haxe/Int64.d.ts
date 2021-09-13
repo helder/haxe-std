@@ -1,5 +1,6 @@
 
-export declare class Int64_Impl_ {
+export declare class Int64 {
+	protected static _new(x: __Int64): __Int64
 	
 	/**
 	Makes a copy of `this` Int64.
@@ -67,6 +68,7 @@ export declare class Int64_Impl_ {
 	Returns a signed decimal `String` representation of `x`.
 	*/
 	static toStr(x: __Int64): string
+	protected static toString($this: __Int64): string
 	static parseString(sParam: string): __Int64
 	static fromFloat(f: number): __Int64
 	
@@ -80,41 +82,72 @@ export declare class Int64_Impl_ {
 	Returns the negative of `x`.
 	*/
 	static neg(x: __Int64): __Int64
+	protected static preIncrement($this: __Int64): __Int64
+	protected static postIncrement($this: __Int64): __Int64
+	protected static preDecrement($this: __Int64): __Int64
+	protected static postDecrement($this: __Int64): __Int64
 	
 	/**
 	Returns the sum of `a` and `b`.
 	*/
 	static add(a: __Int64, b: __Int64): __Int64
+	protected static addInt(a: __Int64, b: number): __Int64
 	
 	/**
 	Returns `a` minus `b`.
 	*/
 	static sub(a: __Int64, b: __Int64): __Int64
+	protected static subInt(a: __Int64, b: number): __Int64
+	protected static intSub(a: number, b: __Int64): __Int64
 	
 	/**
 	Returns the product of `a` and `b`.
 	*/
 	static mul(a: __Int64, b: __Int64): __Int64
+	protected static mulInt(a: __Int64, b: number): __Int64
 	
 	/**
 	Returns the quotient of `a` divided by `b`.
 	*/
 	static div(a: __Int64, b: __Int64): __Int64
+	protected static divInt(a: __Int64, b: number): __Int64
+	protected static intDiv(a: number, b: __Int64): __Int64
 	
 	/**
 	Returns the modulus of `a` divided by `b`.
 	*/
 	static mod(a: __Int64, b: __Int64): __Int64
+	protected static modInt(a: __Int64, b: number): __Int64
+	protected static intMod(a: number, b: __Int64): __Int64
 	
 	/**
 	Returns `true` if `a` is equal to `b`.
 	*/
 	static eq(a: __Int64, b: __Int64): boolean
+	protected static eqInt(a: __Int64, b: number): boolean
 	
 	/**
 	Returns `true` if `a` is not equal to `b`.
 	*/
 	static neq(a: __Int64, b: __Int64): boolean
+	protected static neqInt(a: __Int64, b: number): boolean
+	protected static lt(a: __Int64, b: __Int64): boolean
+	protected static ltInt(a: __Int64, b: number): boolean
+	protected static intLt(a: number, b: __Int64): boolean
+	protected static lte(a: __Int64, b: __Int64): boolean
+	protected static lteInt(a: __Int64, b: number): boolean
+	protected static intLte(a: number, b: __Int64): boolean
+	protected static gt(a: __Int64, b: __Int64): boolean
+	protected static gtInt(a: __Int64, b: number): boolean
+	protected static intGt(a: number, b: __Int64): boolean
+	protected static gte(a: __Int64, b: __Int64): boolean
+	protected static gteInt(a: __Int64, b: number): boolean
+	protected static intGte(a: number, b: __Int64): boolean
+	
+	/**
+	Returns the bitwise NOT of `a`.
+	*/
+	protected static complement(a: __Int64): __Int64
 	
 	/**
 	Returns the bitwise AND of `a` and `b`.
@@ -148,7 +181,11 @@ export declare class Int64_Impl_ {
 	*/
 	static ushr(a: __Int64, b: number): __Int64
 	static readonly high: number
+	protected static get_high($this: __Int64): number
+	protected static set_high($this: __Int64, x: number): number
 	static readonly low: number
+	protected static get_low($this: __Int64): number
+	protected static set_low($this: __Int64, x: number): number
 }
 
 export type __Int64 = ___Int64

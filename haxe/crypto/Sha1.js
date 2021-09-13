@@ -2,6 +2,8 @@ import {Bytes} from "../io/Bytes.js"
 import {Register} from "../../genes/Register.js"
 import {StringTools} from "../../StringTools.js"
 
+const $global = Register.$global
+
 /**
 Creates a Sha1 of a String.
 */
@@ -10,28 +12,28 @@ class Sha1 extends Register.inherits() {
 	new() {
 	}
 	doEncode(x) {
-		let w = new Array();
-		let a = 1732584193;
-		let b = -271733879;
-		let c = -1732584194;
-		let d = 271733878;
-		let e = -1009589776;
-		let i = 0;
+		var w = new Array();
+		var a = 1732584193;
+		var b = -271733879;
+		var c = -1732584194;
+		var d = 271733878;
+		var e = -1009589776;
+		var i = 0;
 		while (i < x.length) {
-			let olda = a;
-			let oldb = b;
-			let oldc = c;
-			let oldd = d;
-			let olde = e;
-			let j = 0;
+			var olda = a;
+			var oldb = b;
+			var oldc = c;
+			var oldd = d;
+			var olde = e;
+			var j = 0;
 			while (j < 80) {
 				if (j < 16) {
 					w[j] = x[i + j];
 				} else {
-					let num = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
+					var num = w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16];
 					w[j] = num << 1 | num >>> 31;
 				};
-				let t = (a << 5 | a >>> 27) + this.ft(j, b, c, d) + e + w[j] + this.kt(j);
+				var t = (a << 5 | a >>> 27) + this.ft(j, b, c, d) + e + w[j] + this.kt(j);
 				e = d;
 				d = c;
 				c = b << 30 | b >>> 2;
@@ -88,24 +90,24 @@ class Sha1 extends Register.inherits() {
 		return -899497514;
 	}
 	hex(a) {
-		let str = "";
-		let _g = 0;
+		var str = "";
+		var _g = 0;
 		while (_g < a.length) {
-			let num = a[_g];
+			var num = a[_g];
 			++_g;
 			str += StringTools.hex(num, 8);
 		};
 		return str.toLowerCase();
 	}
 	static encode(s) {
-		let sh = new Sha1();
-		let h = sh.doEncode(Sha1.str2blks(s));
+		var sh = new Sha1();
+		var h = sh.doEncode(Sha1.str2blks(s));
 		return sh.hex(h);
 	}
 	static make(b) {
-		let h = new Sha1().doEncode(Sha1.bytes2blks(b));
-		let out = new Bytes(new ArrayBuffer(20));
-		let p = 0;
+		var h = new Sha1().doEncode(Sha1.bytes2blks(b));
+		var out = new Bytes(new ArrayBuffer(20));
+		var p = 0;
 		out.b[p++] = h[0] >>> 24;
 		out.b[p++] = h[0] >> 16 & 255;
 		out.b[p++] = h[0] >> 8 & 255;
@@ -134,46 +136,46 @@ class Sha1 extends Register.inherits() {
 	Append padding bits and the length, as described in the SHA1 standard.
 	*/
 	static str2blks(s) {
-		let s1 = Bytes.ofString(s);
-		let nblk = (s1.length + 8 >> 6) + 1;
-		let blks = new Array();
-		let _g = 0;
-		let _g1 = nblk * 16;
+		var s1 = Bytes.ofString(s);
+		var nblk = (s1.length + 8 >> 6) + 1;
+		var blks = new Array();
+		var _g = 0;
+		var _g1 = nblk * 16;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			blks[i] = 0;
 		};
-		let _g2 = 0;
-		let _g3 = s1.length;
-		while (_g2 < _g3) {
-			let i = _g2++;
-			let p = i >> 2;
+		var _g = 0;
+		var _g1 = s1.length;
+		while (_g < _g1) {
+			var i = _g++;
+			var p = i >> 2;
 			blks[p] |= s1.b[i] << 24 - ((i & 3) << 3);
 		};
-		let i = s1.length;
-		let p = i >> 2;
+		var i = s1.length;
+		var p = i >> 2;
 		blks[p] |= 128 << 24 - ((i & 3) << 3);
 		blks[nblk * 16 - 1] = s1.length * 8;
 		return blks;
 	}
 	static bytes2blks(b) {
-		let nblk = (b.length + 8 >> 6) + 1;
-		let blks = new Array();
-		let _g = 0;
-		let _g1 = nblk * 16;
+		var nblk = (b.length + 8 >> 6) + 1;
+		var blks = new Array();
+		var _g = 0;
+		var _g1 = nblk * 16;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			blks[i] = 0;
 		};
-		let _g2 = 0;
-		let _g3 = b.length;
-		while (_g2 < _g3) {
-			let i = _g2++;
-			let p = i >> 2;
+		var _g = 0;
+		var _g1 = b.length;
+		while (_g < _g1) {
+			var i = _g++;
+			var p = i >> 2;
 			blks[p] |= b.b[i] << 24 - ((i & 3) << 3);
 		};
-		let i = b.length;
-		let p = i >> 2;
+		var i = b.length;
+		var p = i >> 2;
 		blks[p] |= 128 << 24 - ((i & 3) << 3);
 		blks[nblk * 16 - 1] = b.length * 8;
 		return blks;

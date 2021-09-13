@@ -8,6 +8,8 @@ element does not imply copying the whole list content every time.
 */
 export declare class List<T> {
 	constructor()
+	protected h: ListNode<T>
+	protected q: ListNode<T>
 	
 	/**
 	The length of `this` List.
@@ -117,12 +119,15 @@ export declare class ListNode<T> {
 
 export declare class ListIterator<T> {
 	constructor(head: ListNode<T>)
+	protected head: ListNode<T>
 	hasNext(): boolean
 	next(): T
 }
 
 export declare class ListKeyValueIterator<T> {
 	constructor(head: ListNode<T>)
+	protected idx: number
+	protected head: ListNode<T>
 	hasNext(): boolean
 	next(): {key: number, value: T}
 }

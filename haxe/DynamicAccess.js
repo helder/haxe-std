@@ -1,16 +1,18 @@
 import {DynamicAccessKeyValueIterator} from "./iterators/DynamicAccessKeyValueIterator.js"
 import {DynamicAccessIterator} from "./iterators/DynamicAccessIterator.js"
 import {Register} from "../genes/Register.js"
-import {Reflect} from "../Reflect.js"
+import {Reflect as Reflect__1} from "../Reflect.js"
 
-export const DynamicAccess_Impl_ = Register.global("$hxClasses")["haxe._DynamicAccess.DynamicAccess_Impl_"] = 
-class DynamicAccess_Impl_ {
+const $global = Register.$global
+
+export const DynamicAccess = Register.global("$hxClasses")["haxe._DynamicAccess.DynamicAccess"] = 
+class DynamicAccess {
 	
 	/**
 	Creates a new structure.
 	*/
 	static _new() {
-		let this1 = {};
+		var this1 = {};
 		return this1;
 	}
 	
@@ -55,21 +57,21 @@ class DynamicAccess_Impl_ {
 	If `key` is `null`, the result is unspecified.
 	*/
 	static remove(this1, key) {
-		return Reflect.deleteField(this1, key);
+		return Reflect__1.deleteField(this1, key);
 	}
 	
 	/**
 	Returns an array of `keys` in a structure.
 	*/
 	static keys(this1) {
-		return Reflect.fields(this1);
+		return Reflect__1.fields(this1);
 	}
 	
 	/**
 	Returns a shallow copy of the structure
 	*/
 	static copy(this1) {
-		return Reflect.copy(this1);
+		return Reflect__1.copy(this1);
 	}
 	
 	/**
@@ -93,7 +95,7 @@ class DynamicAccess_Impl_ {
 		return "haxe._DynamicAccess.DynamicAccess_Impl_"
 	}
 	get __class__() {
-		return DynamicAccess_Impl_
+		return DynamicAccess
 	}
 }
 

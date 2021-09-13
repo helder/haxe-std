@@ -21,6 +21,10 @@ The specification of the serialization format can be found here:
 */
 export declare class Serializer {
 	constructor()
+	protected buf: StringBuf
+	protected cache: any[]
+	protected shash: StringMap<number>
+	protected scount: number
 	
 	/**
 	The individual cache setting for `this` Serializer instance.
@@ -43,6 +47,9 @@ export declare class Serializer {
 	https://haxe.org/manual/serialization/format
 	*/
 	toString(): string
+	protected serializeString(s: string): void
+	protected serializeRef(v: any): boolean
+	protected serializeFields(v: {}): void
 	
 	/**
 	Serializes `v`.
@@ -81,6 +88,8 @@ export declare class Serializer {
 	setting their `useEnumIndex` field.
 	*/
 	static USE_ENUM_INDEX: boolean
+	protected static BASE64: string
+	protected static BASE64_CODES: T[]
 	
 	/**
 	Serializes `v` and returns the String representation.

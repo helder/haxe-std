@@ -1,27 +1,28 @@
 import {Xml} from "../../Xml"
 import {Iterator} from "../../StdTypes"
 
-export declare class NodeAccess_Impl_ {
+export declare class NodeAccess {
 	static resolve($this: Xml, name: string): Xml
 }
 
-export declare class AttribAccess_Impl_ {
+export declare class AttribAccess {
 	static resolve($this: Xml, name: string): string
+	protected static _hx_set($this: Xml, name: string, value: string): string
 }
 
-export declare class HasAttribAccess_Impl_ {
+export declare class HasAttribAccess {
 	static resolve($this: Xml, name: string): boolean
 }
 
-export declare class HasNodeAccess_Impl_ {
+export declare class HasNodeAccess {
 	static resolve($this: Xml, name: string): boolean
 }
 
-export declare class NodeListAccess_Impl_ {
+export declare class NodeListAccess {
 	static resolve($this: Xml, name: string): Xml[]
 }
 
-export declare class Access_Impl_ {
+export declare class Access {
 	static readonly x: Xml
 	static get_x($this: Xml): Xml
 	
@@ -29,6 +30,7 @@ export declare class Access_Impl_ {
 	The name of the current element. This is the same as `Xml.nodeName`.
 	*/
 	static readonly name: string
+	protected static get_name($this: Xml): string
 	
 	/**
 	The inner PCDATA or CDATA of the node.
@@ -60,6 +62,7 @@ export declare class Access_Impl_ {
 	```
 	*/
 	static readonly node: Xml
+	protected static get_node($this: Xml): Xml
 	
 	/**
 	Access to the List of elements with the given name.
@@ -79,6 +82,7 @@ export declare class Access_Impl_ {
 	```
 	*/
 	static readonly nodes: Xml
+	protected static get_nodes($this: Xml): Xml
 	
 	/**
 	Access to a given attribute.
@@ -95,11 +99,13 @@ export declare class Access_Impl_ {
 	```
 	*/
 	static readonly att: Xml
+	protected static get_att($this: Xml): Xml
 	
 	/**
 	Check the existence of an attribute with the given name.
 	*/
 	static readonly has: Xml
+	protected static get_has($this: Xml): Xml
 	
 	/**
 	Check the existence of a sub node with the given name.
@@ -113,12 +119,16 @@ export declare class Access_Impl_ {
 	```
 	*/
 	static readonly hasNode: Xml
+	protected static get_hasNode($this: Xml): Xml
 	
 	/**
 	The list of all sub-elements which are the nodes with type `Xml.Element`.
 	*/
 	static readonly elements: Iterator<Xml>
+	protected static get_elements($this: Xml): Iterator<Xml>
 	static _new(x: Xml): Xml
+	protected static get_innerData($this: Xml): string
+	protected static get_innerHTML($this: Xml): string
 }
 
 //# sourceMappingURL=Access.d.ts.map

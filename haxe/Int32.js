@@ -1,7 +1,9 @@
 import {Register} from "../genes/Register.js"
 
-export const Int32_Impl_ = Register.global("$hxClasses")["haxe._Int32.Int32_Impl_"] = 
-class Int32_Impl_ {
+const $global = Register.$global
+
+export const Int32 = Register.global("$hxClasses")["haxe._Int32.Int32"] = 
+class Int32 {
 	static negate(this1) {
 		return ~this1 + 1 | 0;
 	}
@@ -10,7 +12,7 @@ class Int32_Impl_ {
 		return this1;
 	}
 	static postIncrement(this1) {
-		let ret = this1++;
+		var ret = this1++;
 		this1 |= 0;
 		return ret;
 	}
@@ -19,7 +21,7 @@ class Int32_Impl_ {
 		return this1;
 	}
 	static postDecrement(this1) {
-		let ret = this1--;
+		var ret = this1--;
 		this1 |= 0;
 		return ret;
 	}
@@ -39,10 +41,10 @@ class Int32_Impl_ {
 		return a - b | 0;
 	}
 	static mul(a, b) {
-		return Int32_Impl_._mul(a, b);
+		return Int32._mul(a, b);
 	}
 	static mulInt(a, b) {
-		return Int32_Impl_._mul(a, b);
+		return Int32._mul(a, b);
 	}
 	static toFloat(this1) {
 		return this1;
@@ -72,12 +74,12 @@ class Int32_Impl_ {
 		return "haxe._Int32.Int32_Impl_"
 	}
 	get __class__() {
-		return Int32_Impl_
+		return Int32
 	}
 }
 
 
-Int32_Impl_._mul = (Math.imul != null) ? Math.imul : function (a, b) {
+Int32._mul = (Math.imul != null) ? Math.imul : function (a, b) {
 	return a * (b & 65535) + (a * (b >>> 16) << 16 | 0) | 0;
 }
 //# sourceMappingURL=Int32.js.map

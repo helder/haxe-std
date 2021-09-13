@@ -5,6 +5,8 @@ import {Std} from "../Std.js"
 import {HxOverrides} from "../HxOverrides.js"
 import {EReg} from "../EReg.js"
 
+const $global = Register.$global
+
 export const SysTools = Register.global("$hxClasses")["haxe.SysTools"] = 
 class SysTools {
 	
@@ -38,28 +40,28 @@ class SysTools {
 	*/
 	static quoteWinArg(argument, escapeMetaCharacters) {
 		if (!new EReg("^[^ \t\\\\\"]+$", "").match(argument)) {
-			let result_b = "";
-			let needquote = argument.indexOf(" ") != -1 || argument.indexOf("\t") != -1 || argument == "";
+			var result_b = "";
+			var needquote = argument.indexOf(" ") != -1 || argument.indexOf("\t") != -1 || argument == "";
 			if (needquote) {
 				result_b += "\"";
 			};
-			let bs_buf = new StringBuf();
-			let _g = 0;
-			let _g1 = argument.length;
+			var bs_buf = new StringBuf();
+			var _g = 0;
+			var _g1 = argument.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let _g1 = HxOverrides.cca(argument, i);
-				if (_g1 == null) {
-					let c = _g1;
+				var i = _g++;
+				var _g2 = HxOverrides.cca(argument, i);
+				if (_g2 == null) {
+					var c = _g2;
 					if (bs_buf.b.length > 0) {
 						result_b += Std.string(bs_buf.b);
 						bs_buf = new StringBuf();
 					};
 					result_b += String.fromCodePoint(c);
 				} else {
-					switch (_g1) {
+					switch (_g2) {
 						case 34:
-							let bs = bs_buf.b;
+							var bs = bs_buf.b;
 							result_b += (bs == null) ? "null" : "" + bs;
 							result_b += (bs == null) ? "null" : "" + bs;
 							bs_buf = new StringBuf();
@@ -69,12 +71,12 @@ class SysTools {
 							bs_buf.b += "\\";
 							break
 						default:
-						let c = _g1;
+						var c1 = _g2;
 						if (bs_buf.b.length > 0) {
 							result_b += Std.string(bs_buf.b);
 							bs_buf = new StringBuf();
 						};
-						result_b += String.fromCodePoint(c);
+						result_b += String.fromCodePoint(c1);
 						
 					};
 				};
@@ -87,12 +89,12 @@ class SysTools {
 			argument = result_b;
 		};
 		if (escapeMetaCharacters) {
-			let result_b = "";
-			let _g = 0;
-			let _g1 = argument.length;
+			var result_b = "";
+			var _g = 0;
+			var _g1 = argument.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let c = HxOverrides.cca(argument, i);
+				var i = _g++;
+				var c = HxOverrides.cca(argument, i);
 				if (SysTools.winMetaCharacters.indexOf(c) >= 0) {
 					result_b += String.fromCodePoint(94);
 				};

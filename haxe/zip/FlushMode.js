@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const FlushMode = 
 Register.global("$hxEnums")["haxe.zip.FlushMode"] = 
 {

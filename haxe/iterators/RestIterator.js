@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const RestIterator = Register.global("$hxClasses")["haxe.iterators.RestIterator"] = 
 class RestIterator extends Register.inherits() {
 	new(args) {

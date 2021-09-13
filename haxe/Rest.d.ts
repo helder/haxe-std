@@ -3,12 +3,13 @@ import {RestIterator} from "./iterators/RestIterator"
 
 export type NativeRest<T> = T[]
 
-export declare class Rest_Impl_ {
+export declare class Rest {
 	
 	/**
 	Amount of arguments passed as rest arguments
 	*/
 	static readonly length: number
+	protected static get_length<T>($this: T[]): number
 	
 	/**
 	Create rest arguments using contents of `array`.
@@ -19,6 +20,8 @@ export declare class Rest_Impl_ {
 	Use `Rest.of(array.copy())` to avoid that.
 	*/
 	static of<T>(array: T[]): T[]
+	protected static _new<T>(array: T[]): T[]
+	protected static get<T>($this: T[], index: number): T
 	
 	/**
 	Creates an array containing all the values of rest arguments.

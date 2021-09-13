@@ -1,13 +1,15 @@
 import {Register} from "./genes/Register.js"
 import {Std} from "./Std.js"
 
-export const UInt_Impl_ = Register.global("$hxClasses")["_UInt.UInt_Impl_"] = 
-class UInt_Impl_ {
+const $global = Register.$global
+
+export const UInt = Register.global("$hxClasses")["_UInt.UInt"] = 
+class UInt {
 	static add(a, b) {
 		return a + b;
 	}
 	static div(a, b) {
-		return UInt_Impl_.toFloat(a) / UInt_Impl_.toFloat(b);
+		return UInt.toFloat(a) / UInt.toFloat(b);
 	}
 	static mul(a, b) {
 		return a * b;
@@ -16,8 +18,8 @@ class UInt_Impl_ {
 		return a - b;
 	}
 	static gt(a, b) {
-		let aNeg = a < 0;
-		let bNeg = b < 0;
+		var aNeg = a < 0;
+		var bNeg = b < 0;
 		if (aNeg != bNeg) {
 			return aNeg;
 		} else {
@@ -25,8 +27,8 @@ class UInt_Impl_ {
 		};
 	}
 	static gte(a, b) {
-		let aNeg = a < 0;
-		let bNeg = b < 0;
+		var aNeg = a < 0;
+		var bNeg = b < 0;
 		if (aNeg != bNeg) {
 			return aNeg;
 		} else {
@@ -34,10 +36,10 @@ class UInt_Impl_ {
 		};
 	}
 	static lt(a, b) {
-		return UInt_Impl_.gt(b, a);
+		return UInt.gt(b, a);
 	}
 	static lte(a, b) {
-		return UInt_Impl_.gte(b, a);
+		return UInt.gte(b, a);
 	}
 	static and(a, b) {
 		return a & b;
@@ -58,28 +60,28 @@ class UInt_Impl_ {
 		return a >>> b;
 	}
 	static mod(a, b) {
-		return UInt_Impl_.toFloat(a) % UInt_Impl_.toFloat(b) | 0;
+		return UInt.toFloat(a) % UInt.toFloat(b) | 0;
 	}
 	static addWithFloat(a, b) {
-		return UInt_Impl_.toFloat(a) + b;
+		return UInt.toFloat(a) + b;
 	}
 	static mulWithFloat(a, b) {
-		return UInt_Impl_.toFloat(a) * b;
+		return UInt.toFloat(a) * b;
 	}
 	static divFloat(a, b) {
-		return UInt_Impl_.toFloat(a) / b;
+		return UInt.toFloat(a) / b;
 	}
 	static floatDiv(a, b) {
-		return a / UInt_Impl_.toFloat(b);
+		return a / UInt.toFloat(b);
 	}
 	static subFloat(a, b) {
-		return UInt_Impl_.toFloat(a) - b;
+		return UInt.toFloat(a) - b;
 	}
 	static floatSub(a, b) {
-		return a - UInt_Impl_.toFloat(b);
+		return a - UInt.toFloat(b);
 	}
 	static gtFloat(a, b) {
-		return UInt_Impl_.toFloat(a) > b;
+		return UInt.toFloat(a) > b;
 	}
 	static equalsInt(a, b) {
 		return a == b;
@@ -88,37 +90,37 @@ class UInt_Impl_ {
 		return a != b;
 	}
 	static equalsFloat(a, b) {
-		return UInt_Impl_.toFloat(a) == b;
+		return UInt.toFloat(a) == b;
 	}
 	static notEqualsFloat(a, b) {
-		return UInt_Impl_.toFloat(a) != b;
+		return UInt.toFloat(a) != b;
 	}
 	static gteFloat(a, b) {
-		return UInt_Impl_.toFloat(a) >= b;
+		return UInt.toFloat(a) >= b;
 	}
 	static floatGt(a, b) {
-		return a > UInt_Impl_.toFloat(b);
+		return a > UInt.toFloat(b);
 	}
 	static floatGte(a, b) {
-		return a >= UInt_Impl_.toFloat(b);
+		return a >= UInt.toFloat(b);
 	}
 	static ltFloat(a, b) {
-		return UInt_Impl_.toFloat(a) < b;
+		return UInt.toFloat(a) < b;
 	}
 	static lteFloat(a, b) {
-		return UInt_Impl_.toFloat(a) <= b;
+		return UInt.toFloat(a) <= b;
 	}
 	static floatLt(a, b) {
-		return a < UInt_Impl_.toFloat(b);
+		return a < UInt.toFloat(b);
 	}
 	static floatLte(a, b) {
-		return a <= UInt_Impl_.toFloat(b);
+		return a <= UInt.toFloat(b);
 	}
 	static modFloat(a, b) {
-		return UInt_Impl_.toFloat(a) % b;
+		return UInt.toFloat(a) % b;
 	}
 	static floatMod(a, b) {
-		return a % UInt_Impl_.toFloat(b);
+		return a % UInt.toFloat(b);
 	}
 	static negBits(this1) {
 		return ~this1;
@@ -135,14 +137,14 @@ class UInt_Impl_ {
 	static postfixDecrement(this1) {
 		return this1--;
 	}
-	static toString(this1, radix = null) {
-		return Std.string(UInt_Impl_.toFloat(this1));
+	static toString(this1, radix) {
+		return Std.string(UInt.toFloat(this1));
 	}
 	static toInt(this1) {
 		return this1;
 	}
 	static toFloat(this1) {
-		let $int = this1;
+		var $int = this1;
 		if ($int < 0) {
 			return 4294967296.0 + $int;
 		} else {
@@ -153,7 +155,7 @@ class UInt_Impl_ {
 		return "_UInt.UInt_Impl_"
 	}
 	get __class__() {
-		return UInt_Impl_
+		return UInt
 	}
 }
 

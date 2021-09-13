@@ -6,6 +6,8 @@ It can be used directly: `new HaxeIterator(jsIterator)` or via using: `using Hax
 */
 export declare class HaxeIterator<T> {
 	constructor(jsIterator: Iterator<T>)
+	protected jsIterator: Iterator<T>
+	protected lastStep: IteratorStep<T>
 	hasNext(): boolean
 	next(): T
 	static iterator<T>(jsIterator: Iterator<T>): HaxeIterator<T>

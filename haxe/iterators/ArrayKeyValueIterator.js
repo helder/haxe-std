@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const ArrayKeyValueIterator = Register.global("$hxClasses")["haxe.iterators.ArrayKeyValueIterator"] = 
 class ArrayKeyValueIterator extends Register.inherits() {
 	new(array) {

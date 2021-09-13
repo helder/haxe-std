@@ -13,6 +13,7 @@ are in-order.
 */
 export declare class BalancedTree<K, V> implements IMap<K, V> {
 	constructor()
+	protected root: TreeNode<K, V>
 	
 	/**
 	Binds `key` to `value`.
@@ -72,12 +73,21 @@ export declare class BalancedTree<K, V> implements IMap<K, V> {
 	*/
 	keys(): Iterator<K>
 	copy(): BalancedTree<K, V>
+	protected setLoop(k: K, v: V, node: TreeNode<K, V>): TreeNode<K, V>
+	protected removeLoop(k: K, node: TreeNode<K, V>): TreeNode<K, V>
+	protected keysLoop(node: TreeNode<K, V>, acc: K[]): void
+	protected merge(t1: TreeNode<K, V>, t2: TreeNode<K, V>): TreeNode<K, V>
+	protected minBinding(t: TreeNode<K, V>): TreeNode<K, V>
+	protected removeMinBinding(t: TreeNode<K, V>): TreeNode<K, V>
+	protected balance(l: TreeNode<K, V>, k: K, v: V, r: TreeNode<K, V>): TreeNode<K, V>
+	protected compare(k1: K, k2: K): number
 	toString(): string
 	
 	/**
 	Removes all keys from `this` BalancedTree.
 	*/
 	clear(): void
+	protected static iteratorLoop<V, K>(node: TreeNode<K, V>, acc: V[]): void
 }
 
 /**
@@ -89,6 +99,7 @@ export declare class TreeNode<K, V> {
 	right: TreeNode<K, V>
 	key: K
 	value: V
+	protected _height: number
 	toString(): string
 }
 

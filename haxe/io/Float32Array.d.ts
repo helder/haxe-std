@@ -2,11 +2,12 @@ import {Bytes} from "./Bytes"
 
 export type Float32ArrayData = Float32Array
 
-export declare class Float32Array_Impl_ {
+export declare class Float32Array {
 	static BYTES_PER_ELEMENT: number
 	static readonly length: number
 	static readonly view: ArrayBufferView
 	static _new(elements: number): Float32Array
+	protected static get_length($this: Float32Array): number
 	static get_view($this: Float32Array): ArrayBufferView
 	static get($this: Float32Array, index: number): number
 	static set($this: Float32Array, index: number, value: number): number

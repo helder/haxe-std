@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 This exception is raised when reading while data is no longer available in the `haxe.io.Input`.
 */

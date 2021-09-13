@@ -5,6 +5,7 @@ export declare class Browser {
 	The global scope typed with fields available only in a worker context.
 	*/
 	static readonly self: WorkerGlobalScope
+	protected static get_self(): WorkerGlobalScope
 	
 	/**
 	The global window object.
@@ -38,6 +39,7 @@ export declare class Browser {
 	* environment such as node.js.
 	*/
 	static readonly supported: boolean
+	protected static get_supported(): boolean
 	
 	/**
 	* Safely gets the browser's local storage, or returns null if localStorage is unsupported or

@@ -12,6 +12,8 @@ export declare class Meta {
 	Returns the metadata that were declared for the given type (class or enum)
 	*/
 	static getType(t: any): {[key: string]: any[]}
+	protected static isInterface(t: any): boolean
+	protected static getMeta(t: any): MetaObject
 	
 	/**
 	Returns the metadata that were declared for the given class static fields

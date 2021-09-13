@@ -2,7 +2,10 @@ import {Encoding} from "./Encoding"
 import {__Int64} from "../Int64"
 
 export declare class Bytes {
+	protected constructor(data: ArrayBuffer)
 	length: number
+	protected b: Uint8Array
+	protected data: DataView
 	
 	/**
 	Returns the byte at index `pos`.
@@ -49,6 +52,7 @@ export declare class Bytes {
 	instance; otherwise returns a positive value.
 	*/
 	compare(other: Bytes): number
+	protected initData(): void
 	
 	/**
 	Returns the IEEE double-precision value at the given position `pos` (in

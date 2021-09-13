@@ -3,6 +3,8 @@ import {Exception} from "../haxe/Exception.js"
 import {Register} from "../genes/Register.js"
 import {Std} from "../Std.js"
 
+const $global = Register.$global
+
 export const Browser = Register.global("$hxClasses")["js.Browser"] = 
 class Browser {
 	static get self() {
@@ -28,10 +30,10 @@ class Browser {
 	*/
 	static getLocalStorage() {
 		try {
-			let s = window.localStorage;
+			var s = window.localStorage;
 			s.getItem("");
 			if (s.length == 0) {
-				let key = "_hx_" + Math.random();
+				var key = "_hx_" + Math.random();
 				s.setItem(key, key);
 				s.removeItem(key);
 			};
@@ -48,10 +50,10 @@ class Browser {
 	*/
 	static getSessionStorage() {
 		try {
-			let s = window.sessionStorage;
+			var s = window.sessionStorage;
 			s.getItem("");
 			if (s.length == 0) {
-				let key = "_hx_" + Math.random();
+				var key = "_hx_" + Math.random();
 				s.setItem(key, key);
 				s.removeItem(key);
 			};

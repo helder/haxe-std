@@ -1,7 +1,9 @@
 import {Register} from "../../genes/Register.js"
 
-export const ObjectEntry_Impl_ = Register.global("$hxClasses")["js.lib._Object.ObjectEntry_Impl_"] = 
-class ObjectEntry_Impl_ {
+const $global = Register.$global
+
+export const ObjectEntry = Register.global("$hxClasses")["js.lib._Object.ObjectEntry"] = 
+class ObjectEntry {
 	static get key() {
 		return this.get_key()
 	}
@@ -18,7 +20,7 @@ class ObjectEntry_Impl_ {
 		return "js.lib._Object.ObjectEntry_Impl_"
 	}
 	get __class__() {
-		return ObjectEntry_Impl_
+		return ObjectEntry
 	}
 }
 

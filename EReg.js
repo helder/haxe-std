@@ -3,6 +3,8 @@ import {Register} from "./genes/Register.js"
 import {Std} from "./Std.js"
 import {HxOverrides} from "./HxOverrides.js"
 
+const $global = Register.$global
+
 /**
 The EReg class represents regular expressions.
 
@@ -93,7 +95,7 @@ class EReg extends Register.inherits() {
 		if (this.r.m == null) {
 			throw Exception.thrown("No string matched");
 		};
-		let sz = this.r.m.index + this.r.m[0].length;
+		var sz = this.r.m.index + this.r.m[0].length;
 		return HxOverrides.substr(this.r.s, sz, this.r.s.length - sz);
 	}
 	
@@ -126,17 +128,20 @@ class EReg extends Register.inherits() {
 	
 	If `s` is null, the result is unspecified.
 	*/
-	matchSub(s, pos, len = -1) {
+	matchSub(s, pos, len) {
+		if (len == null) {
+			len = -1;
+		};
 		if (this.r.global) {
 			this.r.lastIndex = pos;
 			this.r.m = this.r.exec((len < 0) ? s : HxOverrides.substr(s, 0, pos + len));
-			let b = this.r.m != null;
+			var b = this.r.m != null;
 			if (b) {
 				this.r.s = s;
 			};
 			return b;
 		} else {
-			let b = this.match((len < 0) ? HxOverrides.substr(s, pos, null) : HxOverrides.substr(s, pos, len));
+			var b = this.match((len < 0) ? HxOverrides.substr(s, pos, null) : HxOverrides.substr(s, pos, len));
 			if (b) {
 				this.r.s = s;
 				this.r.m.index += pos;
@@ -164,7 +169,7 @@ class EReg extends Register.inherits() {
 	If `s` is null, the result is unspecified.
 	*/
 	split(s) {
-		let d = "#__delim__#";
+		var d = "#__delim__#";
 		return s.replace(this.r, d).split(d);
 	}
 	
@@ -201,8 +206,8 @@ class EReg extends Register.inherits() {
 	If `s` or `f` are null, the result is unspecified.
 	*/
 	map(s, f) {
-		let offset = 0;
-		let buf_b = "";
+		var offset = 0;
+		var buf_b = "";
 		while (true) {
 			if (offset >= s.length) {
 				break;
@@ -210,7 +215,7 @@ class EReg extends Register.inherits() {
 				buf_b += Std.string(HxOverrides.substr(s, offset, null));
 				break;
 			};
-			let p = this.matchedPos();
+			var p = this.matchedPos();
 			buf_b += Std.string(HxOverrides.substr(s, offset, p.pos - offset));
 			buf_b += Std.string(f(this));
 			if (p.len == 0) {

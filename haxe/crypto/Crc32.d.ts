@@ -5,6 +5,7 @@ Calculates the Crc32 of the given Bytes.
 */
 export declare class Crc32 {
 	constructor()
+	protected crc: number
 	byte(b: number): void
 	update(b: Bytes, pos: number, len: number): void
 	get(): number

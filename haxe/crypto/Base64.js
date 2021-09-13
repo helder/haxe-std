@@ -3,13 +3,18 @@ import {BaseCode} from "./BaseCode.js"
 import {Register} from "../../genes/Register.js"
 import {HxOverrides} from "../../HxOverrides.js"
 
+const $global = Register.$global
+
 /**
 Allows one to encode/decode String and bytes using Base64 encoding.
 */
 export const Base64 = Register.global("$hxClasses")["haxe.crypto.Base64"] = 
 class Base64 {
-	static encode(bytes, complement = true) {
-		let str = new BaseCode(Base64.BYTES).encodeBytes(bytes).toString();
+	static encode(bytes, complement) {
+		if (complement == null) {
+			complement = true;
+		};
+		var str = new BaseCode(Base64.BYTES).encodeBytes(bytes).toString();
 		if (complement) {
 			switch (bytes.length % 3) {
 				case 1:
@@ -24,14 +29,20 @@ class Base64 {
 		};
 		return str;
 	}
-	static decode(str, complement = true) {
+	static decode(str, complement) {
+		if (complement == null) {
+			complement = true;
+		};
 		if (complement) {
 			while (HxOverrides.cca(str, str.length - 1) == 61) str = HxOverrides.substr(str, 0, -1);
 		};
 		return new BaseCode(Base64.BYTES).decodeBytes(Bytes.ofString(str));
 	}
-	static urlEncode(bytes, complement = false) {
-		let str = new BaseCode(Base64.URL_BYTES).encodeBytes(bytes).toString();
+	static urlEncode(bytes, complement) {
+		if (complement == null) {
+			complement = false;
+		};
+		var str = new BaseCode(Base64.URL_BYTES).encodeBytes(bytes).toString();
 		if (complement) {
 			switch (bytes.length % 3) {
 				case 1:
@@ -46,7 +57,10 @@ class Base64 {
 		};
 		return str;
 	}
-	static urlDecode(str, complement = false) {
+	static urlDecode(str, complement) {
+		if (complement == null) {
+			complement = false;
+		};
 		if (complement) {
 			while (HxOverrides.cca(str, str.length - 1) == 61) str = HxOverrides.substr(str, 0, -1);
 		};

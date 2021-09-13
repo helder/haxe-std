@@ -1,5 +1,9 @@
 
 export declare class MainEvent {
+	protected constructor(f: (() => void), p: number)
+	protected f: () => void
+	protected prev: MainEvent
+	protected next: MainEvent
 	
 	/**
 	Tells if the event can lock the process from exiting (default:true)
@@ -26,7 +30,9 @@ export declare class MainEvent {
 }
 
 export declare class MainLoop {
+	protected static pending: MainEvent
 	static readonly threadCount: number
+	protected static get_threadCount(): number
 	static hasEvents(): boolean
 	static addThread(f: (() => void)): void
 	static runInMainThread(f: (() => void)): void
@@ -35,6 +41,13 @@ export declare class MainLoop {
 	Add a pending event to be run into the main loop.
 	*/
 	static add(f: (() => void), priority?: number): MainEvent
+	protected static injectIntoEventLoop(waitMs: number): void
+	protected static sortEvents(): void
+	
+	/**
+	Run the pending events. Return the time for next event.
+	*/
+	protected static tick(): number
 }
 
 //# sourceMappingURL=MainLoop.d.ts.map

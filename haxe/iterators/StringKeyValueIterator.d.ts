@@ -7,6 +7,8 @@ internal encoding of strings in different runtimes.
 */
 export declare class StringKeyValueIterator {
 	constructor(s: string)
+	protected offset: number
+	protected s: string
 	
 	/**
 	See `KeyValueIterator.hasNext`

@@ -1,6 +1,8 @@
 import {Boot} from "./js/Boot.js"
 import {Register} from "./genes/Register.js"
 
+const $global = Register.$global
+
 /**
 The Std class provides standard methods for manipulating basic types.
 */
@@ -112,14 +114,14 @@ class Std {
 	*/
 	static parseInt(x) {
 		if (x != null) {
-			let _g = 0;
-			let _g1 = x.length;
+			var _g = 0;
+			var _g1 = x.length;
 			while (_g < _g1) {
-				let i = _g++;
-				let c = x.charCodeAt(i);
+				var i = _g++;
+				var c = x.charCodeAt(i);
 				if (c <= 8 || c >= 14 && c != 32 && c != 45) {
-					let nc = x.charCodeAt(i + 1);
-					let v = parseInt(x, (nc == 120 || nc == 88) ? 16 : 10);
+					var nc = x.charCodeAt(i + 1);
+					var v = parseInt(x, (nc == 120 || nc == 88) ? 16 : 10);
 					if ((isNaN)(v)) {
 						return null;
 					} else {

@@ -1,6 +1,8 @@
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 An API to access classes and enums metadata at runtime.
 
@@ -13,7 +15,7 @@ class Meta {
 	Returns the metadata that were declared for the given type (class or enum)
 	*/
 	static getType(t) {
-		let meta = Meta.getMeta(t);
+		var meta = Meta.getMeta(t);
 		if (meta == null || meta.obj == null) {
 			return {};
 		} else {
@@ -31,7 +33,7 @@ class Meta {
 	Returns the metadata that were declared for the given class static fields
 	*/
 	static getStatics(t) {
-		let meta = Meta.getMeta(t);
+		var meta = Meta.getMeta(t);
 		if (meta == null || meta.statics == null) {
 			return {};
 		} else {
@@ -43,7 +45,7 @@ class Meta {
 	Returns the metadata that were declared for the given class fields or enum constructors
 	*/
 	static getFields(t) {
-		let meta = Meta.getMeta(t);
+		var meta = Meta.getMeta(t);
 		if (meta == null || meta.fields == null) {
 			return {};
 		} else {

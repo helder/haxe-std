@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 This iterator is used only when `Array<T>` is passed to `Iterable<T>`
 */

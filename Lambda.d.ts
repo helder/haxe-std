@@ -36,14 +36,14 @@ export declare class Lambda {
 	The order of elements is preserved.
 	If `f` is null, the result is unspecified.
 	*/
-	static map<A, B>(it: Iterable<A>, f: ((item: A) => B)): B[]
+	static map<B, A>(it: Iterable<A>, f: ((item: A) => B)): B[]
 	
 	/**
 	Similar to map, but also passes the index of each element to `f`.
 	The order of elements is preserved.
 	If `f` is null, the result is unspecified.
 	*/
-	static mapi<A, B>(it: Iterable<A>, f: ((index: number, item: A) => B)): B[]
+	static mapi<B, A>(it: Iterable<A>, f: ((index: number, item: A) => B)): B[]
 	
 	/**
 	Concatenate a list of iterables.
@@ -56,7 +56,7 @@ export declare class Lambda {
 	The order of elements is preserved.
 	If `f` is null, the result is unspecified.
 	*/
-	static flatMap<A, B>(it: Iterable<A>, f: ((item: A) => Iterable<B>)): B[]
+	static flatMap<B, A>(it: Iterable<A>, f: ((item: A) => Iterable<B>)): B[]
 	
 	/**
 	Tells if `it` contains `elt`.
@@ -121,14 +121,14 @@ export declare class Lambda {
 	
 	If `it` or `f` are null, the result is unspecified.
 	*/
-	static fold<A, B>(it: Iterable<A>, f: ((item: A, result: B) => B), first: B): B
+	static fold<B, A>(it: Iterable<A>, f: ((item: A, result: B) => B), first: B): B
 	
 	/**
 	Similar to fold, but also passes the index of each element to `f`.
 	
 	If `it` or `f` are null, the result is unspecified.
 	*/
-	static foldi<A, B>(it: Iterable<A>, f: ((item: A, result: B, index: number) => B), first: B): B
+	static foldi<B, A>(it: Iterable<A>, f: ((item: A, result: B, index: number) => B), first: B): B
 	
 	/**
 	Returns the number of elements in `it` for which `pred` is true, or the

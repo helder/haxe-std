@@ -1,5 +1,7 @@
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 /**
 A cell of `haxe.ds.GenericStack`.
 
@@ -65,7 +67,7 @@ class GenericStack extends Register.inherits() {
 	If the stack is empty, null is returned.
 	*/
 	pop() {
-		let k = this.head;
+		var k = this.head;
 		if (k == null) {
 			return null;
 		} else {
@@ -91,8 +93,8 @@ class GenericStack extends Register.inherits() {
 	If no matching element is found, false is returned.
 	*/
 	remove(v) {
-		let prev = null;
-		let l = this.head;
+		var prev = null;
+		var l = this.head;
 		while (l != null) {
 			if (l.elt == v) {
 				if (prev == null) {
@@ -112,11 +114,11 @@ class GenericStack extends Register.inherits() {
 	Returns an iterator over the elements of `this` GenericStack.
 	*/
 	iterator() {
-		let l = this.head;
+		var l = this.head;
 		return {"hasNext": function () {
 			return l != null;
 		}, "next": function () {
-			let k = l;
+			var k = l;
 			l = k.next;
 			return k.elt;
 		}};
@@ -126,8 +128,8 @@ class GenericStack extends Register.inherits() {
 	Returns a String representation of `this` GenericStack.
 	*/
 	toString() {
-		let a = new Array();
-		let l = this.head;
+		var a = new Array();
+		var l = this.head;
 		while (l != null) {
 			a.push(l.elt);
 			l = l.next;

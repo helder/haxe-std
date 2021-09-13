@@ -1,7 +1,9 @@
 import {Register} from "../../genes/Register.js"
 
-export const ReadOnlyArray_Impl_ = Register.global("$hxClasses")["haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_"] = 
-class ReadOnlyArray_Impl_ {
+const $global = Register.$global
+
+export const ReadOnlyArray = Register.global("$hxClasses")["haxe.ds._ReadOnlyArray.ReadOnlyArray"] = 
+class ReadOnlyArray {
 	static get length() {
 		return this.get_length()
 	}
@@ -32,7 +34,7 @@ class ReadOnlyArray_Impl_ {
 		return "haxe.ds._ReadOnlyArray.ReadOnlyArray_Impl_"
 	}
 	get __class__() {
-		return ReadOnlyArray_Impl_
+		return ReadOnlyArray
 	}
 }
 

@@ -3,6 +3,8 @@ import {Register} from "../../genes/Register.js"
 import * as Fs from "fs"
 import {Buffer} from "buffer"
 
+const $global = Register.$global
+
 /**
 Use `sys.io.File.write` to create a `FileOutput`.
 */
@@ -13,15 +15,15 @@ class FileOutput extends Register.inherits(Output) {
 		this.pos = 0;
 	}
 	writeByte(b) {
-		let buf = Buffer.alloc(1);
+		var buf = Buffer.alloc(1);
 		buf[0] = b;
 		Fs.writeSync(this.fd, buf, 0, 1, this.pos);
 		this.pos++;
 	}
 	writeBytes(s, pos, len) {
-		let data = s.b;
-		let buf = Buffer.from(data.buffer, data.byteOffset, s.length);
-		let wrote = Fs.writeSync(this.fd, buf, pos, len, this.pos);
+		var data = s.b;
+		var buf = Buffer.from(data.buffer, data.byteOffset, s.length);
+		var wrote = Fs.writeSync(this.fd, buf, pos, len, this.pos);
 		this.pos += wrote;
 		return wrote;
 	}

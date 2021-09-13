@@ -1,13 +1,15 @@
-import {NodeListAccess_Impl_, Access_Impl_, AttribAccess_Impl_, HasAttribAccess_Impl_, HasNodeAccess_Impl_, NodeAccess_Impl_} from "../xml/Access.js"
+import {NodeListAccess, Access, AttribAccess, HasAttribAccess, HasNodeAccess, NodeAccess} from "../xml/Access.js"
 import {TypeApi, Rights, TypeTree, CType} from "./CType.js"
 import {ArrayIterator} from "../iterators/ArrayIterator.js"
 import {StringMap} from "../ds/StringMap.js"
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
-import {Xml, XmlType_Impl_} from "../../Xml.js"
+import {Xml, XmlType} from "../../Xml.js"
 import {Type} from "../../Type.js"
 import {Std} from "../../Std.js"
 import {HxOverrides} from "../../HxOverrides.js"
+
+const $global = Register.$global
 
 /**
 XmlParser processes the runtime type information (RTTI) which
@@ -20,25 +22,25 @@ class XmlParser extends Register.inherits() {
 	new() {
 		this.root = new Array();
 	}
-	sort(l = null) {
+	sort(l) {
 		if (l == null) {
 			l = this.root;
 		};
 		l.sort(function (e1, e2) {
-			let n1;
+			var n1;
 			if (e1._hx_index == 0) {
-				let _g = e1.full;
-				let _g1 = e1.subs;
-				let p = e1.name;
+				var _g = e1.full;
+				var _g = e1.subs;
+				var p = e1.name;
 				n1 = " " + p;
 			} else {
 				n1 = TypeApi.typeInfos(e1).path;
 			};
-			let n2;
+			var n2;
 			if (e2._hx_index == 0) {
-				let _g = e2.full;
-				let _g1 = e2.subs;
-				let p = e2.name;
+				var _g = e2.full;
+				var _g = e2.subs;
+				var p = e2.name;
 				n2 = " " + p;
 			} else {
 				n2 = TypeApi.typeInfos(e2).path;
@@ -48,30 +50,30 @@ class XmlParser extends Register.inherits() {
 			};
 			return -1;
 		});
-		let _g = 0;
+		var _g = 0;
 		while (_g < l.length) {
-			let x = l[_g];
+			var x = l[_g];
 			++_g;
 			switch (x._hx_index) {
 				case 0:
-					let _g1 = x.name;
-					let _g2 = x.full;
-					let l1 = x.subs;
+					var _g1 = x.name;
+					var _g2 = x.full;
+					var l1 = x.subs;
 					this.sort(l1);
 					break
 				case 1:
-					let c = x.c;
+					var c = x.c;
 					this.sortFields(c.fields);
 					this.sortFields(c.statics);
 					break
 				case 2:
-					let _g3 = x.e;
+					var _g3 = x.e;
 					break
 				case 3:
-					let _g4 = x.t;
+					var _g4 = x.t;
 					break
 				case 4:
-					let _g5 = x.a;
+					var _g5 = x.a;
 					break
 				
 			};
@@ -79,8 +81,8 @@ class XmlParser extends Register.inherits() {
 	}
 	sortFields(a) {
 		a.sort(function (f1, f2) {
-			let v1 = TypeApi.isVar(f1.type);
-			let v2 = TypeApi.isVar(f2.type);
+			var v1 = TypeApi.isVar(f1.type);
+			var v2 = TypeApi.isVar(f2.type);
 			if (v1 && !v2) {
 				return -1;
 			};
@@ -102,9 +104,9 @@ class XmlParser extends Register.inherits() {
 	process(x, platform) {
 		this.curplatform = platform;
 		if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType.toString(x.nodeType)));
 		};
-		let this1 = x;
+		var this1 = x;
 		this.xroot(this1);
 	}
 	mergeRights(f1, f2) {
@@ -150,16 +152,16 @@ class XmlParser extends Register.inherits() {
 		if (c.isExtern != c2.isExtern) {
 			c.isExtern = false;
 		};
-		let _g = 0;
-		let _g1 = c2.fields;
+		var _g = 0;
+		var _g1 = c2.fields;
 		while (_g < _g1.length) {
-			let f2 = _g1[_g];
+			var f2 = _g1[_g];
 			++_g;
-			let found = null;
-			let _g2 = 0;
-			let _g3 = c.fields;
+			var found = null;
+			var _g2 = 0;
+			var _g3 = c.fields;
 			while (_g2 < _g3.length) {
-				let f = _g3[_g2];
+				var f = _g3[_g2];
 				++_g2;
 				if (this.mergeFields(f, f2)) {
 					found = f;
@@ -173,17 +175,17 @@ class XmlParser extends Register.inherits() {
 				found.platforms.push(this.curplatform);
 			};
 		};
-		let _g2 = 0;
-		let _g3 = c2.statics;
-		while (_g2 < _g3.length) {
-			let f2 = _g3[_g2];
-			++_g2;
-			let found = null;
-			let _g = 0;
-			let _g1 = c.statics;
-			while (_g < _g1.length) {
-				let f = _g1[_g];
-				++_g;
+		var _g = 0;
+		var _g1 = c2.statics;
+		while (_g < _g1.length) {
+			var f2 = _g1[_g];
+			++_g;
+			var found = null;
+			var _g2 = 0;
+			var _g3 = c.statics;
+			while (_g2 < _g3.length) {
+				var f = _g3[_g2];
+				++_g2;
 				if (this.mergeFields(f, f2)) {
 					found = f;
 					break;
@@ -205,16 +207,16 @@ class XmlParser extends Register.inherits() {
 		if (this.curplatform != null) {
 			e.platforms.push(this.curplatform);
 		};
-		let _g = 0;
-		let _g1 = e2.constructors;
+		var _g = 0;
+		var _g1 = e2.constructors;
 		while (_g < _g1.length) {
-			let c2 = _g1[_g];
+			var c2 = _g1[_g];
 			++_g;
-			let found = null;
-			let _g2 = 0;
-			let _g3 = e.constructors;
+			var found = null;
+			var _g2 = 0;
+			var _g3 = e.constructors;
 			while (_g2 < _g3.length) {
-				let c = _g3[_g2];
+				var c = _g3[_g2];
 				++_g2;
 				if (TypeApi.constructorEq(c, c2)) {
 					found = c;
@@ -244,18 +246,18 @@ class XmlParser extends Register.inherits() {
 		if (a.to.length != a2.to.length || a.from.length != a2.from.length) {
 			return false;
 		};
-		let _g = 0;
-		let _g1 = a.to.length;
+		var _g = 0;
+		var _g1 = a.to.length;
 		while (_g < _g1) {
-			let i = _g++;
+			var i = _g++;
 			if (!TypeApi.typeEq(a.to[i].t, a2.to[i].t)) {
 				return false;
 			};
 		};
-		let _g2 = 0;
-		let _g3 = a.from.length;
-		while (_g2 < _g3) {
-			let i = _g2++;
+		var _g = 0;
+		var _g1 = a.from.length;
+		while (_g < _g1) {
+			var i = _g++;
 			if (!TypeApi.typeEq(a.from[i].t, a2.from[i].t)) {
 				return false;
 			};
@@ -267,24 +269,24 @@ class XmlParser extends Register.inherits() {
 		return true;
 	}
 	merge(t) {
-		let inf = TypeApi.typeInfos(t);
-		let pack = inf.path.split(".");
-		let cur = this.root;
-		let curpack = new Array();
+		var inf = TypeApi.typeInfos(t);
+		var pack = inf.path.split(".");
+		var cur = this.root;
+		var curpack = new Array();
 		pack.pop();
-		let _g = 0;
+		var _g = 0;
 		while (_g < pack.length) {
-			let p = pack[_g];
+			var p = pack[_g];
 			++_g;
-			let found = false;
-			let _g1 = 0;
+			var found = false;
+			var _g1 = 0;
 			while (_g1 < cur.length) {
-				let pk = cur[_g1];
+				var pk = cur[_g1];
 				++_g1;
 				if (pk._hx_index == 0) {
-					let _g = pk.full;
-					let pname = pk.name;
-					let subs = pk.subs;
+					var _g2 = pk.full;
+					var pname = pk.name;
+					var subs = pk.subs;
 					if (pname == p) {
 						found = true;
 						cur = subs;
@@ -294,20 +296,20 @@ class XmlParser extends Register.inherits() {
 			};
 			curpack.push(p);
 			if (!found) {
-				let pk = new Array();
-				cur.push(TypeTree.TPackage(p, curpack.join("."), pk));
-				cur = pk;
+				var pk1 = new Array();
+				cur.push(TypeTree.TPackage(p, curpack.join("."), pk1));
+				cur = pk1;
 			};
 		};
-		let _g1 = 0;
-		while (_g1 < cur.length) {
-			let ct = cur[_g1];
-			++_g1;
-			let tmp;
+		var _g = 0;
+		while (_g < cur.length) {
+			var ct = cur[_g];
+			++_g;
+			var tmp;
 			if (ct._hx_index == 0) {
-				let _g = ct.name;
-				let _g1 = ct.full;
-				let _g2 = ct.subs;
+				var _g1 = ct.name;
+				var _g2 = ct.full;
+				var _g3 = ct.subs;
 				tmp = true;
 			} else {
 				tmp = false;
@@ -315,9 +317,9 @@ class XmlParser extends Register.inherits() {
 			if (tmp) {
 				continue;
 			};
-			let tinf = TypeApi.typeInfos(ct);
+			var tinf = TypeApi.typeInfos(ct);
 			if (tinf.path == inf.path) {
-				let sameType = true;
+				var sameType = true;
 				if (tinf.doc == null != (inf.doc == null)) {
 					if (inf.doc == null) {
 						inf.doc = tinf.doc;
@@ -331,15 +333,15 @@ class XmlParser extends Register.inherits() {
 				if (tinf.module == inf.module && tinf.doc == inf.doc && tinf.isPrivate == inf.isPrivate) {
 					switch (ct._hx_index) {
 						case 0:
-							let _g = ct.name;
-							let _g1 = ct.full;
-							let _g2 = ct.subs;
+							var _g4 = ct.name;
+							var _g5 = ct.full;
+							var _g6 = ct.subs;
 							sameType = false;
 							break
 						case 1:
-							let c = ct.c;
+							var c = ct.c;
 							if (t._hx_index == 1) {
-								let c2 = t.c;
+								var c2 = t.c;
 								if (this.mergeClasses(c, c2)) {
 									return;
 								};
@@ -348,9 +350,9 @@ class XmlParser extends Register.inherits() {
 							};
 							break
 						case 2:
-							let e = ct.e;
+							var e = ct.e;
 							if (t._hx_index == 2) {
-								let e2 = t.e;
+								var e2 = t.e;
 								if (this.mergeEnums(e, e2)) {
 									return;
 								};
@@ -359,18 +361,18 @@ class XmlParser extends Register.inherits() {
 							};
 							break
 						case 3:
-							let td = ct.t;
+							var td = ct.t;
 							if (t._hx_index == 3) {
-								let td2 = t.t;
+								var td2 = t.t;
 								if (this.mergeTypedefs(td, td2)) {
 									return;
 								};
 							};
 							break
 						case 4:
-							let a = ct.a;
+							var a = ct.a;
 							if (t._hx_index == 4) {
-								let a2 = t.a;
+								var a2 = t.a;
 								if (this.mergeAbstracts(a, a2)) {
 									return;
 								};
@@ -381,7 +383,7 @@ class XmlParser extends Register.inherits() {
 						
 					};
 				};
-				let msg = (tinf.module != inf.module) ? "module " + inf.module + " should be " + tinf.module : (tinf.doc != inf.doc) ? "documentation is different" : (tinf.isPrivate != inf.isPrivate) ? "private flag is different" : (!sameType) ? "type kind is different" : "could not merge definition";
+				var msg = (tinf.module != inf.module) ? "module " + inf.module + " should be " + tinf.module : (tinf.doc != inf.doc) ? "documentation is different" : (tinf.isPrivate != inf.isPrivate) ? "private flag is different" : (!sameType) ? "type kind is different" : "could not merge definition";
 				throw Exception.thrown("Incompatibilities between " + tinf.path + " in " + tinf.platforms.join(",") + " and " + this.curplatform + " (" + msg + ")");
 			};
 		};
@@ -391,7 +393,7 @@ class XmlParser extends Register.inherits() {
 		return p;
 	}
 	mkTypeParams(p) {
-		let pl = p.split(":");
+		var pl = p.split(":");
 		if (pl[0] == "") {
 			return new Array();
 		};
@@ -417,36 +419,36 @@ class XmlParser extends Register.inherits() {
 		};
 	}
 	xerror(c) {
-		let tmp;
+		var tmp;
 		if (c.nodeType == Xml.Document) {
 			tmp = "Document";
 		} else {
 			if (c.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((c.nodeType == null) ? "null" : XmlType_Impl_.toString(c.nodeType)));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((c.nodeType == null) ? "null" : XmlType.toString(c.nodeType)));
 			};
 			tmp = c.nodeName;
 		};
 		throw Exception.thrown("Invalid " + tmp);
 	}
 	xroot(x) {
-		let c = x.elements();
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
+			var c1 = c.next();
 			this.merge(this.processElement(c1));
 		};
 	}
 	processElement(x) {
 		if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+			throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType.toString(x.nodeType)));
 		};
-		let this1 = x;
-		let c = this1;
-		let _g;
+		var this1 = x;
+		var c = this1;
+		var _g;
 		if (c.nodeType == Xml.Document) {
 			_g = "Document";
 		} else {
 			if (c.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((c.nodeType == null) ? "null" : XmlType_Impl_.toString(c.nodeType)));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((c.nodeType == null) ? "null" : XmlType.toString(c.nodeType)));
 			};
 			_g = c.nodeName;
 		};
@@ -469,61 +471,61 @@ class XmlParser extends Register.inherits() {
 		};
 	}
 	xmeta(x) {
-		let ml = [];
-		let _g = 0;
-		let _g1 = NodeListAccess_Impl_.resolve(x, "m");
+		var ml = [];
+		var _g = 0;
+		var _g1 = NodeListAccess.resolve(x, "m");
 		while (_g < _g1.length) {
-			let m = _g1[_g];
+			var m = _g1[_g];
 			++_g;
-			let pl = [];
-			let _g2 = 0;
-			let _g3 = NodeListAccess_Impl_.resolve(m, "e");
+			var pl = [];
+			var _g2 = 0;
+			var _g3 = NodeListAccess.resolve(m, "e");
 			while (_g2 < _g3.length) {
-				let p = _g3[_g2];
+				var p = _g3[_g2];
 				++_g2;
-				pl.push(Access_Impl_.get_innerHTML(p));
+				pl.push(Access.get_innerHTML(p));
 			};
-			ml.push({"name": AttribAccess_Impl_.resolve(m, "n"), "params": pl});
+			ml.push({"name": AttribAccess.resolve(m, "n"), "params": pl});
 		};
 		return ml;
 	}
 	xoverloads(x) {
-		let l = new Array();
-		let m = x.elements();
+		var l = new Array();
+		var m = x.elements();
 		while (m.hasNext()) {
-			let m1 = m.next();
+			var m1 = m.next();
 			l.push(this.xclassfield(m1));
 		};
 		return l;
 	}
 	xpath(x) {
-		let path = this.mkPath(AttribAccess_Impl_.resolve(x, "path"));
-		let params = new Array();
-		let c = x.elements();
+		var path = this.mkPath(AttribAccess.resolve(x, "path"));
+		var params = new Array();
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
+			var c1 = c.next();
 			params.push(this.xtype(c1));
 		};
 		return {"path": path, "params": params};
 	}
 	xclass(x) {
-		let csuper = null;
-		let doc = null;
-		let tdynamic = null;
-		let interfaces = new Array();
-		let fields = new Array();
-		let statics = new Array();
-		let meta = [];
-		let isInterface = x.exists("interface");
-		let c = x.elements();
+		var csuper = null;
+		var doc = null;
+		var tdynamic = null;
+		var interfaces = new Array();
+		var fields = new Array();
+		var statics = new Array();
+		var meta = [];
+		var isInterface = x.exists("interface");
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
-			let _g;
+			var c1 = c.next();
+			var _g;
 			if (c1.nodeType == Xml.Document) {
 				_g = "Document";
 			} else {
 				if (c1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 				};
 				_g = c1.nodeName;
 			};
@@ -536,14 +538,14 @@ class XmlParser extends Register.inherits() {
 					};
 					break
 				case "haxe_doc":
-					doc = Access_Impl_.get_innerData(c1);
+					doc = Access.get_innerData(c1);
 					break
 				case "haxe_dynamic":
-					let x = c1.firstElement();
-					if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-						throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+					var x1 = c1.firstElement();
+					if (x1.nodeType != Xml.Document && x1.nodeType != Xml.Element) {
+						throw Exception.thrown("Invalid nodeType " + ((x1.nodeType == null) ? "null" : XmlType.toString(x1.nodeType)));
 					};
-					let this1 = x;
+					var this1 = x1;
 					tdynamic = this.xtype(this1);
 					break
 				case "implements":
@@ -561,29 +563,32 @@ class XmlParser extends Register.inherits() {
 				
 			};
 		};
-		return {"file": (HasAttribAccess_Impl_.resolve(x, "file")) ? AttribAccess_Impl_.resolve(x, "file") : null, "path": this.mkPath(AttribAccess_Impl_.resolve(x, "path")), "module": (HasAttribAccess_Impl_.resolve(x, "module")) ? this.mkPath(AttribAccess_Impl_.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "isExtern": x.exists("extern"), "isFinal": x.exists("final"), "isInterface": isInterface, "params": this.mkTypeParams(AttribAccess_Impl_.resolve(x, "params")), "superClass": csuper, "interfaces": interfaces, "fields": fields, "statics": statics, "tdynamic": tdynamic, "platforms": this.defplat(), "meta": meta};
+		return {"file": (HasAttribAccess.resolve(x, "file")) ? AttribAccess.resolve(x, "file") : null, "path": this.mkPath(AttribAccess.resolve(x, "path")), "module": (HasAttribAccess.resolve(x, "module")) ? this.mkPath(AttribAccess.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "isExtern": x.exists("extern"), "isFinal": x.exists("final"), "isInterface": isInterface, "params": this.mkTypeParams(AttribAccess.resolve(x, "params")), "superClass": csuper, "interfaces": interfaces, "fields": fields, "statics": statics, "tdynamic": tdynamic, "platforms": this.defplat(), "meta": meta};
 	}
-	xclassfield(x, defPublic = false) {
-		let e = x.elements();
-		let t = this.xtype(e.next());
-		let doc = null;
-		let meta = [];
-		let overloads = null;
-		let c = e;
+	xclassfield(x, defPublic) {
+		if (defPublic == null) {
+			defPublic = false;
+		};
+		var e = x.elements();
+		var t = this.xtype(e.next());
+		var doc = null;
+		var meta = [];
+		var overloads = null;
+		var c = e;
 		while (c.hasNext()) {
-			let c1 = c.next();
-			let _g;
+			var c1 = c.next();
+			var _g;
 			if (c1.nodeType == Xml.Document) {
 				_g = "Document";
 			} else {
 				if (c1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 				};
 				_g = c1.nodeName;
 			};
 			switch (_g) {
 				case "haxe_doc":
-					doc = Access_Impl_.get_innerData(c1);
+					doc = Access.get_innerData(c1);
 					break
 				case "meta":
 					meta = this.xmeta(c1);
@@ -596,68 +601,68 @@ class XmlParser extends Register.inherits() {
 				
 			};
 		};
-		let tmp;
+		var tmp;
 		if (x.nodeType == Xml.Document) {
 			tmp = "Document";
 		} else {
 			if (x.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType.toString(x.nodeType)));
 			};
 			tmp = x.nodeName;
 		};
-		return {"name": tmp, "type": t, "isPublic": x.exists("public") || defPublic, "isFinal": x.exists("final"), "isOverride": x.exists("override"), "line": (HasAttribAccess_Impl_.resolve(x, "line")) ? Std.parseInt(AttribAccess_Impl_.resolve(x, "line")) : null, "doc": doc, "get": (HasAttribAccess_Impl_.resolve(x, "get")) ? this.mkRights(AttribAccess_Impl_.resolve(x, "get")) : Rights.RNormal, "set": (HasAttribAccess_Impl_.resolve(x, "set")) ? this.mkRights(AttribAccess_Impl_.resolve(x, "set")) : Rights.RNormal, "params": (HasAttribAccess_Impl_.resolve(x, "params")) ? this.mkTypeParams(AttribAccess_Impl_.resolve(x, "params")) : [], "platforms": this.defplat(), "meta": meta, "overloads": overloads, "expr": (HasAttribAccess_Impl_.resolve(x, "expr")) ? AttribAccess_Impl_.resolve(x, "expr") : null};
+		return {"name": tmp, "type": t, "isPublic": x.exists("public") || defPublic, "isFinal": x.exists("final"), "isOverride": x.exists("override"), "line": (HasAttribAccess.resolve(x, "line")) ? Std.parseInt(AttribAccess.resolve(x, "line")) : null, "doc": doc, "get": (HasAttribAccess.resolve(x, "get")) ? this.mkRights(AttribAccess.resolve(x, "get")) : Rights.RNormal, "set": (HasAttribAccess.resolve(x, "set")) ? this.mkRights(AttribAccess.resolve(x, "set")) : Rights.RNormal, "params": (HasAttribAccess.resolve(x, "params")) ? this.mkTypeParams(AttribAccess.resolve(x, "params")) : [], "platforms": this.defplat(), "meta": meta, "overloads": overloads, "expr": (HasAttribAccess.resolve(x, "expr")) ? AttribAccess.resolve(x, "expr") : null};
 	}
 	xenum(x) {
-		let cl = new Array();
-		let doc = null;
-		let meta = [];
-		let c = x.elements();
+		var cl = new Array();
+		var doc = null;
+		var meta = [];
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
-			let tmp;
+			var c1 = c.next();
+			var tmp;
 			if (c1.nodeType == Xml.Document) {
 				tmp = "Document";
 			} else {
 				if (c1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 				};
 				tmp = c1.nodeName;
 			};
 			if (tmp == "haxe_doc") {
-				doc = Access_Impl_.get_innerData(c1);
+				doc = Access.get_innerData(c1);
 			} else {
-				let tmp;
+				var tmp1;
 				if (c1.nodeType == Xml.Document) {
-					tmp = "Document";
+					tmp1 = "Document";
 				} else {
 					if (c1.nodeType != Xml.Element) {
-						throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+						throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 					};
-					tmp = c1.nodeName;
+					tmp1 = c1.nodeName;
 				};
-				if (tmp == "meta") {
+				if (tmp1 == "meta") {
 					meta = this.xmeta(c1);
 				} else {
 					cl.push(this.xenumfield(c1));
 				};
 			};
 		};
-		return {"file": (HasAttribAccess_Impl_.resolve(x, "file")) ? AttribAccess_Impl_.resolve(x, "file") : null, "path": this.mkPath(AttribAccess_Impl_.resolve(x, "path")), "module": (HasAttribAccess_Impl_.resolve(x, "module")) ? this.mkPath(AttribAccess_Impl_.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "isExtern": x.exists("extern"), "params": this.mkTypeParams(AttribAccess_Impl_.resolve(x, "params")), "constructors": cl, "platforms": this.defplat(), "meta": meta};
+		return {"file": (HasAttribAccess.resolve(x, "file")) ? AttribAccess.resolve(x, "file") : null, "path": this.mkPath(AttribAccess.resolve(x, "path")), "module": (HasAttribAccess.resolve(x, "module")) ? this.mkPath(AttribAccess.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "isExtern": x.exists("extern"), "params": this.mkTypeParams(AttribAccess.resolve(x, "params")), "constructors": cl, "platforms": this.defplat(), "meta": meta};
 	}
 	xenumfield(x) {
-		let args = null;
-		let docElements = x.elementsNamed("haxe_doc");
-		let xdoc = (docElements.hasNext()) ? docElements.next() : null;
-		let meta = (HasNodeAccess_Impl_.resolve(x, "meta")) ? this.xmeta(NodeAccess_Impl_.resolve(x, "meta")) : [];
-		if (HasAttribAccess_Impl_.resolve(x, "a")) {
-			let names = AttribAccess_Impl_.resolve(x, "a").split(":");
-			let elts = x.elements();
+		var args = null;
+		var docElements = x.elementsNamed("haxe_doc");
+		var xdoc = (docElements.hasNext()) ? docElements.next() : null;
+		var meta = (HasNodeAccess.resolve(x, "meta")) ? this.xmeta(NodeAccess.resolve(x, "meta")) : [];
+		if (HasAttribAccess.resolve(x, "a")) {
+			var names = AttribAccess.resolve(x, "a").split(":");
+			var elts = x.elements();
 			args = new Array();
-			let _g = 0;
+			var _g = 0;
 			while (_g < names.length) {
-				let c = names[_g];
+				var c = names[_g];
 				++_g;
-				let opt = false;
+				var opt = false;
 				if (c.charAt(0) == "?") {
 					opt = true;
 					c = HxOverrides.substr(c, 1, null);
@@ -665,86 +670,86 @@ class XmlParser extends Register.inherits() {
 				args.push({"name": c, "opt": opt, "t": this.xtype(elts.next())});
 			};
 		};
-		let tmp;
+		var tmp;
 		if (x.nodeType == Xml.Document) {
 			tmp = "Document";
 		} else {
 			if (x.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType.toString(x.nodeType)));
 			};
 			tmp = x.nodeName;
 		};
-		let tmp1;
+		var tmp1;
 		if (xdoc == null) {
 			tmp1 = null;
 		} else {
 			if (xdoc.nodeType != Xml.Document && xdoc.nodeType != Xml.Element) {
-				throw Exception.thrown("Invalid nodeType " + ((xdoc.nodeType == null) ? "null" : XmlType_Impl_.toString(xdoc.nodeType)));
+				throw Exception.thrown("Invalid nodeType " + ((xdoc.nodeType == null) ? "null" : XmlType.toString(xdoc.nodeType)));
 			};
-			let this1 = xdoc;
-			tmp1 = Access_Impl_.get_innerData(this1);
+			var this1 = xdoc;
+			tmp1 = Access.get_innerData(this1);
 		};
 		return {"name": tmp, "args": args, "doc": tmp1, "meta": meta, "platforms": this.defplat()};
 	}
 	xabstract(x) {
-		let doc = null;
-		let impl = null;
-		let athis = null;
-		let meta = [];
-		let to = [];
-		let from = [];
-		let c = x.elements();
+		var doc = null;
+		var impl = null;
+		var athis = null;
+		var meta = [];
+		var to = [];
+		var from = [];
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
-			let _g;
+			var c1 = c.next();
+			var _g;
 			if (c1.nodeType == Xml.Document) {
 				_g = "Document";
 			} else {
 				if (c1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 				};
 				_g = c1.nodeName;
 			};
 			switch (_g) {
 				case "from":
-					let t = c1.elements();
+					var t = c1.elements();
 					while (t.hasNext()) {
-						let t1 = t.next();
-						let x = t1.firstElement();
-						if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-							throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+						var t1 = t.next();
+						var x1 = t1.firstElement();
+						if (x1.nodeType != Xml.Document && x1.nodeType != Xml.Element) {
+							throw Exception.thrown("Invalid nodeType " + ((x1.nodeType == null) ? "null" : XmlType.toString(x1.nodeType)));
 						};
-						let this1 = x;
-						from.push({"t": this.xtype(this1), "field": (HasAttribAccess_Impl_.resolve(t1, "field")) ? AttribAccess_Impl_.resolve(t1, "field") : null});
+						var this1 = x1;
+						from.push({"t": this.xtype(this1), "field": (HasAttribAccess.resolve(t1, "field")) ? AttribAccess.resolve(t1, "field") : null});
 					};
 					break
 				case "haxe_doc":
-					doc = Access_Impl_.get_innerData(c1);
+					doc = Access.get_innerData(c1);
 					break
 				case "impl":
-					impl = this.xclass(NodeAccess_Impl_.resolve(c1, "class"));
+					impl = this.xclass(NodeAccess.resolve(c1, "class"));
 					break
 				case "meta":
 					meta = this.xmeta(c1);
 					break
 				case "this":
-					let x = c1.firstElement();
-					if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-						throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+					var x2 = c1.firstElement();
+					if (x2.nodeType != Xml.Document && x2.nodeType != Xml.Element) {
+						throw Exception.thrown("Invalid nodeType " + ((x2.nodeType == null) ? "null" : XmlType.toString(x2.nodeType)));
 					};
-					let this1 = x;
-					athis = this.xtype(this1);
+					var this2 = x2;
+					athis = this.xtype(this2);
 					break
 				case "to":
-					let t1 = c1.elements();
-					while (t1.hasNext()) {
-						let t = t1.next();
-						let x = t.firstElement();
-						if (x.nodeType != Xml.Document && x.nodeType != Xml.Element) {
-							throw Exception.thrown("Invalid nodeType " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+					var t2 = c1.elements();
+					while (t2.hasNext()) {
+						var t3 = t2.next();
+						var x3 = t3.firstElement();
+						if (x3.nodeType != Xml.Document && x3.nodeType != Xml.Element) {
+							throw Exception.thrown("Invalid nodeType " + ((x3.nodeType == null) ? "null" : XmlType.toString(x3.nodeType)));
 						};
-						let this1 = x;
-						to.push({"t": this.xtype(this1), "field": (HasAttribAccess_Impl_.resolve(t, "field")) ? AttribAccess_Impl_.resolve(t, "field") : null});
+						var this3 = x3;
+						to.push({"t": this.xtype(this3), "field": (HasAttribAccess.resolve(t3, "field")) ? AttribAccess.resolve(t3, "field") : null});
 					};
 					break
 				default:
@@ -752,100 +757,100 @@ class XmlParser extends Register.inherits() {
 				
 			};
 		};
-		return {"file": (HasAttribAccess_Impl_.resolve(x, "file")) ? AttribAccess_Impl_.resolve(x, "file") : null, "path": this.mkPath(AttribAccess_Impl_.resolve(x, "path")), "module": (HasAttribAccess_Impl_.resolve(x, "module")) ? this.mkPath(AttribAccess_Impl_.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "params": this.mkTypeParams(AttribAccess_Impl_.resolve(x, "params")), "platforms": this.defplat(), "meta": meta, "athis": athis, "to": to, "from": from, "impl": impl};
+		return {"file": (HasAttribAccess.resolve(x, "file")) ? AttribAccess.resolve(x, "file") : null, "path": this.mkPath(AttribAccess.resolve(x, "path")), "module": (HasAttribAccess.resolve(x, "module")) ? this.mkPath(AttribAccess.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "params": this.mkTypeParams(AttribAccess.resolve(x, "params")), "platforms": this.defplat(), "meta": meta, "athis": athis, "to": to, "from": from, "impl": impl};
 	}
 	xtypedef(x) {
-		let doc = null;
-		let t = null;
-		let meta = [];
-		let c = x.elements();
+		var doc = null;
+		var t = null;
+		var meta = [];
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
-			let tmp;
+			var c1 = c.next();
+			var tmp;
 			if (c1.nodeType == Xml.Document) {
 				tmp = "Document";
 			} else {
 				if (c1.nodeType != Xml.Element) {
-					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+					throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 				};
 				tmp = c1.nodeName;
 			};
 			if (tmp == "haxe_doc") {
-				doc = Access_Impl_.get_innerData(c1);
+				doc = Access.get_innerData(c1);
 			} else {
-				let tmp;
+				var tmp1;
 				if (c1.nodeType == Xml.Document) {
-					tmp = "Document";
+					tmp1 = "Document";
 				} else {
 					if (c1.nodeType != Xml.Element) {
-						throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType_Impl_.toString(c1.nodeType)));
+						throw Exception.thrown("Bad node type, expected Element but found " + ((c1.nodeType == null) ? "null" : XmlType.toString(c1.nodeType)));
 					};
-					tmp = c1.nodeName;
+					tmp1 = c1.nodeName;
 				};
-				if (tmp == "meta") {
+				if (tmp1 == "meta") {
 					meta = this.xmeta(c1);
 				} else {
 					t = this.xtype(c1);
 				};
 			};
 		};
-		let types = new StringMap();
+		var types = new StringMap();
 		if (this.curplatform != null) {
 			types.inst.set(this.curplatform, t);
 		};
-		return {"file": (HasAttribAccess_Impl_.resolve(x, "file")) ? AttribAccess_Impl_.resolve(x, "file") : null, "path": this.mkPath(AttribAccess_Impl_.resolve(x, "path")), "module": (HasAttribAccess_Impl_.resolve(x, "module")) ? this.mkPath(AttribAccess_Impl_.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "params": this.mkTypeParams(AttribAccess_Impl_.resolve(x, "params")), "type": t, "types": types, "platforms": this.defplat(), "meta": meta};
+		return {"file": (HasAttribAccess.resolve(x, "file")) ? AttribAccess.resolve(x, "file") : null, "path": this.mkPath(AttribAccess.resolve(x, "path")), "module": (HasAttribAccess.resolve(x, "module")) ? this.mkPath(AttribAccess.resolve(x, "module")) : null, "doc": doc, "isPrivate": x.exists("private"), "params": this.mkTypeParams(AttribAccess.resolve(x, "params")), "type": t, "types": types, "platforms": this.defplat(), "meta": meta};
 	}
 	xtype(x) {
-		let _g;
+		var _g;
 		if (x.nodeType == Xml.Document) {
 			_g = "Document";
 		} else {
 			if (x.nodeType != Xml.Element) {
-				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType_Impl_.toString(x.nodeType)));
+				throw Exception.thrown("Bad node type, expected Element but found " + ((x.nodeType == null) ? "null" : XmlType.toString(x.nodeType)));
 			};
 			_g = x.nodeName;
 		};
 		switch (_g) {
 			case "a":
-				let fields = new Array();
-				let f = x.elements();
+				var fields = new Array();
+				var f = x.elements();
 				while (f.hasNext()) {
-					let f1 = f.next();
-					let f2 = this.xclassfield(f1, true);
+					var f1 = f.next();
+					var f2 = this.xclassfield(f1, true);
 					f2.platforms = new Array();
 					fields.push(f2);
 				};
 				return CType.CAnonymous(fields);
 				break
 			case "c":
-				return CType.CClass(this.mkPath(AttribAccess_Impl_.resolve(x, "path")), this.xtypeparams(x));
+				return CType.CClass(this.mkPath(AttribAccess.resolve(x, "path")), this.xtypeparams(x));
 				break
 			case "d":
-				let t = null;
-				let tx = x.firstElement();
+				var t = null;
+				var tx = x.firstElement();
 				if (tx != null) {
 					if (tx.nodeType != Xml.Document && tx.nodeType != Xml.Element) {
-						throw Exception.thrown("Invalid nodeType " + ((tx.nodeType == null) ? "null" : XmlType_Impl_.toString(tx.nodeType)));
+						throw Exception.thrown("Invalid nodeType " + ((tx.nodeType == null) ? "null" : XmlType.toString(tx.nodeType)));
 					};
-					let this1 = tx;
+					var this1 = tx;
 					t = this.xtype(this1);
 				};
 				return CType.CDynamic(t);
 				break
 			case "e":
-				return CType.CEnum(this.mkPath(AttribAccess_Impl_.resolve(x, "path")), this.xtypeparams(x));
+				return CType.CEnum(this.mkPath(AttribAccess.resolve(x, "path")), this.xtypeparams(x));
 				break
 			case "f":
-				let args = new Array();
-				let aname = AttribAccess_Impl_.resolve(x, "a").split(":");
-				let eargs_current = 0;
-				let eargs_array = aname;
-				let evalues = (HasAttribAccess_Impl_.resolve(x, "v")) ? new ArrayIterator(AttribAccess_Impl_.resolve(x, "v").split(":")) : null;
-				let e = x.elements();
+				var args = new Array();
+				var aname = AttribAccess.resolve(x, "a").split(":");
+				var eargs_current = 0;
+				var eargs_array = aname;
+				var evalues = (HasAttribAccess.resolve(x, "v")) ? new ArrayIterator(AttribAccess.resolve(x, "v").split(":")) : null;
+				var e = x.elements();
 				while (e.hasNext()) {
-					let e1 = e.next();
-					let opt = false;
-					let a = (eargs_current < eargs_array.length) ? eargs_array[eargs_current++] : null;
+					var e1 = e.next();
+					var opt = false;
+					var a = (eargs_current < eargs_array.length) ? eargs_array[eargs_current++] : null;
 					if (a == null) {
 						a = "";
 					};
@@ -853,21 +858,21 @@ class XmlParser extends Register.inherits() {
 						opt = true;
 						a = HxOverrides.substr(a, 1, null);
 					};
-					let v = (evalues == null || evalues.current >= evalues.array.length) ? null : evalues.array[evalues.current++];
+					var v = (evalues == null || evalues.current >= evalues.array.length) ? null : evalues.array[evalues.current++];
 					args.push({"name": a, "opt": opt, "t": this.xtype(e1), "value": (v == "") ? null : v});
 				};
-				let ret = args[args.length - 1];
+				var ret = args[args.length - 1];
 				HxOverrides.remove(args, ret);
 				return CType.CFunction(args, ret.t);
 				break
 			case "t":
-				return CType.CTypedef(this.mkPath(AttribAccess_Impl_.resolve(x, "path")), this.xtypeparams(x));
+				return CType.CTypedef(this.mkPath(AttribAccess.resolve(x, "path")), this.xtypeparams(x));
 				break
 			case "unknown":
 				return CType.CUnknown;
 				break
 			case "x":
-				return CType.CAbstract(this.mkPath(AttribAccess_Impl_.resolve(x, "path")), this.xtypeparams(x));
+				return CType.CAbstract(this.mkPath(AttribAccess.resolve(x, "path")), this.xtypeparams(x));
 				break
 			default:
 			return this.xerror(x);
@@ -875,16 +880,16 @@ class XmlParser extends Register.inherits() {
 		};
 	}
 	xtypeparams(x) {
-		let p = new Array();
-		let c = x.elements();
+		var p = new Array();
+		var c = x.elements();
 		while (c.hasNext()) {
-			let c1 = c.next();
+			var c1 = c.next();
 			p.push(this.xtype(c1));
 		};
 		return p;
 	}
 	defplat() {
-		let l = new Array();
+		var l = new Array();
 		if (this.curplatform != null) {
 			l.push(this.curplatform);
 		};

@@ -24,12 +24,13 @@ export declare type StackItem =
 	| StackItem.FilePos
 	| StackItem.CFunction
 
-export declare class CallStack_Impl_ {
+export declare class CallStack {
 	
 	/**
 	The length of this stack.
 	*/
 	static readonly length: number
+	protected static get_length($this: StackItem[]): number
 	
 	/**
 	Return the call stack elements, or an empty array if not available.
@@ -62,6 +63,10 @@ export declare class CallStack_Impl_ {
 	*/
 	static copy($this: StackItem[]): StackItem[]
 	static get($this: StackItem[], index: number): StackItem
+	protected static asArray($this: StackItem[]): StackItem[]
+	protected static equalItems(item1: null | StackItem, item2: null | StackItem): boolean
+	protected static exceptionToString(e: Exception): string
+	protected static itemToString(b: StringBuf, s: StackItem): void
 }
 
 //# sourceMappingURL=CallStack.d.ts.map

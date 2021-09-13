@@ -1,7 +1,9 @@
-import {Error} from "./Error.js"
+import {Error as Error__1} from "./Error.js"
 import {Bytes} from "./Bytes.js"
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
+
+const $global = Register.$global
 
 export const BytesBuffer = Register.global("$hxClasses")["haxe.io.BytesBuffer"] = 
 class BytesBuffer extends Register.inherits() {
@@ -28,11 +30,11 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return;
 		};
-		let sub = new Uint8Array(src.b.buffer, src.b.byteOffset, src.length);
+		var sub = new Uint8Array(src.b.buffer, src.b.byteOffset, src.length);
 		this.u8.set(sub, this.pos);
 		this.pos += src.length;
 	}
-	addString(v, encoding = null) {
+	addString(v, encoding) {
 		this.add(Bytes.ofString(v, encoding));
 	}
 	addInt32(v) {
@@ -66,7 +68,7 @@ class BytesBuffer extends Register.inherits() {
 	}
 	addBytes(src, pos, len) {
 		if (pos < 0 || len < 0 || pos + len > src.length) {
-			throw Exception.thrown(Error.OutsideBounds);
+			throw Exception.thrown(Error__1.OutsideBounds);
 		};
 		if (this.pos + len > this.size) {
 			this.grow(len);
@@ -74,16 +76,16 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return;
 		};
-		let sub = new Uint8Array(src.b.buffer, src.b.byteOffset + pos, len);
+		var sub = new Uint8Array(src.b.buffer, src.b.byteOffset + pos, len);
 		this.u8.set(sub, this.pos);
 		this.pos += len;
 	}
 	grow(delta) {
-		let req = this.pos + delta;
-		let nsize = (this.size == 0) ? 16 : this.size;
+		var req = this.pos + delta;
+		var nsize = (this.size == 0) ? 16 : this.size;
 		while (nsize < req) nsize = nsize * 3 >> 1;
-		let nbuf = new ArrayBuffer(nsize);
-		let nu8 = new Uint8Array(nbuf);
+		var nbuf = new ArrayBuffer(nsize);
+		var nu8 = new Uint8Array(nbuf);
 		if (this.size > 0) {
 			nu8.set(this.u8);
 		};
@@ -101,7 +103,7 @@ class BytesBuffer extends Register.inherits() {
 		if (this.size == 0) {
 			return new Bytes(new ArrayBuffer(0));
 		};
-		let b = new Bytes(this.buffer);
+		var b = new Bytes(this.buffer);
 		b.length = this.pos;
 		return b;
 	}

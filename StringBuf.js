@@ -2,6 +2,8 @@ import {Register} from "./genes/Register.js"
 import {Std} from "./Std.js"
 import {HxOverrides} from "./HxOverrides.js"
 
+const $global = Register.$global
+
 /**
 A String buffer is an efficient way to build a big string by appending small
 elements together.
@@ -57,7 +59,7 @@ class StringBuf extends Register.inherits() {
 	If `len` is omitted or null, the substring ranges from `pos` to the end
 	of `s`.
 	*/
-	addSub(s, pos, len = null) {
+	addSub(s, pos, len) {
 		this.b += (len == null) ? HxOverrides.substr(s, pos, null) : HxOverrides.substr(s, pos, len);
 	}
 	

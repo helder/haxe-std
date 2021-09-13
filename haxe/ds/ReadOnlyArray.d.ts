@@ -1,10 +1,12 @@
 
-export declare class ReadOnlyArray_Impl_ {
+export declare class ReadOnlyArray {
 	
 	/**
 	The length of `this` Array.
 	*/
 	static readonly length: number
+	protected static get_length<T>($this: T[]): number
+	protected static get<T>($this: T[], i: number): T
 	
 	/**
 	Returns a new Array by appending the elements of `a` to the elements of

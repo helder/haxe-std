@@ -3,7 +3,7 @@ import {StringIteratorUnicode} from "./haxe/iterators/StringIteratorUnicode"
 import {Encoding} from "./haxe/io/Encoding"
 import {Bytes} from "./haxe/io/Bytes"
 
-export declare class UnicodeString_Impl_ {
+export declare class UnicodeString {
 	
 	/**
 	Tells if `b` is a correctly encoded UTF8 byte sequence.
@@ -106,6 +106,7 @@ export declare class UnicodeString_Impl_ {
 	String `""` is returned.
 	*/
 	static substring($this: string, startIndex: number, endIndex?: null | number): string
+	protected static get_length($this: string): number
 }
 
 //# sourceMappingURL=UnicodeString.d.ts.map

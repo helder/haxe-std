@@ -33,6 +33,7 @@ export declare class Lib {
 	In Haxe, `null` is used to represent the absence of a value.
 	*/
 	static readonly undefined: any
+	protected static get_undefined(): any
 	
 	/**
 	`nativeThis` is the JavaScript `this`, which is semantically different
@@ -71,6 +72,11 @@ export declare class Lib {
 	Calling this is only possible inside a catch statement.
 	*/
 	static getOriginalException(): any
+	
+	/**
+	Generate next unique id
+	*/
+	protected static getNextHaxeUID(): number
 }
 
 //# sourceMappingURL=Lib.d.ts.map

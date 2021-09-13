@@ -1,7 +1,7 @@
 import {Iterator} from "./StdTypes"
-import {Map} from "./Map"
+import {Map as Map__1} from "./Map"
 
-export declare class XmlType_Impl_ {
+export declare class XmlType {
 	
 	/**
 	Represents an XML element type.
@@ -46,6 +46,7 @@ Cross-platform Xml API.
 @see https://haxe.org/manual/std-Xml.html
 */
 export declare class Xml {
+	protected constructor(nodeType: number)
 	
 	/**
 	Returns the type of the Xml Node. This should be used before
@@ -69,6 +70,12 @@ export declare class Xml {
 	The parent can be `null`, an Element or a Document.
 	*/
 	parent: Xml
+	protected children: Xml[]
+	protected attributeMap: Map__1<string, string>
+	protected get_nodeName(): string
+	protected set_nodeName(v: string): string
+	protected get_nodeValue(): string
+	protected set_nodeValue(v: string): string
 	
 	/**
 	Get the given attribute of an Element node. Returns `null` if not found.
@@ -153,6 +160,7 @@ export declare class Xml {
 	Returns a String representation of the Xml node.
 	*/
 	toString(): string
+	protected ensureElementType(): void
 	
 	/**
 	XML element type.

@@ -149,6 +149,8 @@ export declare class Path {
 	Returns `true` if the path is an absolute path, and `false` otherwise.
 	*/
 	static isAbsolute(path: string): boolean
+	protected static unescape(path: string): string
+	protected static escape(path: string, allowSlashes?: boolean): string
 }
 
 //# sourceMappingURL=Path.d.ts.map

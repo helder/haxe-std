@@ -5,6 +5,8 @@ import {Crc32} from "../crypto/Crc32.js"
 import {Exception} from "../Exception.js"
 import {Register} from "../../genes/Register.js"
 
+const $global = Register.$global
+
 export const Writer = Register.global("$hxClasses")["haxe.zip.Writer"] = 
 class Writer extends Register.inherits() {
 	new(o) {
@@ -12,24 +14,24 @@ class Writer extends Register.inherits() {
 		this.files = new List();
 	}
 	writeZipDate(date) {
-		let hour = date.getHours();
-		let min = date.getMinutes();
-		let sec = date.getSeconds() >> 1;
+		var hour = date.getHours();
+		var min = date.getMinutes();
+		var sec = date.getSeconds() >> 1;
 		this.o.writeUInt16(hour << 11 | min << 5 | sec);
-		let year = date.getFullYear() - 1980;
-		let month = date.getMonth() + 1;
-		let day = date.getDate();
+		var year = date.getFullYear() - 1980;
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
 		this.o.writeUInt16(year << 9 | month << 5 | day);
 	}
 	writeEntryHeader(f) {
-		let o = this.o;
-		let flags = 0;
+		var o = this.o;
+		var flags = 0;
 		if (f.extraFields != null) {
-			let _g_head = f.extraFields.h;
+			var _g_head = f.extraFields.h;
 			while (_g_head != null) {
-				let val = _g_head.item;
+				var val = _g_head.item;
 				_g_head = _g_head.next;
-				let e = val;
+				var e = val;
 				if (e._hx_index == 2) {
 					flags |= 2048;
 				};
@@ -62,25 +64,25 @@ class Writer extends Register.inherits() {
 		o.writeInt32(f.dataSize);
 		o.writeInt32(f.fileSize);
 		o.writeUInt16(f.fileName.length);
-		let e = new BytesOutput();
+		var e = new BytesOutput();
 		if (f.extraFields != null) {
-			let _g_head = f.extraFields.h;
+			var _g_head = f.extraFields.h;
 			while (_g_head != null) {
-				let val = _g_head.item;
+				var val = _g_head.item;
 				_g_head = _g_head.next;
-				let f = val;
-				switch (f._hx_index) {
+				var f1 = val;
+				switch (f1._hx_index) {
 					case 0:
-						let tag = f.tag;
-						let bytes = f.bytes;
+						var tag = f1.tag;
+						var bytes = f1.bytes;
 						e.writeUInt16(tag);
 						e.writeUInt16(bytes.length);
 						e.write(bytes);
 						break
 					case 1:
-						let name = f.name;
-						let crc = f.crc;
-						let namebytes = Bytes.ofString(name);
+						var name = f1.name;
+						var crc = f1.crc;
+						var namebytes = Bytes.ofString(name);
 						e.writeUInt16(28789);
 						e.writeUInt16(namebytes.length + 5);
 						e.writeByte(1);
@@ -93,33 +95,33 @@ class Writer extends Register.inherits() {
 				};
 			};
 		};
-		let ebytes = e.getBytes();
+		var ebytes = e.getBytes();
 		o.writeUInt16(ebytes.length);
 		o.writeString(f.fileName);
 		o.write(ebytes);
 		this.files.add({"name": f.fileName, "compressed": f.compressed, "clen": f.data.length, "size": f.fileSize, "crc": f.crc32, "date": f.fileTime, "fields": ebytes});
 	}
 	write(files) {
-		let _g_head = files.h;
+		var _g_head = files.h;
 		while (_g_head != null) {
-			let val = _g_head.item;
+			var val = _g_head.item;
 			_g_head = _g_head.next;
-			let f = val;
+			var f = val;
 			this.writeEntryHeader(f);
 			this.o.writeFullBytes(f.data, 0, f.data.length);
 		};
 		this.writeCDR();
 	}
 	writeCDR() {
-		let cdr_size = 0;
-		let cdr_offset = 0;
-		let _g_head = this.files.h;
+		var cdr_size = 0;
+		var cdr_offset = 0;
+		var _g_head = this.files.h;
 		while (_g_head != null) {
-			let val = _g_head.item;
+			var val = _g_head.item;
 			_g_head = _g_head.next;
-			let f = val;
-			let namelen = f.name.length;
-			let extraFieldsLength = f.fields.length;
+			var f = val;
+			var namelen = f.name.length;
+			var extraFieldsLength = f.fields.length;
 			this.o.writeInt32(33639248);
 			this.o.writeUInt16(20);
 			this.o.writeUInt16(20);
